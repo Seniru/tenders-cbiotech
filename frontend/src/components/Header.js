@@ -1,3 +1,5 @@
+import logo from "../assets/images/favicon.png";
+
 export default function Header() {
 	return (
 		<header
@@ -8,7 +10,7 @@ export default function Header() {
 				alignItems: "center",
 			}}
 		>
-			<img src="favicon.png" alt="logo" />
+			<img src={logo} alt="logo" />
 		</header>
 	);
 }
