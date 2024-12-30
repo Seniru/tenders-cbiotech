@@ -1,9 +1,9 @@
 import "./SearchBar.css";
 import searchIcon from "../../assets/images/search-solid.svg";
 
-export default function SearchBar({ placeholder }) {
+export default function SearchBar({ placeholder, style }) {
 	return (
-		<div className="search-bar-container">
+		<div className="search-bar-container" style={style}>
 			<input
 				type="search"
 				className="search-bar"
