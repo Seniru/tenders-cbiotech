@@ -1,4 +1,4 @@
-import logo from "../assets/images/favicon.png";
+import logo from "../assets/images/favicon.png"
 
 export default function Header() {
 	return (
@@ -12,5 +12,5 @@ export default function Header() {
 		>
 			<img src={logo} alt="logo" />
 		</header>
-	);
+	)
 }

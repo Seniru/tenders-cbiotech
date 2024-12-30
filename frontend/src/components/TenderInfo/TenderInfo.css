@@ -17,6 +17,7 @@
 }
 
 .tender-table {
+	width: 100%;
 	margin-top: 20px;
 	border-collapse: collapse;
 	padding: 5px;
@@ -27,13 +28,15 @@
 	color: white;
 }
 
-.tender-table th, .tender-table td {
+.tender-table th,
+.tender-table td {
 	padding: 5px;
 	padding-right: 12px;
 }
 
 .tender-table th {
 	padding-bottom: 12px;
+	text-align: left;
 }
 
 .tender-table > tbody > tr:nth-child(odd) {

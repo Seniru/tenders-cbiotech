@@ -1,19 +1,19 @@
 import "./TenderInfo.css"
 
-function TenderRow({ tender, index}) {
+function TenderRow({ tender, index }) {
 	return (
 		<tr>
-			<td>{ index }</td>
-			<td>{ tender.bidder }</td>
-			<td>{ tender.manufacturer }</td>
-			<td>{ tender.currency }</td>
-			<td>{ tender.quotedPrice }</td>
-			<td>{ tender.packSize }</td>
-			<td>{ tender.quotedPriceLKR }</td>
-			<td>{ tender.quotedUnitPriceLKR }</td>
-			<td>{ tender.bindBond ? "Yes" : "No"}</td>
-			<td>{ tender.pr ? "Yes" : "No" }</td>
-			<td>{ tender.pca ? "Yes" : "No" }</td>
+			<td>{index}</td>
+			<td>{tender.bidder}</td>
+			<td>{tender.manufacturer}</td>
+			<td>{tender.currency}</td>
+			<td>{tender.quotedPrice}</td>
+			<td>{tender.packSize}</td>
+			<td>{tender.quotedPriceLKR}</td>
+			<td>{tender.quotedUnitPriceLKR}</td>
+			<td>{tender.bindBond ? "Yes" : "No"}</td>
+			<td>{tender.pr ? "Yes" : "No"}</td>
+			<td>{tender.pca ? "Yes" : "No"}</td>
 		</tr>
 	)
 }
@@ -37,7 +37,9 @@ export default function TenderTable({ tenders }) {
 				</tr>
 			</thead>
 			<tbody>
-				{ tenders.map((tender, index) => <TenderRow index={index + 1} tender={tender}/>)}
+				{tenders.map((tender, index) => (
+					<TenderRow index={index + 1} tender={tender} />
+				))}
 			</tbody>
 		</table>
 	)

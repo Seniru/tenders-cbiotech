@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../Button"
 
 export default function ProductRow({
 	product,
@@ -18,5 +18,5 @@ export default function ProductRow({
 				<Button isPrimary={true}>+ Add</Button>
 			</td>
 		</tr>
-	);
+	)
 }

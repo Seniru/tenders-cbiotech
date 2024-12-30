@@ -1,6 +1,6 @@
-import Button from "../components/Button";
-import ProductList from "../components/ProductList";
-import SearchBar from "../components/SearchBar";
+import Button from "../components/Button"
+import ProductList from "../components/ProductList"
+import SearchBar from "../components/SearchBar"
 
 export default function Index() {
 	return (
@@ -91,5 +91,5 @@ export default function Index() {
 				/>
 			</div>
 		</>
-	);
+	)
 }

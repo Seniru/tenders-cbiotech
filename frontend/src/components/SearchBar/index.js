@@ -1,5 +1,5 @@
-import "./SearchBar.css";
-import searchIcon from "../../assets/images/search-solid.svg";
+import "./SearchBar.css"
+import searchIcon from "../../assets/images/search-solid.svg"
 
 export default function SearchBar({ placeholder, style }) {
 	return (
@@ -11,5 +11,5 @@ export default function SearchBar({ placeholder, style }) {
 			/>
 			<img src={searchIcon} alt="Search Icon" className="search-icon" />
 		</div>
-	);
+	)
 }

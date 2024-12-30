@@ -1,12 +1,12 @@
-import { useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPrint } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPrint } from "@fortawesome/free-solid-svg-icons"
 
-import Button from "../components/Button";
-import TenderInfo from "../components/TenderInfo";
+import Button from "../components/Button"
+import TenderInfo from "../components/TenderInfo"
 
 export default function Product() {
-	const { productName } = useParams();
+	const { productName } = useParams()
 
 	let tenderDetails = [
 		{
@@ -57,9 +57,9 @@ export default function Product() {
 				},
 			],
 		},
-	];
+	]
 
-	tenderDetails = [...tenderDetails, ...tenderDetails, ...tenderDetails];
+	tenderDetails = [...tenderDetails, ...tenderDetails, ...tenderDetails]
 
 	return (
 		<>
@@ -84,5 +84,5 @@ export default function Product() {
 				))}
 			</div>
 		</>
-	);
+	)
 }

@@ -1,5 +1,5 @@
-import ProductRow from "./ProductRow";
-import "./List.css";
+import ProductRow from "./ProductRow"
+import "./List.css"
 
 export default function ProductList({ products }) {
 	return (
@@ -31,5 +31,5 @@ export default function ProductList({ products }) {
 				))}
 			</tbody>
 		</table>
-	);
+	)
 }

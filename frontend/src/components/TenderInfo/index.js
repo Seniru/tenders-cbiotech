@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faPills } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCalendar, faPills } from "@fortawesome/free-solid-svg-icons"
 
-import "./TenderInfo.css";
-import TenderTable from "./TenderTable";
+import "./TenderInfo.css"
+import TenderTable from "./TenderTable"
 
 function RateComponent({ currency, rate }) {
 	return (
@@ -10,7 +10,7 @@ function RateComponent({ currency, rate }) {
 			<span className="secondary-text">{currency.toUpperCase()}: </span>
 			<span>{rate}</span>
 		</div>
-	);
+	)
 }
 
 function TenderDetailsComponent({ icon, detail, value }) {
@@ -20,7 +20,7 @@ function TenderDetailsComponent({ icon, detail, value }) {
 			<div className="secondary-text">{detail}:</div>
 			<div>{value}</div>
 		</div>
-	);
+	)
 }
 
 export default function TenderInfo({ details }) {
@@ -55,7 +55,7 @@ export default function TenderInfo({ details }) {
 					))}
 				</div>
 			</div>
-			<TenderTable tenders={ details.tenders }/>
+			<TenderTable tenders={details.tenders} />
 		</div>
-	);
+	)
 }

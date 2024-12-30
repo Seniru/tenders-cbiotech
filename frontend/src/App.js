@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
-import Layout from "./components/Layout";
-import Index from "./pages/Index";
-import Components from "./pages/Components";
-import Product from "./pages/Product";
+import Layout from "./components/Layout"
+import Index from "./pages/Index"
+import Components from "./pages/Components"
+import Product from "./pages/Product"
 
 function App() {
 	return (
@@ -21,7 +21,7 @@ function App() {
 				</Routes>
 			</BrowserRouter>
 		</div>
-	);
+	)
 }
 
-export default App;
+export default App

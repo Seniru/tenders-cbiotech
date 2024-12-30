@@ -1,5 +1,5 @@
-import Button from "../components/Button";
-import SearchBar from "../components/SearchBar";
+import Button from "../components/Button"
+import SearchBar from "../components/SearchBar"
 
 export default function Components() {
 	return (
@@ -20,5 +20,5 @@ export default function Components() {
 			<p>Primary text</p>
 			<p className="secondary-text">Secondary text</p>
 		</>
-	);
+	)
 }
