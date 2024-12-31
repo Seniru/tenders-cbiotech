@@ -7,26 +7,26 @@ import Product from "./pages/Product"
 import TenderByDate from "./pages/TendersByDate"
 
 function App() {
-	return (
-		<div className="App">
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<Layout />}>
-						<Route index element={<Index />} />
-						<Route path="components" element={<Components />} />
-						<Route
-							path="product/:productName"
-							element={<Product />}
-						/>
-						<Route
-							path="tenders/:date"
-							element={<TenderByDate />}
-						/>
-					</Route>
-				</Routes>
-			</BrowserRouter>
-		</div>
-	)
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Index />} />
+                        <Route path="components" element={<Components />} />
+                        <Route
+                            path="product/:productName"
+                            element={<Product />}
+                        />
+                        <Route
+                            path="tenders/:date"
+                            element={<TenderByDate />}
+                        />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </div>
+    )
 }
 
 export default App

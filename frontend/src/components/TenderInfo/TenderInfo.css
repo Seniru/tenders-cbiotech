@@ -1,48 +1,48 @@
 .tender-info-container {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .tender-details {
-	display: inline-block;
+    display: inline-block;
 }
 
 .tender-details > div {
-	display: grid;
-	grid-template-columns: 8px 1fr 1fr;
-	gap: 16px;
+    display: grid;
+    grid-template-columns: 8px 1fr 1fr;
+    gap: 16px;
 }
 
 .currency-conversions {
-	margin-left: 70px;
+    margin-left: 70px;
 }
 
 .tender-table {
-	width: 100%;
-	margin-top: 20px;
-	border-collapse: collapse;
-	padding: 5px;
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    padding: 5px;
 }
 
 .tender-table > thead {
-	background-color: var(--primary-color);
-	color: white;
+    background-color: var(--primary-color);
+    color: white;
 }
 
 .tender-table th,
 .tender-table td {
-	padding: 5px;
-	padding-right: 12px;
+    padding: 5px;
+    padding-right: 12px;
 }
 
 .tender-table th {
-	padding-bottom: 12px;
-	text-align: left;
+    padding-bottom: 12px;
+    text-align: left;
 }
 
 .tender-table > tbody > tr:nth-child(odd) {
-	background-color: #d9d9d9;
+    background-color: #d9d9d9;
 }
 
 .tender-table > tbody > tr:nth-child(even) {
-	background-color: white;
+    background-color: white;
 }

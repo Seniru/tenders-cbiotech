@@ -1,12 +1,12 @@
 .product-list {
-	border-collapse: collapse;
-	width: 100%;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .product-list th {
-	text-align: left;
+    text-align: left;
 }
 
 .product-row {
-	border-top: 1px solid #333;
+    border-top: 1px solid #333;
 }
