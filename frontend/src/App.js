@@ -4,6 +4,7 @@ import Layout from "./components/Layout"
 import Index from "./pages/Index"
 import Components from "./pages/Components"
 import Product from "./pages/Product"
+import TenderByDate from "./pages/TendersByDate"
 
 function App() {
 	return (
@@ -16,6 +17,10 @@ function App() {
 						<Route
 							path="product/:productName"
 							element={<Product />}
+						/>
+						<Route
+							path="tenders/:date"
+							element={<TenderByDate />}
 						/>
 					</Route>
 				</Routes>

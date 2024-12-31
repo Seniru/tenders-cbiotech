@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 import Button from "../Button"
 
 export default function ProductRow({
@@ -9,7 +11,15 @@ export default function ProductRow({
 }) {
 	return (
 		<tr className="product-row">
-			<td>{product}</td>
+			<td>
+				<Link
+					to={`/product/${product}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{product}
+				</Link>
+			</td>
 			<td>{bidder}</td>
 			<td>{manufacturer}</td>
 			<td>{currency}</td>

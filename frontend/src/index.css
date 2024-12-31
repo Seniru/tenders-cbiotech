@@ -51,6 +51,18 @@ h3 {
 	font-size: 18px;
 }
 
+a,
+a:visited,
+a:hover,
+a:active {
+	color: var(--primary-color);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
 .secondary-text {
 	color: var(--secondary-text-color);
 }
