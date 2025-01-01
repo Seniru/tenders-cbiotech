@@ -7,6 +7,17 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "prettify": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\"",
+    "populate": "node src/populate.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.3"
+  },
+  "devDependencies": {
+    "prettier": "3.4.2"
   }
 }
