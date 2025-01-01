@@ -1,6 +1,8 @@
 const express = require("express")
 const router = express.Router()
 
-router.get("/", (req, res) => res.send("Tenders route"))
+const { getTendersSummary } = require("../controllers/tenders")
+
+router.get("/", getTendersSummary)
 
 module.exports = router
