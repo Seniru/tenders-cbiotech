@@ -42,7 +42,7 @@ export default function TenderTable({ tenders }) {
                         <TenderRow index={index + 1} tender={tender} />
                     ))
                 ) : (
-                    <TenderRow index={1} tender={{}}/>
+                    <TenderRow index={1} tender={{}} />
                 )}
             </tbody>
         </table>

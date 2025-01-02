@@ -5,6 +5,7 @@ import Index from "./pages/Index"
 import Components from "./pages/Components"
 import Product from "./pages/Product"
 import TenderByDate from "./pages/TendersByDate"
+import Login from "./pages/Login"
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                             path="tenders/:date"
                             element={<TenderByDate />}
                         />
+                        <Route path="login" element={<Login />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

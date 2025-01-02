@@ -6,7 +6,7 @@ import useFetch from "../hooks/useFetch"
 import Button from "../components/Button"
 import ProductList from "../components/ProductList"
 import SearchBar from "../components/SearchBar"
-import DateInput from "../components/DateInput"
+import Input from "../components/Input"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -29,7 +29,8 @@ export default function Index() {
             >
                 <h1>Index</h1>
                 <div>
-                    <DateInput
+                    <Input
+                        type="date"
                         onChange={(e) => setTendersOnDate(e.target.value)}
                     />
                     <Button isPrimary={true} onClick={handleSearchByDate}>
