@@ -20,15 +20,18 @@ export default function ProductList({ products }) {
                 </tr>
             </thead>
             <tbody>
-                {products.map((p) => (
-                    <ProductRow
-                        product={p.product}
-                        bidder={p.bidder}
-                        manufacturer={p.manufacturer}
-                        currency={p.currency}
-                        quotedPrice={p.quotedPrice}
-                    />
-                ))}
+                {products.map((p) => {
+                    let bidder = p.bidders[0]
+                    return (
+                        <ProductRow
+                            product={p.itemName}
+                            bidder={bidder?.bidder || "No listing"}
+                            manufacturer={bidder?.manufacturer}
+                            currency={bidder?.currency}
+                            quotedPrice={bidder?.quotedPrice}
+                        />
+                    )
+                })}
             </tbody>
         </table>
     )

@@ -55,7 +55,7 @@ export default function TenderInfo({ details }) {
                     ))}
                 </div>
             </div>
-            <TenderTable tenders={details.tenders} />
+            <TenderTable tenders={details.bidders} />
         </div>
     )
 }

@@ -2,13 +2,17 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 
+import useFetch from "../hooks/useFetch"
 import Button from "../components/Button"
 import ProductList from "../components/ProductList"
 import SearchBar from "../components/SearchBar"
 import DateInput from "../components/DateInput"
 
+const { REACT_APP_API_URL } = process.env
+
 export default function Index() {
     let [tendersOnDate, setTendersOnDate] = useState(null)
+    let [products] = useFetch(`${REACT_APP_API_URL}/api/tenders/`, [])
 
     const handleSearchByDate = () => {
         if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
@@ -45,80 +49,7 @@ export default function Index() {
             <div className="secondary-text">Showing 800 products...</div>
 
             <div className="container" style={{ marginTop: 10 }}>
-                <ProductList
-                    products={[
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                        {
-                            product: "Product 1",
-                            bidder: "Bidder 1",
-                            manufacturer: "Manufacturer 1",
-                            currency: "USD",
-                            quotedPrice: 1.0,
-                        },
-                    ]}
-                />
+                <ProductList products={products || []} />
             </div>
         </>
     )

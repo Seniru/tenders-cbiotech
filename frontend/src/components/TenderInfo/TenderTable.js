@@ -4,7 +4,7 @@ function TenderRow({ tender, index }) {
     return (
         <tr>
             <td>{index}</td>
-            <td>{tender.bidder}</td>
+            <td>{tender.bidder || "No offers"}</td>
             <td>{tender.manufacturer}</td>
             <td>{tender.currency}</td>
             <td>{tender.quotedPrice}</td>
@@ -37,9 +37,13 @@ export default function TenderTable({ tenders }) {
                 </tr>
             </thead>
             <tbody>
-                {tenders.map((tender, index) => (
-                    <TenderRow index={index + 1} tender={tender} />
-                ))}
+                {tenders.length > 0 ? (
+                    tenders.map((tender, index) => (
+                        <TenderRow index={index + 1} tender={tender} />
+                    ))
+                ) : (
+                    <TenderRow index={1} tender={{}}/>
+                )}
             </tbody>
         </table>
     )

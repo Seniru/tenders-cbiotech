@@ -2,14 +2,13 @@ require("dotenv").config()
 
 const express = require("express")
 const app = express()
+const cors = require("cors")
 const mongoose = require("mongoose")
 
 const tendersRoute = require("./routes/tenders")
 const productRoute = require("./routes/product")
 
-app.get("/", (req, res) => {
-    res.send("Hello world")
-})
+app.use(cors())
 
 app.use("/api/tenders", tendersRoute)
 app.use("/api/product", productRoute)
