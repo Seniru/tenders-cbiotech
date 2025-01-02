@@ -1,0 +1,23 @@
+aside.profile-sidebar {
+    background-color: var(--secondary-color);
+    position: fixed;
+    height: 100%;
+    margin: -12px;
+    display: grid;
+    color: white;
+    padding: 20px;
+    padding-top: 50px;
+}
+
+.profile-sidebar-profile-icon {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 160px;
+    font-size: 100px;
+    font-weight: bold;
+}

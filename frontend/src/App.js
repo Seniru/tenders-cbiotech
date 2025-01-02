@@ -7,6 +7,7 @@ import Product from "./pages/Product"
 import TenderByDate from "./pages/TendersByDate"
 import Login from "./pages/Login"
 import { AuthProvider } from "./contexts/AuthProvider"
+import Profile from "./pages/Profile"
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                         <Route path="/" element={<Layout />}>
                             <Route index element={<Index />} />
                             <Route path="components" element={<Components />} />
+                            <Route path="profile" element={<Profile />} />
                             <Route
                                 path="product/:productName"
                                 element={<Product />}
