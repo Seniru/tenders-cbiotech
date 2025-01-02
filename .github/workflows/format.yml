@@ -18,13 +18,21 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install dependencies
+      - name: "Frontend: Install dependencies"
         run: npm install
         working-directory: frontend
 
-      - name: Run Prettier
+      - name: "Frontend: Run Prettier"
         run: npm run prettify
         working-directory: frontend
+
+      - name: "Backend: Install dependencies"
+        run: npm install
+        working-directory: backend
+
+      - name: "Backend: Run Prettier"
+        run: npm run prettify
+        working-directory: backend
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
