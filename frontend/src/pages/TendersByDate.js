@@ -33,7 +33,7 @@ export default function TenderByDate() {
             </div>
 
             <div>
-                {tenderDetails.map((detail) => (
+                {tenderDetails?.body?.tenders.map((detail) => (
                     <TenderInfo details={detail} />
                 ))}
             </div>

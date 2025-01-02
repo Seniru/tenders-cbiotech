@@ -14,7 +14,7 @@ button.primary {
 }
 
 button.secondary {
-    background-color: white;
+    background-color: transparent;
     color: var(--primary-color);
 }
 

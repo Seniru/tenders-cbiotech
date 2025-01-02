@@ -1,30 +1,17 @@
-import Input from "../components/Input"
-import Button from "../components/Button"
 import { useState } from "react"
 
-const { REACT_APP_API_URL } = process.env
+import Input from "../components/Input"
+import Button from "../components/Button"
+import { useAuth } from "../contexts/AuthProvider"
 
 export default function Login() {
     let [email, setEmail] = useState("")
     let [password, setPassword] = useState("")
+    let { loginAction } = useAuth()
 
     const handleSubmit = async (evt) => {
         evt.preventDefault()
-
-        try {
-            let response = await fetch(`${REACT_APP_API_URL}/api/auth/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            })
-
-            let data = await response.json()
-            console.log(data)
-        } catch (error) {
-            console.error(error)
-        }
+        loginAction({ email, password })
     }
 
     return (
@@ -49,15 +36,15 @@ export default function Login() {
                 <label>Email</label>
                 <Input
                     type="email"
-                    onChange={(evt) => setEmail(evt.target.valeu)}
-					required
+                    onChange={(evt) => setEmail(evt.target.value)}
+                    required
                 />
                 <br />
                 <label>Password</label>
                 <Input
                     type="password"
-                    onChange={(evt) => setPassword(evt.target.password)}
-					required
+                    onChange={(evt) => setPassword(evt.target.value)}
+                    required
                 />
                 <br />
                 <Button isPrimary={true}>Login</Button>

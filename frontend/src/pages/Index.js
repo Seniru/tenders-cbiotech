@@ -50,7 +50,7 @@ export default function Index() {
             <div className="secondary-text">Showing 800 products...</div>
 
             <div className="container" style={{ marginTop: 10 }}>
-                <ProductList products={products || []} />
+                <ProductList products={products?.body?.tenders || []} />
             </div>
         </>
     )

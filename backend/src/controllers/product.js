@@ -11,7 +11,11 @@ const getProduct = async (req, res) => {
             .exec()
         return createResponse(res, StatusCodes.OK, { tenders })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        return createResponse(
+            res,
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            error.message,
+        )
     }
 }
 
