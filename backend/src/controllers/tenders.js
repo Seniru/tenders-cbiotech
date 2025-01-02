@@ -1,5 +1,7 @@
+const { StatusCodes } = require("http-status-codes")
 const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
+const createResponse = require("../utils/createResponse")
 
 const getTendersSummary = async (req, res) => {
     try {
@@ -31,9 +33,9 @@ const getTendersSummary = async (req, res) => {
             }),
         )
 
-        res.json(latestTenders)
+        return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
-        res.status(500).send(error)
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
     }
 }
 
@@ -53,10 +55,9 @@ const getTendersOnDate = async (req, res) => {
             .populate("bidders")
             .exec()
 
-        console.log(tenders)
-        res.send(tenders)
+        return createResponse(res, StatusCodes.OK, { tenders })
     } catch (error) {
-        res.status(500).send(error)
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
     }
 }
 

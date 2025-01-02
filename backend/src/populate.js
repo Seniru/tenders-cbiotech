@@ -1,8 +1,11 @@
 require("dotenv").config()
 
+const bcrypt = require("bcrypt")
+
 const mongoose = require("mongoose")
 const Tender = require("./models/Tender")
 const Bidder = require("./models/Bidder")
+const User = require("./models/User")
 
 const MONGO_URI = process.env.MONGO_URI
 
@@ -76,4 +79,31 @@ const populate = async () => {
     }
 }
 
-populate()
+// populate()
+
+// Create super user
+const createUser = async () => {
+    try {
+        await mongoose.connect(MONGO_URI)
+        console.log("Connected to MongoDB")
+
+        // password should be hashed
+        let hashedPassword = bcrypt.hashSync("pass", 10)
+        const user = new User({
+            username: "seniru",
+            email: "senirupasan@gmail.com",
+            password: hashedPassword,
+            role: "admin",
+        })
+        await user.save()
+        console.log("User saved")
+
+        mongoose.connection.close()
+        console.log("MongoDB connection closed")
+    } catch (error) {
+        console.error("Error:", error)
+        mongoose.connection.close()
+    }
+}
+
+createUser()
