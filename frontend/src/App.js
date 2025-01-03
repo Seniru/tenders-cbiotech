@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
+import { AuthProvider } from "./contexts/AuthProvider"
 import Layout from "./components/Layout"
 import Index from "./pages/Index"
 import Components from "./pages/Components"
 import Product from "./pages/Product"
 import TenderByDate from "./pages/TendersByDate"
 import Login from "./pages/Login"
-import { AuthProvider } from "./contexts/AuthProvider"
 import Profile from "./pages/Profile"
+import Admin from "./pages/Admin"
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                             <Route index element={<Index />} />
                             <Route path="components" element={<Components />} />
                             <Route path="profile" element={<Profile />} />
+                            <Route path="admin" element={<Admin />} />
                             <Route
                                 path="product/:productName"
                                 element={<Product />}

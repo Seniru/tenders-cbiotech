@@ -22,19 +22,20 @@ function ProfileDetail({ icon, detail }) {
 }
 
 export default function Profile() {
-
     const handleSubmit = (e) => {
         e.preventDefault()
     }
 
-	let {user} = useAuth()
+    let { user } = useAuth()
 
     return (
         <div style={{ display: "flex" }}>
             <aside className="profile-sidebar">
                 <div>
                     <div>
-                        <div className="profile-sidebar-profile-icon">{user.username.charAt(0).toUpperCase()}</div>
+                        <div className="profile-sidebar-profile-icon">
+                            {user.username.charAt(0).toUpperCase()}
+                        </div>
                         <h2 style={{ color: "white" }}>Profile</h2>
                         <hr />
                         <br />
@@ -47,7 +48,13 @@ export default function Profile() {
                                 icon={faEnvelope}
                                 detail={user.email}
                             />
-                            <ProfileDetail icon={null} detail={user.role.charAt(0).toUpperCase() + user.role.substring(1)} />
+                            <ProfileDetail
+                                icon={null}
+                                detail={
+                                    user.role.charAt(0).toUpperCase() +
+                                    user.role.substring(1)
+                                }
+                            />
                         </div>
                     </div>
                 </div>
@@ -65,11 +72,21 @@ export default function Profile() {
                 >
                     <label htmlFor="password">Password</label>
                     <br />
-                    <Input type="password" id="password" placeholder="Please enter your password..." required />
+                    <Input
+                        type="password"
+                        id="password"
+                        placeholder="Please enter your password..."
+                        required
+                    />
                     <br />
                     <label htmlFor="conf-password">Re-enter password</label>
                     <br />
-                    <Input type="password" id="conf-password" placeholder="Please re-enter your password..." required />
+                    <Input
+                        type="password"
+                        id="conf-password"
+                        placeholder="Please re-enter your password..."
+                        required
+                    />
                     <br />
                     <br />
                     <Button isPrimary={true}>Change Password</Button>
