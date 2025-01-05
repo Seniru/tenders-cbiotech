@@ -5,7 +5,7 @@ const requireRole = require("../middlewares/requireRole")
 const {
     getTendersSummary,
     getTendersOnDate,
-    createTender
+    createTender,
 } = require("../controllers/tenders")
 
 router.get("/", requireRole("viewer"), getTendersSummary)

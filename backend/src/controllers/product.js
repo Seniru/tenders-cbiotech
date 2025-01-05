@@ -8,7 +8,12 @@ const createResponse = require("../utils/createResponse")
 
 const getProduct = async (req, res) => {
     const token = req.headers.authorization
-    if (!token) return createResponse(res, StatusCodes.UNAUTHORIZED, "You must log in to continue")
+    if (!token)
+        return createResponse(
+            res,
+            StatusCodes.UNAUTHORIZED,
+            "You must log in to continue",
+        )
     console.log(jwt.verify(token.split(" ")[1], process.env.JWT_SECRET))
     try {
         const { productName } = req.params
