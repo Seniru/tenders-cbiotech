@@ -5,7 +5,10 @@ const createResponse = require("../utils/createResponse")
 
 const getTendersSummary = async (req, res) => {
     try {
-        const itemNames = await Tender.distinct("itemName")
+        const searchString = req.query.q || ""
+        const itemNames = await Tender.distinct("itemName", {
+            itemName: { $regex: searchString, $options: "i" }
+        })
         const latestTenders = await Promise.all(
             itemNames.map(async (itemName) => {
                 // todo: quoted price should be quotedPriceLKR later
@@ -69,7 +72,42 @@ const getTendersOnDate = async (req, res) => {
     }
 }
 
+const createTender = async (req, res) => {
+    try {
+        const { bidders } = req.body
+        if (!Array.isArray(bidders))
+            return createResponse(res, StatusCodes.BAD_REQUEST, "Request must include bidder data");
+
+        const tender = new Tender({
+            closedOn: req.body.closedOn,
+            itemName: req.body.itemName,
+            tenderNumber: req.body.tenderNumber,
+            quantity: req.body.quantity,
+            conversionRates: req.body.conversionRates,
+        
+        })
+        await tender.save()
+
+        let bidderPromises = []
+        for (let bidderData of bidders) {
+            bidderPromises.push((async () => {
+                let bidder = new Bidder(bidderData)
+                await bidder.save()
+                tender.bidders.push(bidder._id)
+            })())
+        }
+        await Promise.all(bidderPromises)
+        await tender.save()
+
+        return createResponse(res, StatusCodes.CREATED, req.body)
+
+    } catch (error) {
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+    }
+}
+
 module.exports = {
     getTendersSummary,
     getTendersOnDate,
+    createTender
 }

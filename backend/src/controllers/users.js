@@ -21,7 +21,6 @@ const createUser = async (req, res) => {
 		if (!password) return createResponse(res, StatusCodes.BAD_REQUEST, "You must provide a password");
 		let salt = await bcrypt.genSalt(10)
 		let hashedPassword = await bcrypt.hash(password, salt)
-		console.log(hashedPassword)
 		const user = new User({
 			username,
 			email,
