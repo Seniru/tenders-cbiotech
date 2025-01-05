@@ -8,6 +8,7 @@ const mongoose = require("mongoose")
 const tendersRoute = require("./routes/tenders")
 const productRoute = require("./routes/product")
 const authRoute = require("./routes/auth")
+const usersRoute = require("./routes/users")
 
 app.use(cors())
 app.use(express.json())
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use("/api/tenders", tendersRoute)
 app.use("/api/product", productRoute)
 app.use("/api/auth", authRoute)
+app.use("/api/users", usersRoute)
 
 const start = async () => {
     const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost/test"
