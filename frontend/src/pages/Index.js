@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 
+import { useAuth } from "../contexts/AuthProvider"
 import useFetch from "../hooks/useFetch"
 import Button from "../components/Button"
 import ProductList from "../components/ProductList"
@@ -24,6 +25,7 @@ export default function Index() {
     let [addingProduct, setAddingProduct] = useState("")
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
+    let { user } = useAuth()
 
     useEffect(() => {
         if (productFetchError) {
@@ -89,6 +91,7 @@ export default function Index() {
                 <ProductList
                     products={products?.body?.tenders || []}
                     onAdd={addTender}
+                    viewingAs={user.role}
                 />
             </div>
         </>

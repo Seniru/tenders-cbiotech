@@ -9,6 +9,7 @@ export default function ProductRow({
     currency,
     quotedPrice,
     onAdd,
+    viewingAs,
 }) {
     return (
         <tr className="product-row">
@@ -26,9 +27,16 @@ export default function ProductRow({
             <td>{currency}</td>
             <td>{quotedPrice}</td>
             <td>
-                <Button isPrimary={true} onClick={() => onAdd(product)}>
-                    + Add
-                </Button>
+                {viewingAs === "viewer" ? (
+                    <>
+                        <br />
+                        <br />
+                    </>
+                ) : (
+                    <Button isPrimary={true} onClick={() => onAdd(product)}>
+                        + Add
+                    </Button>
+                )}
             </td>
         </tr>
     )

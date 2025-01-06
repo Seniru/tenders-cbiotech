@@ -1,7 +1,7 @@
 import ProductRow from "./ProductRow"
 import "./List.css"
 
-export default function ProductList({ products, onAdd }) {
+export default function ProductList({ products, onAdd, viewingAs }) {
     return (
         <table className="product-list">
             <thead>
@@ -30,6 +30,7 @@ export default function ProductList({ products, onAdd }) {
                             currency={bidder?.currency}
                             quotedPrice={bidder?.quotedPrice}
                             onAdd={onAdd}
+                            viewingAs={viewingAs}
                         />
                     )
                 })}

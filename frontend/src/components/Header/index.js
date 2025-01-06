@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import logo from "../../assets/images/favicon.png"
 import { useAuth } from "../../contexts/AuthProvider"
 import "./Header.css"
@@ -6,6 +7,12 @@ import ProfileButton from "./ProfileButton"
 export default function Header() {
     let { user } = useAuth()
 
+    let links = {}
+    if (user) {
+        links["/"] = "Index"
+        if (user.role === "admin") links["/admin"] = "Admin"
+    }
+
     return (
         <header>
             <div style={{ display: "flex" }}>
@@ -13,12 +20,11 @@ export default function Header() {
                 <img src={logo} alt="logo" />
                 <nav className="header-nav">
                     <ul>
-                        <li>
-                            <a href="/">Index</a>
-                        </li>
-                        <li>
-                            <a href="/admin">Admin</a>
-                        </li>
+                        {Object.entries(links).map(([path, name], index) => (
+                            <li key={index}>
+                                <Link to={path}>{name}</Link>
+                            </li>
+                        ))}
                     </ul>
                 </nav>
             </div>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import { AuthProvider } from "./contexts/AuthProvider"
+import PrivateRoute from "./components/PrivateRoute"
 import Layout from "./components/Layout"
 import Index from "./pages/Index"
 import Components from "./pages/Components"
@@ -17,19 +18,25 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Layout />}>
-                            <Route index element={<Index />} />
                             <Route path="components" element={<Components />} />
-                            <Route path="profile" element={<Profile />} />
-                            <Route path="admin" element={<Admin />} />
-                            <Route
-                                path="product/:productName"
-                                element={<Product />}
-                            />
-                            <Route
-                                path="tenders/:date"
-                                element={<TenderByDate />}
-                            />
                             <Route path="login" element={<Login />} />
+                            <Route element={<PrivateRoute />}>
+                                <Route index element={<Index />} />
+                                <Route path="profile" element={<Profile />} />
+                                <Route
+                                    path="product/:productName"
+                                    element={<Product />}
+                                />
+                                <Route
+                                    path="tenders/:date"
+                                    element={<TenderByDate />}
+                                />
+                            </Route>
+                            <Route
+                                element={<PrivateRoute minimumRole="admin" />}
+                            >
+                                <Route path="admin" element={<Admin />} />
+                            </Route>
                         </Route>
                     </Routes>
                 </BrowserRouter>
