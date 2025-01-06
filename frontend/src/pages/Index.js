@@ -36,7 +36,6 @@ export default function Index() {
         }
     }, [productFetchError])
 
-
     const handleSearchByDate = () => {
         if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
     }
@@ -90,14 +89,14 @@ export default function Index() {
                         if (evt.code === "Enter") setQ(query)
                     }}
                 />
-                <Button
-                    isPrimary={true}
-                    onClick={(evt) => setQ(query)}
-                >
+                <Button isPrimary={true} onClick={(evt) => setQ(query)}>
                     Go
                 </Button>
             </div>
-            <div className="secondary-text">Showing {products?.body ? products?.body?.tenders?.length : 0} products...</div>
+            <div className="secondary-text">
+                Showing {products?.body ? products?.body?.tenders?.length : 0}{" "}
+                products...
+            </div>
 
             <div className="container" style={{ marginTop: 10 }}>
                 <ProductList

@@ -22,8 +22,12 @@ const getProduct = async (req, res) => {
             .sort({ closedOn: -1 })
             .exec()
 
-        let afterDerivations = tenders.map(tender => tender.applyDerivations())        
-        return createResponse(res, StatusCodes.OK, { tenders: afterDerivations })
+        let afterDerivations = tenders.map((tender) =>
+            tender.applyDerivations(),
+        )
+        return createResponse(res, StatusCodes.OK, {
+            tenders: afterDerivations,
+        })
     } catch (error) {
         return createResponse(
             res,

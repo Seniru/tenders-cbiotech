@@ -32,7 +32,7 @@ const getTendersSummary = async (req, res) => {
                     bidder: latestTender.bidders.bidder,
                     manufacturer: latestTender.bidders.manufacturer,
                     currency: latestTender.bidders.currency,
-                    quotedPrice: latestTender.bidders.quotedPrice
+                    quotedPrice: latestTender.bidders.quotedPrice,
                 }
             }),
         )
@@ -64,8 +64,12 @@ const getTendersOnDate = async (req, res) => {
             .populate("bidders")
             .exec()
 
-        let afterDerivations = tenders.map(tender => tender.applyDerivations())        
-        return createResponse(res, StatusCodes.OK, { tenders: afterDerivations })
+        let afterDerivations = tenders.map((tender) =>
+            tender.applyDerivations(),
+        )
+        return createResponse(res, StatusCodes.OK, {
+            tenders: afterDerivations,
+        })
     } catch (error) {
         return createResponse(
             res,

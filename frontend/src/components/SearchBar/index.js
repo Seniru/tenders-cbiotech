@@ -8,7 +8,7 @@ export default function SearchBar({ placeholder, style, ...props }) {
                 type="search"
                 className="search-bar"
                 placeholder={placeholder}
-                { ...props }
+                {...props}
             />
             <img src={searchIcon} alt="Search Icon" className="search-icon" />
         </div>
