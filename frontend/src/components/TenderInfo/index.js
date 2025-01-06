@@ -50,9 +50,12 @@ export default function TenderInfo({ details }) {
 
                 <div className="currency-conversions">
                     <h4 style={{ marginTop: 0 }}>Conversion rates</h4>
-                    {Object.entries(details.conversionRates).map((rates) => (
-                        <RateComponent currency={rates[0]} rate={rates[1]} />
-                    ))}
+                    {details.conversionRates ?
+                        Object.entries(details.conversionRates).map((rates) => (
+                            <RateComponent currency={rates[0]} rate={rates[1]} />
+                        ))
+                        : <span style={{ color: "var(--secondary-text-color)"}}>N/A</span>
+                    }
                 </div>
             </div>
             <TenderTable tenders={details.bidders} />

@@ -14,13 +14,16 @@ const getProduct = async (req, res) => {
             StatusCodes.UNAUTHORIZED,
             "You must log in to continue",
         )
-    console.log(jwt.verify(token.split(" ")[1], process.env.JWT_SECRET))
+
     try {
         const { productName } = req.params
         const tenders = await Tender.find({ itemName: productName })
             .populate("bidders")
+            .sort({ closedOn: -1 })
             .exec()
-        return createResponse(res, StatusCodes.OK, { tenders })
+
+        let afterDerivations = tenders.map(tender => tender.applyDerivations())        
+        return createResponse(res, StatusCodes.OK, { tenders: afterDerivations })
     } catch (error) {
         return createResponse(
             res,

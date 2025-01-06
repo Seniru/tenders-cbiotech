@@ -21,14 +21,13 @@ export default function ProductList({ products, onAdd, viewingAs }) {
             </thead>
             <tbody>
                 {products.map((p) => {
-                    let bidder = p.bidders[0]
                     return (
                         <ProductRow
                             product={p.itemName}
-                            bidder={bidder?.bidder || "No listing"}
-                            manufacturer={bidder?.manufacturer}
-                            currency={bidder?.currency}
-                            quotedPrice={bidder?.quotedPrice}
+                            bidder={p.bidder || "No listing"}
+                            manufacturer={p.manufacturer}
+                            currency={p.currency}
+                            quotedPrice={p.quotedPrice}
                             onAdd={onAdd}
                             viewingAs={viewingAs}
                         />

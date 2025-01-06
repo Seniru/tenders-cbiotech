@@ -12,30 +12,32 @@ const getTendersSummary = async (req, res) => {
         const latestTenders = await Promise.all(
             itemNames.map(async (itemName) => {
                 // todo: quoted price should be quotedPriceLKR later
-                const latestTender = await Tender.findOne({ itemName })
-                    .populate({
-                        path: "bidders",
-                        select: [
-                            "bidder",
-                            "manufacturer",
-                            "currency",
-                            "quotedPrice",
-                        ],
-                    })
+                let latestTender = await Tender.findOne({ itemName })
+                    .populate("bidders")
                     .sort({ closedOn: -1 })
                     .exec()
 
+                latestTender = latestTender.applyDerivations()
                 if (latestTender && latestTender.bidders.length > 0) {
                     latestTender.bidders.sort(
-                        (a, b) => a.quotedPrice - b.quotedPrice,
+                        (a, b) => a.quotedUnitPrice - b.quotedUnitPrice,
                     )
-                    latestTender.bidders = [latestTender.bidders[0]]
+                    latestTender.bidders = latestTender.bidders[0]
                 }
 
-                return latestTender
+                console.log(latestTender)
+
+                return {
+                    itemName: latestTender.itemName,
+                    bidder: latestTender.bidders.bidder,
+                    manufacturer: latestTender.bidders.manufacturer,
+                    currency: latestTender.bidders.currency,
+                    quotedPrice: latestTender.bidders.quotedPrice
+                }
             }),
         )
 
+        console.log(latestTenders)
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
         return createResponse(
@@ -62,7 +64,8 @@ const getTendersOnDate = async (req, res) => {
             .populate("bidders")
             .exec()
 
-        return createResponse(res, StatusCodes.OK, { tenders })
+        let afterDerivations = tenders.map(tender => tender.applyDerivations())        
+        return createResponse(res, StatusCodes.OK, { tenders: afterDerivations })
     } catch (error) {
         return createResponse(
             res,

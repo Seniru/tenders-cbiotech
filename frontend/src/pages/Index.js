@@ -17,14 +17,16 @@ export default function Index() {
     let [tendersOnDate, setTendersOnDate] = useState(
         new Date().toISOString().split("T")[0],
     )
-    let [products, productFetchError] = useFetch(
-        `${REACT_APP_API_URL}/api/tenders/`,
-        [],
-    )
     let [addTenderFormOpen, setAddTenderFormOpen] = useState(false)
     let [addingProduct, setAddingProduct] = useState("")
+    let [query, setQuery] = useState("")
+    let [q, setQ] = useState("")
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
+    let [products, productFetchError] = useFetch(
+        `${REACT_APP_API_URL}/api/tenders?q=${q}`,
+        [],
+    )
     let { user } = useAuth()
 
     useEffect(() => {
@@ -33,6 +35,7 @@ export default function Index() {
             setMessage(productFetchError)
         }
     }, [productFetchError])
+
 
     const handleSearchByDate = () => {
         if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
@@ -82,10 +85,19 @@ export default function Index() {
                 <SearchBar
                     placeholder="Search products..."
                     style={{ width: "60%", marginRight: 6 }}
+                    onChange={(evt) => setQuery(evt.target.value)}
+                    onKeyDown={(evt) => {
+                        if (evt.code === "Enter") setQ(query)
+                    }}
                 />
-                <Button isPrimary={true}>Go</Button>
+                <Button
+                    isPrimary={true}
+                    onClick={(evt) => setQ(query)}
+                >
+                    Go
+                </Button>
             </div>
-            <div className="secondary-text">Showing 800 products...</div>
+            <div className="secondary-text">Showing {products?.body ? products?.body?.tenders?.length : 0} products...</div>
 
             <div className="container" style={{ marginTop: 10 }}>
                 <ProductList
