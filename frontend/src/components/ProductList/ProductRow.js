@@ -8,6 +8,7 @@ export default function ProductRow({
     manufacturer,
     currency,
     quotedPrice,
+    onAdd,
 }) {
     return (
         <tr className="product-row">
@@ -25,7 +26,9 @@ export default function ProductRow({
             <td>{currency}</td>
             <td>{quotedPrice}</td>
             <td>
-                <Button isPrimary={true}>+ Add</Button>
+                <Button isPrimary={true} onClick={() => onAdd(product)}>
+                    + Add
+                </Button>
             </td>
         </tr>
     )

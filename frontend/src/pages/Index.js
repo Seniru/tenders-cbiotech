@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 
@@ -7,6 +7,8 @@ import Button from "../components/Button"
 import ProductList from "../components/ProductList"
 import SearchBar from "../components/SearchBar"
 import Input from "../components/Input"
+import MessageBox from "../components/MessageBox"
+import NewTenderForm from "../forms/NewTenderForm"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -14,14 +16,45 @@ export default function Index() {
     let [tendersOnDate, setTendersOnDate] = useState(
         new Date().toISOString().split("T")[0],
     )
-    let [products] = useFetch(`${REACT_APP_API_URL}/api/tenders/`, [])
+    let [products, productFetchError] = useFetch(
+        `${REACT_APP_API_URL}/api/tenders/`,
+        [],
+    )
+    let [addTenderFormOpen, setAddTenderFormOpen] = useState(false)
+    let [addingProduct, setAddingProduct] = useState("")
+    let [message, setMessage] = useState(null)
+    let [isError, setIsError] = useState(false)
+
+    useEffect(() => {
+        if (productFetchError) {
+            setIsError(true)
+            setMessage(productFetchError)
+        }
+    }, [productFetchError])
 
     const handleSearchByDate = () => {
         if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
     }
 
+    const addTender = (product) => {
+        setAddTenderFormOpen(true)
+        setAddingProduct(product)
+    }
+
     return (
         <>
+            <MessageBox
+                isError={isError}
+                message={message}
+                setMessage={setMessage}
+            />
+            <NewTenderForm
+                isOpen={addTenderFormOpen}
+                setIsError={setIsError}
+                setMessage={setMessage}
+                setIsOpen={setAddTenderFormOpen}
+                addingProduct={addingProduct}
+            />
             <div
                 style={{
                     display: "flex",
@@ -53,7 +86,10 @@ export default function Index() {
             <div className="secondary-text">Showing 800 products...</div>
 
             <div className="container" style={{ marginTop: 10 }}>
-                <ProductList products={products?.body?.tenders || []} />
+                <ProductList
+                    products={products?.body?.tenders || []}
+                    onAdd={addTender}
+                />
             </div>
         </>
     )
