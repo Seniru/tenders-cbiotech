@@ -23,7 +23,7 @@ export default function Index() {
     let [q, setQ] = useState("")
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
-    let [products, productFetchError] = useFetch(
+    let [products, productFetchError, productsLoading] = useFetch(
         `${REACT_APP_API_URL}/api/tenders?q=${q}`,
         [],
     )
@@ -35,6 +35,10 @@ export default function Index() {
             setMessage(productFetchError)
         }
     }, [productFetchError])
+
+    useEffect(() => {
+        document.title = "Tenders | Cliniqon Biotech"
+    }, [])
 
     const handleSearchByDate = () => {
         if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
@@ -94,8 +98,11 @@ export default function Index() {
                 </Button>
             </div>
             <div className="secondary-text">
-                Showing {products?.body ? products?.body?.tenders?.length : 0}{" "}
-                products...
+                {productsLoading
+                    ? "Loading..."
+                    : "Showing " +
+                      (products?.body ? products?.body?.tenders?.length : 0) +
+                      " products"}
             </div>
 
             <div className="container" style={{ marginTop: 10 }}>
@@ -103,6 +110,7 @@ export default function Index() {
                     products={products?.body?.tenders || []}
                     onAdd={addTender}
                     viewingAs={user.role}
+                    isLoading={productsLoading}
                 />
             </div>
         </>

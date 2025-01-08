@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import Button from "../components/Button"
 import Table from "../components/Table"
 import NewAccountForm from "../forms/NewAccountForm"
@@ -20,6 +21,10 @@ function UserRow({ row, index }) {
 
 export default function Admin() {
     let [users] = useFetch(`${REACT_APP_API_URL}/api/users`, [])
+
+    useEffect(() => {
+        document.title = "Admin | Cliniqon Biotech"
+    }, [])
 
     return (
         <div>

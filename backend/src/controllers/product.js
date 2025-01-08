@@ -1,7 +1,6 @@
 require("dotenv").config()
 
 const { StatusCodes } = require("http-status-codes")
-const jwt = require("jsonwebtoken")
 const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
 const createResponse = require("../utils/createResponse")

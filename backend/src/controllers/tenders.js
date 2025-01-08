@@ -11,7 +11,6 @@ const getTendersSummary = async (req, res) => {
         })
         const latestTenders = await Promise.all(
             itemNames.map(async (itemName) => {
-                // todo: quoted price should be quotedPriceLKR later
                 let latestTender = await Tender.findOne({ itemName })
                     .populate("bidders")
                     .sort({ closedOn: -1 })
@@ -25,8 +24,6 @@ const getTendersSummary = async (req, res) => {
                     latestTender.bidders = latestTender.bidders[0]
                 }
 
-                console.log(latestTender)
-
                 return {
                     itemName: latestTender.itemName,
                     bidder: latestTender.bidders.bidder,
@@ -37,7 +34,7 @@ const getTendersSummary = async (req, res) => {
             }),
         )
 
-        console.log(latestTenders)
+
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
         return createResponse(

@@ -34,8 +34,10 @@ export const AuthProvider = ({ children }) => {
                 body: JSON.stringify(data),
             })
             let res = await response.json()
-            if (res) {
-                setToken(res.body.token)
+            if (response.ok) {
+                if (res) setToken(res.body.token)
+            } else {
+                return res ? res.body : response.statusText
             }
             window.location.href = "/"
         } catch (error) {

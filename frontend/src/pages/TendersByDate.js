@@ -24,6 +24,10 @@ export default function TenderByDate() {
         }
     }, [tenderFetchError])
 
+    useEffect(() => {
+        document.title = "Tenders on " + date + " | Cliniqon Biotech"
+    }, [date])
+
     return (
         <>
             <MessageBox isError={true} message={error} setMessage={setError} />
@@ -36,7 +40,7 @@ export default function TenderByDate() {
                 }}
             >
                 <h1>Tenders on {date}</h1>
-                <Button isPrimary={true}>
+                <Button isPrimary={true} onClick={window.print}>
                     <FontAwesomeIcon icon={faPrint} />
                     <span style={{ marginLeft: 5 }}>Print</span>
                 </Button>

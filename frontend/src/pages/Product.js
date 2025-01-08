@@ -24,6 +24,11 @@ export default function Product() {
         }
     }, [tenderFetchError])
 
+    useEffect(() => {
+        document.title = productName + " | Cliniqon Biotech"
+    }, [productName])
+
+
     return (
         <>
             <MessageBox isError={true} message={error} setMessage={setError} />
@@ -36,7 +41,7 @@ export default function Product() {
                 }}
             >
                 <h1>{productName}</h1>
-                <Button isPrimary={true}>
+                <Button isPrimary={true} onClick={window.print}>
                     <FontAwesomeIcon icon={faPrint} />
                     <span style={{ marginLeft: 5 }}>Print</span>
                 </Button>

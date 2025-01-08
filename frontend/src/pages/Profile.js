@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faEnvelope } from "@fortawesome/free-solid-svg-icons"
 
@@ -27,6 +28,11 @@ export default function Profile() {
     }
 
     let { user } = useAuth()
+
+    useEffect(() => {
+        document.title = user.username + " | Cliniqon Biotech"
+    }, [user])
+
 
     return (
         <div style={{ display: "flex" }}>

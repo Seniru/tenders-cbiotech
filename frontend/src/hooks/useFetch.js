@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthProvider"
 const useFetch = (url, initialValue) => {
     const [data, setData] = useState(initialValue)
     const [error, setError] = useState("")
+    const [isLoading, setIsLoading] = useState(true)
     let { token } = useAuth()
 
     useEffect(() => {
@@ -17,6 +18,7 @@ const useFetch = (url, initialValue) => {
                 if (!response.ok)
                     throw new Error(result.body || response.statusText)
                 setData(result)
+                setIsLoading(false)
             } catch (error) {
                 setError(error.message)
             }
@@ -24,7 +26,7 @@ const useFetch = (url, initialValue) => {
         fetchData()
     }, [url, token])
 
-    return [data, error]
+    return [data, error, isLoading]
 }
 
 export default useFetch

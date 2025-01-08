@@ -8,7 +8,6 @@ const createResponse = require("../utils/createResponse")
 const getUsers = async (req, res) => {
     try {
         const users = await User.find({})
-        console.log(users)
         return createResponse(res, StatusCodes.OK, { users })
     } catch (error) {
         return createResponse(

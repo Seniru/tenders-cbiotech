@@ -43,3 +43,9 @@ nav.header-nav > ul > li > a {
     align-items: center;
     margin-right: 15px;
 }
+
+@media print {
+    header {
+        display: none;
+    }
+}

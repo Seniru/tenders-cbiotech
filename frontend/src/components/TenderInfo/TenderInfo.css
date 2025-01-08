@@ -46,3 +46,20 @@
 .tender-table > tbody > tr:nth-child(even) {
     background-color: white;
 }
+
+@media print {
+    table {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+
+    tr, td, th {
+        border: 1px solid black;
+    }
+
+    th {
+        font-weight: bold;
+        color: black;
+    }
+
+  }
