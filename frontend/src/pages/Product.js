@@ -28,7 +28,6 @@ export default function Product() {
         document.title = productName + " | Cliniqon Biotech"
     }, [productName])
 
-
     return (
         <>
             <MessageBox isError={true} message={error} setMessage={setError} />

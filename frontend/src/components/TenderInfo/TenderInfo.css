@@ -53,7 +53,9 @@
         border: 1px solid black;
     }
 
-    tr, td, th {
+    tr,
+    td,
+    th {
         border: 1px solid black;
     }
 
@@ -61,5 +63,4 @@
         font-weight: bold;
         color: black;
     }
-
-  }
+}

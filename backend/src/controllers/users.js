@@ -56,7 +56,42 @@ const createUser = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    try {
+        const { email } = req.body
+        if (!email)
+            return createResponse(
+                res,
+                StatusCodes.BAD_REQUEST,
+                "email is required to delete",
+            )
+        if (email === req.user.email)
+            return createResponse(
+                res,
+                StatusCodes.UNAUTHORIZED,
+                "Can't delete yourself",
+            )
+
+        let user = await User.findOneAndDelete({ email }).exec()
+        if (!user)
+            return createResponse(res, StatusCodes.NOT_FOUND, "User not found")
+
+        return createResponse(res, StatusCodes.OK, {
+            username: user.username,
+            email: user.email,
+            role: user.role,
+        })
+    } catch (error) {
+        return createResponse(
+            res,
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            error.message,
+        )
+    }
+}
+
 module.exports = {
     getUsers,
     createUser,
+    deleteUser,
 }

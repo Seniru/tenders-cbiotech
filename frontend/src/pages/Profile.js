@@ -33,7 +33,6 @@ export default function Profile() {
         document.title = user.username + " | Cliniqon Biotech"
     }, [user])
 
-
     return (
         <div style={{ display: "flex" }}>
             <aside className="profile-sidebar">

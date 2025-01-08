@@ -8,11 +8,11 @@ import { useAuth } from "../contexts/AuthProvider"
 
 const { REACT_APP_API_URL } = process.env
 
-export default function NewAccountForm() {
+export default function NewAccountForm({ refreshUsers, setRefreshUsers }) {
     let [username, setUsername] = useState("")
     let [email, setEmail] = useState("")
     let [password, setPassword] = useState("")
-    let [role, setRole] = useState("")
+    let [role, setRole] = useState("admin")
     let [error, setError] = useState(null)
     let [info, setInfo] = useState(null)
     let { token } = useAuth()
@@ -30,6 +30,7 @@ export default function NewAccountForm() {
         const result = await response.json()
         if (!response.ok) return setError(result.body)
         setInfo("Account created!")
+        setRefreshUsers(!refreshUsers)
         // reset the input fields
         setUsername("")
         setEmail("")
@@ -77,7 +78,7 @@ export default function NewAccountForm() {
                         contributer: "Contributer",
                         viewer: "Viewer",
                     }}
-                    value="admin"
+                    value={role}
                     onChange={(evt) => setRole(evt.target.value)}
                 />
                 <br />

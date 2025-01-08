@@ -3,7 +3,6 @@ import { useEffect } from "react"
 import LoginForm from "../forms/LoginForm"
 
 export default function Login() {
-
     useEffect(() => {
         document.title = "Admin | Cliniqon Biotech"
     }, [])

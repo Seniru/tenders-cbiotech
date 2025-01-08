@@ -45,7 +45,9 @@ export default function LoginForm() {
                 />
                 <br />
 
-                <Button type="submit" isPrimary={true}>Login</Button>
+                <Button type="submit" isPrimary={true}>
+                    Login
+                </Button>
             </form>
         </>
     )

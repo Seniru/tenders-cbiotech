@@ -5,7 +5,6 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import "./MessageBox.css"
 
 function MessageComponent({ isError, message, setMessage }) {
-
     useEffect(() => {
         if (message) {
             let timeout = setTimeout(() => {

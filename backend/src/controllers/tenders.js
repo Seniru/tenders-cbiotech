@@ -34,7 +34,6 @@ const getTendersSummary = async (req, res) => {
             }),
         )
 
-
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
         return createResponse(

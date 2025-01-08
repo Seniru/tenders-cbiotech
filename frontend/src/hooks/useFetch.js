@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "../contexts/AuthProvider"
 
-const useFetch = (url, initialValue) => {
+const useFetch = (url, initialValue, refreshFlag) => {
     const [data, setData] = useState(initialValue)
     const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(true)
@@ -24,7 +24,7 @@ const useFetch = (url, initialValue) => {
             }
         }
         fetchData()
-    }, [url, token])
+    }, [url, token, refreshFlag])
 
     return [data, error, isLoading]
 }
