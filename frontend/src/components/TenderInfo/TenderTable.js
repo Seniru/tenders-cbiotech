@@ -38,7 +38,7 @@ function TenderRow({ row, index }) {
                 {formatNumber(row.quotedUnitPriceLKR)}
             </td>
             <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
-                {row.bindBond ? "Yes" : "No"}
+                {row.bidBond ? "Yes" : "No"}
             </td>
             <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
                 {row.pr ? "Yes" : "No"}

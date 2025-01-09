@@ -108,6 +108,8 @@ export default function NewTenderForm({
     addingProduct,
     setIsError,
     setMessage,
+    refreshList,
+    setRefreshList,
 }) {
     let [inputs, setInputs] = useState({
         itemName: addingProduct,
@@ -146,6 +148,7 @@ export default function NewTenderForm({
         // display the result
         setIsError(!response.ok)
         setMessage(response.ok ? result.statusMessage : result.body)
+        setRefreshList(!refreshList)
         // clear old values and close the window
         setInputs({ conversionRates: {}, bidders: [], itemName: "" })
         setConversionRates([])
@@ -310,7 +313,7 @@ export default function NewTenderForm({
                             <br />
                         </div>
                     ))}
-                    <Button kind="primary" onClick={addRate}>
+                    <Button type="button" kind="primary" onClick={addRate}>
                         Add rate
                     </Button>
                 </fieldset>
@@ -341,7 +344,9 @@ export default function NewTenderForm({
                 <Button kind="primary" type="button" onClick={addBidderRow}>
                     Add bidder
                 </Button>
-                <Button kind="primary">Submit</Button>
+                <Button kind="primary" type="submit">
+                    Submit
+                </Button>
             </form>
         </div>
     )

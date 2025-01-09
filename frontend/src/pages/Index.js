@@ -23,6 +23,7 @@ export default function Index() {
     let [q, setQ] = useState("")
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
+    let [refreshList, setRefreshList] = useState(false)
     let [products, productFetchError, productsLoading] = useFetch(
         `${REACT_APP_API_URL}/api/tenders?q=${q}`,
         [],
@@ -62,6 +63,8 @@ export default function Index() {
                 setMessage={setMessage}
                 setIsOpen={setAddTenderFormOpen}
                 addingProduct={addingProduct}
+                refreshList={refreshList}
+                setRefreshList={setRefreshList}
             />
             <div
                 style={{
