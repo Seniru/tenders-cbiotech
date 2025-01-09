@@ -40,7 +40,7 @@ export default function Product() {
                 }}
             >
                 <h1>{productName}</h1>
-                <Button isPrimary={true} onClick={window.print}>
+                <Button kind="primary" onClick={window.print}>
                     <FontAwesomeIcon icon={faPrint} />
                     <span style={{ marginLeft: 5 }}>Print</span>
                 </Button>

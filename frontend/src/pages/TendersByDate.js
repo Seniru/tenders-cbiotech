@@ -40,7 +40,7 @@ export default function TenderByDate() {
                 }}
             >
                 <h1>Tenders on {date}</h1>
-                <Button isPrimary={true} onClick={window.print}>
+                <Button kind="primary" onClick={window.print}>
                     <FontAwesomeIcon icon={faPrint} />
                     <span style={{ marginLeft: 5 }}>Print</span>
                 </Button>

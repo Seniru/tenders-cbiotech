@@ -33,7 +33,7 @@ export default function ProductRow({
                         <br />
                     </>
                 ) : (
-                    <Button isPrimary={true} onClick={() => onAdd(product)}>
+                    <Button kind="primary" onClick={() => onAdd(product)}>
                         + Add
                     </Button>
                 )}

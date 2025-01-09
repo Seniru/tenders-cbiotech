@@ -43,7 +43,7 @@ export default function Admin() {
                 <td>{row.role}</td>
                 <td>
                     <Button
-                        isPrimary={true}
+                        kind="primary"
                         onClick={() => removeUser(row.email)}
                     >
                         Remove user

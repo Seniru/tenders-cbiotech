@@ -310,7 +310,7 @@ export default function NewTenderForm({
                             <br />
                         </div>
                     ))}
-                    <Button isPrimary={true} onClick={addRate}>
+                    <Button kind="primary" onClick={addRate}>
                         Add rate
                     </Button>
                 </fieldset>
@@ -338,10 +338,10 @@ export default function NewTenderForm({
                           ))}
                 </fieldset>
                 <br />
-                <Button isPrimary={true} type="button" onClick={addBidderRow}>
+                <Button kind="primary" type="button" onClick={addBidderRow}>
                     Add bidder
                 </Button>
-                <Button isPrimary={true}>Submit</Button>
+                <Button kind="primary">Submit</Button>
             </form>
         </div>
     )

@@ -77,7 +77,7 @@ export default function Index() {
                         value={tendersOnDate}
                         onChange={(e) => setTendersOnDate(e.target.value)}
                     />
-                    <Button isPrimary={true} onClick={handleSearchByDate}>
+                    <Button kind="primary" onClick={handleSearchByDate}>
                         <FontAwesomeIcon icon={faCalendar} />
                         <span style={{ marginLeft: 5 }}>Search by date</span>
                     </Button>
@@ -93,7 +93,7 @@ export default function Index() {
                         if (evt.code === "Enter") setQ(query)
                     }}
                 />
-                <Button isPrimary={true} onClick={(evt) => setQ(query)}>
+                <Button kind="primary" onClick={(evt) => setQ(query)}>
                     Go
                 </Button>
             </div>

@@ -11,7 +11,7 @@ export default function ProfileButton({ profile }) {
     return profile ? (
         <div className="profileButton">
             <Button
-                isPrimary={false}
+                kind="secondary"
                 style={{ color: "white", fontWeight: "bold", marginRight: 10 }}
                 onClick={logoutAction}
             >
@@ -25,7 +25,7 @@ export default function ProfileButton({ profile }) {
             </Link>
         </div>
     ) : (
-        <Button isPrimary={true} style={{ marginRight: 20 }}>
+        <Button kind="primary" style={{ marginRight: 20 }}>
             <Link
                 to="/login"
                 style={{ color: "white", fontWeight: "bold", fontSize: 16 }}
