@@ -12,9 +12,11 @@ const { REACT_APP_API_URL } = process.env
 
 export default function TenderByDate() {
     const { date } = useParams()
+    let [refreshList, setRefreshList] = useState(false)
     let [tenderDetails, tenderFetchError] = useFetch(
         `${REACT_APP_API_URL}/api/tenders/${date}`,
         [],
+        refreshList,
     )
     let [error, setError] = useState(null)
 
@@ -48,7 +50,11 @@ export default function TenderByDate() {
 
             <div>
                 {tenderDetails?.body?.tenders.map((detail) => (
-                    <TenderInfo details={detail} />
+                    <TenderInfo
+                        details={detail}
+                        refreshList={refreshList}
+                        setRefreshList={setRefreshList}
+                    />
                 ))}
             </div>
         </>

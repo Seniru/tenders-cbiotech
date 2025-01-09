@@ -12,9 +12,11 @@ const { REACT_APP_API_URL } = process.env
 
 export default function Product() {
     const { productName } = useParams()
+    let [refreshList, setRefreshList] = useState(false)
     let [tenderDetails, tenderFetchError] = useFetch(
         `${REACT_APP_API_URL}/api/product/${productName}`,
         [],
+        refreshList,
     )
     let [error, setError] = useState(null)
 
@@ -48,7 +50,11 @@ export default function Product() {
 
             <div>
                 {tenderDetails?.body?.tenders.map((detail) => (
-                    <TenderInfo details={detail} />
+                    <TenderInfo
+                        details={detail}
+                        refreshList={refreshList}
+                        setRefreshList={setRefreshList}
+                    />
                 ))}
             </div>
         </>

@@ -12,7 +12,7 @@ function TenderRow({ row, index }) {
                     ?.toLowerCase()
                     .match("(slim|cliniqon)")
                     ? "#FFEB3B"
-                    : "initial",
+                    : "reverse-layer",
             }}
         >
             <td style={{ width: "calc(2vw - 17px)", textAlign: "center" }}>
@@ -68,7 +68,7 @@ export default function TenderTable({ tenders }) {
             ]}
             rows={tenders}
             renderRowWith={TenderRow}
-            emptyTableText="No offering"
+            emptyTableText="No offers"
         />
     )
 }

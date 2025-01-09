@@ -117,8 +117,36 @@ const createTender = async (req, res) => {
     }
 }
 
+const deleteTender = async (req, res) => {
+    try {
+        let { tenderNumber } = req.params
+        if (!tenderNumber)
+            return createResponse(
+                res,
+                StatusCodes.BAD_REQUEST,
+                "tenderNumber should be provided to delete",
+            )
+
+        let tender = await Tender.findOneAndDelete({ tenderNumber })
+        if (!tender)
+            return createResponse(
+                res,
+                StatusCodes.NOT_FOUND,
+                "Tender not found",
+            )
+        return createResponse(res, StatusCodes.OK, { tender })
+    } catch (error) {
+        return createResponse(
+            res,
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            error.message,
+        )
+    }
+}
+
 module.exports = {
     getTendersSummary,
     getTendersOnDate,
     createTender,
+    deleteTender,
 }
