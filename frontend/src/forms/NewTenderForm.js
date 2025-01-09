@@ -88,13 +88,42 @@ function BidderFields({
             />
             <br />
             <label>PCA: </label>
-            <Input
-                type="checkbox"
-                value={pca}
-                onChange={(e) =>
-                    handleBidderChange(index, "pca", e.target.checked)
-                }
-            />
+            <label style={{ marginLeft: 6 }}>
+                <Input
+                    type="radio"
+                    name={"pca-" + index}
+                    value="yes"
+                    onChange={(e) =>
+                        e.target.checked &&
+                        handleBidderChange(index, "pca", true)
+                    }
+                />
+                Yes
+            </label>
+            <label style={{ marginLeft: 6 }}>
+                <Input
+                    type="radio"
+                    name={"pca-" + index}
+                    value="no"
+                    onChange={(e) =>
+                        e.target.checked &&
+                        handleBidderChange(index, "pca", false)
+                    }
+                />
+                No
+            </label>
+            <label style={{ marginLeft: 6 }}>
+                <Input
+                    type="radio"
+                    name={"pca-" + index}
+                    value="na"
+                    onChange={(e) =>
+                        e.target.checked &&
+                        handleBidderChange(index, "pca", null)
+                    }
+                />
+                N/A
+            </label>
             <br />
             <br />
             <hr />

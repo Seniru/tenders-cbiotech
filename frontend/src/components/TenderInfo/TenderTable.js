@@ -44,7 +44,7 @@ function TenderRow({ row, index }) {
                 {row.pr ? "Yes" : "No"}
             </td>
             <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
-                {row.pca ? "Yes" : "No"}
+                {row.pca === null ? "N/A" : row.pca ? "Yes" : "No"}
             </td>
         </tr>
     )
