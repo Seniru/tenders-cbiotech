@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCalendar, faPills } from "@fortawesome/free-solid-svg-icons"
+import { faCalendar, faCoins, faPills } from "@fortawesome/free-solid-svg-icons"
 
 import "./TenderInfo.css"
 import TenderTable from "./TenderTable"
@@ -7,8 +7,10 @@ import TenderTable from "./TenderTable"
 function RateComponent({ currency, rate }) {
     return (
         <div>
-            <span className="secondary-text">{currency.toUpperCase()}: </span>
-            <span>{rate}</span>
+            <span className="secondary-text">
+                1 {currency.toUpperCase()} ={" "}
+            </span>
+            <span>{rate} LKR</span>
         </div>
     )
 }
@@ -49,7 +51,13 @@ export default function TenderInfo({ details }) {
                 </div>
 
                 <div className="currency-conversions">
-                    <h4 style={{ marginTop: 0 }}>Conversion rates</h4>
+                    <h4 style={{ marginTop: 0 }}>
+                        <FontAwesomeIcon
+                            icon={faCoins}
+                            style={{ marginRight: 5 }}
+                        />
+                        Conversion rates
+                    </h4>
                     {details.conversionRates ? (
                         Object.entries(details.conversionRates).map((rates) => (
                             <RateComponent
@@ -64,7 +72,9 @@ export default function TenderInfo({ details }) {
                     )}
                 </div>
             </div>
-            <TenderTable tenders={details.bidders} />
+            <div>
+                <TenderTable tenders={details.bidders} />
+            </div>
         </div>
     )
 }
