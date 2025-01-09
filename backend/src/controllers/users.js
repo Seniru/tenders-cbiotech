@@ -63,7 +63,7 @@ const deleteUser = async (req, res) => {
             return createResponse(
                 res,
                 StatusCodes.BAD_REQUEST,
-                "email is required to delete",
+                "Email is required to delete",
             )
         if (email === req.user.email)
             return createResponse(
@@ -90,8 +90,51 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const editUserPassword = async (req, res) => {
+    try {
+        let { email, password: newPassword } = req.body
+        if (!email || !newPassword)
+            return createResponse(
+                res,
+                StatusCodes.BAD_REQUEST,
+                "Email and password is required for the operation",
+            )
+
+        if (email !== req.user.email)
+            return createResponse(
+                res,
+                StatusCodes.UNAUTHORIZED,
+                "Not authorized to change other users' passwords",
+            )
+
+        let salt = await bcrypt.genSalt(10)
+        let hashedPassword = await bcrypt.hash(newPassword, salt)
+
+        let user = await User.findOneAndUpdate(
+            { email },
+            { password: hashedPassword },
+        ).exec()
+
+        if (!user)
+            return createResponse(res, StatusCodes.NOT_FOUND, "User not found")
+
+        return createResponse(res, StatusCodes.OK, {
+            username: user.username,
+            email: user.email,
+            role: user.role,
+        })
+    } catch (error) {
+        return createResponse(
+            res,
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            error.message,
+        )
+    }
+}
+
 module.exports = {
     getUsers,
     createUser,
     deleteUser,
+    editUserPassword,
 }

@@ -19,7 +19,8 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"prettify": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\""
+		"prettify": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\"",
+		"check": "npx prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\""
 	},
 	"eslintConfig": {
 		"extends": [
