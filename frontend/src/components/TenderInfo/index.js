@@ -137,7 +137,14 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                 )}
             </div>
             <div>
-                <TenderTable tenders={details.bidders} />
+                <TenderTable
+                    tenderNumber={details.tenderNumber}
+                    tenders={details.bidders}
+                    setIsError={setIsError}
+                    setMessage={setMessage}
+                    refreshList={refreshList}
+                    setRefreshList={setRefreshList}
+                />
             </div>
         </div>
     )

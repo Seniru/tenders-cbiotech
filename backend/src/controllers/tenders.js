@@ -117,6 +117,62 @@ const createTender = async (req, res) => {
     }
 }
 
+const editTenderBidder = async (req, res) => {
+    try {
+        let { tenderNumber, bidder: bidderName } = req.params
+
+        let tender = await Tender.findOne({ tenderNumber })
+            .populate("bidders")
+            .exec()
+        if (!tender)
+            return createResponse(
+                res,
+                StatusCodes.NOT_FOUND,
+                "Tender not found",
+            )
+
+        let bidderData = tender.bidders.filter(
+            (bidder) => bidder.bidder == bidderName,
+        )
+        if (bidderData.length == 0)
+            return createResponse(
+                res,
+                StatusCodes.NOT_FOUND,
+                "Bidder not found for the given tender",
+            )
+
+        let bidder = await Bidder.findByIdAndUpdate(bidderData[0]._id, {
+            bidder: req.body.bidder,
+            manufacturer: req.body.manufacturer,
+            currency: req.body.currency,
+            quotedPrice: req.body.quotedPrice,
+            packSize: req.body.packSize,
+            bidBond: req.body.bidBond,
+            pr: req.body.pr,
+            pca: req.body.pca,
+        }).exec()
+
+        if (!bidder)
+            return createResponse(
+                res,
+                StatusCodes.NOT_FOUND,
+                "Bidder not found for the given tender",
+            )
+        return createResponse(res, StatusCodes.OK, {
+            bidder: {
+                previous: bidder,
+                current: req.body,
+            },
+        })
+    } catch (error) {
+        return createResponse(
+            res,
+            StatusCodes.INTERNAL_SERVER_ERROR,
+            error.message,
+        )
+    }
+}
+
 const deleteTender = async (req, res) => {
     try {
         let { tenderNumber } = req.params
@@ -148,5 +204,6 @@ module.exports = {
     getTendersSummary,
     getTendersOnDate,
     createTender,
+    editTenderBidder,
     deleteTender,
 }

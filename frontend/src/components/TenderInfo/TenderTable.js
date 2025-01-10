@@ -1,56 +1,15 @@
 import Table from "../Table"
+import TenderRow from "./TenderRow"
 import "./TenderInfo.css"
 
-const formatNumber = (n) =>
-    n && n.toFixed(5).replace(/(?<=\.\d\d0*[1-9]*)0+$/, "")
-
-function TenderRow({ row, index }) {
-    return (
-        <tr
-            style={{
-                backgroundColor: row.bidder
-                    ?.toLowerCase()
-                    .match("(slim|cliniqon)")
-                    ? "#FFEB3B"
-                    : "reverse-layer",
-            }}
-        >
-            <td style={{ width: "calc(2vw - 17px)", textAlign: "center" }}>
-                {index + 1}
-            </td>
-            <td style={{ width: "calc(19vw - 17px)" }}>
-                {row.bidder || "No offers"}
-            </td>
-            <td style={{ width: "calc(19vw - 17px)" }}>{row.manufacturer}</td>
-            <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
-                {row.currency}
-            </td>
-            <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>
-                {formatNumber(row.quotedPrice)}
-            </td>
-            <td style={{ width: "calc(10vw - 17px)", textAlign: "center" }}>
-                {row.packSize}
-            </td>
-            <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>
-                {formatNumber(row.quotedPriceLKR)}
-            </td>
-            <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>
-                {formatNumber(row.quotedUnitPriceLKR)}
-            </td>
-            <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
-                {row.bidBond ? "Yes" : "No"}
-            </td>
-            <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
-                {row.pr ? "Yes" : "No"}
-            </td>
-            <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
-                {row.pca === null ? "N/A" : row.pca ? "Yes" : "No"}
-            </td>
-        </tr>
-    )
-}
-
-export default function TenderTable({ tenders }) {
+export default function TenderTable({
+    tenderNumber,
+    tenders,
+    setIsError,
+    setMessage,
+    refreshList,
+    setRefreshList,
+}) {
     return (
         <Table
             headers={[
@@ -65,8 +24,16 @@ export default function TenderTable({ tenders }) {
                 "Bid Bond",
                 "PR",
                 "PCA",
+                "",
             ]}
-            rows={tenders}
+            rows={tenders.map((tender) => ({
+                ...tender,
+                tenderNumber,
+                setIsError,
+                setMessage,
+                refreshList,
+                setRefreshList,
+            }))}
             renderRowWith={TenderRow}
             emptyTableText="No offers"
         />
