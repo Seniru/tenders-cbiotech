@@ -38,7 +38,7 @@ export default function TenderRow({ row, index }) {
 
     const submitEdits = async () => {
         let response = await fetch(
-            `${REACT_APP_API_URL}/api/tenders/${row.tenderNumber}/${row.bidder}`,
+            `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(row.tenderNumber)}/${encodeURIComponent(row.bidder)}`,
             {
                 method: "PUT",
                 headers: {
