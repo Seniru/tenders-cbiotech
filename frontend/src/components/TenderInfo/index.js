@@ -12,6 +12,7 @@ import MessageBox from "../MessageBox"
 import { useAuth } from "../../contexts/AuthProvider"
 import "./TenderInfo.css"
 import TenderTable from "./TenderTable"
+import AddBidderForm from "../../forms/AddBidderForm"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -39,6 +40,7 @@ function TenderDetailsComponent({ icon, detail, value }) {
 export default function TenderInfo({ details, refreshList, setRefreshList }) {
     let [isError, setIsError] = useState(false)
     let [message, setMessage] = useState(null)
+    let [addBidderFormOpen, setAddBidderFormOpen] = useState(false)
     let { user, token } = useAuth()
 
     const deleteTender = async (tenderNumber) => {
@@ -144,6 +146,18 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                     setMessage={setMessage}
                     refreshList={refreshList}
                     setRefreshList={setRefreshList}
+                />
+                <br />
+                <Button
+                    kind="primary"
+                    onClick={() => setAddBidderFormOpen(true)}
+                >
+                    + Add bidder
+                </Button>
+                <AddBidderForm
+                    tenderNumber={details.tenderNumber}
+                    isOpen={addBidderFormOpen}
+                    setIsOpen={setAddBidderFormOpen}
                 />
             </div>
         </div>

@@ -2,6 +2,9 @@ import { Link } from "react-router-dom"
 
 import Button from "../Button"
 
+const formatNumber = (n) =>
+    n && n.toFixed(5).replace(/(?<=\.\d\d0*[1-9]*)0+$/, "")
+
 export default function ProductRow({
     product,
     bidder,
@@ -24,8 +27,8 @@ export default function ProductRow({
             </td>
             <td>{bidder}</td>
             <td>{manufacturer}</td>
-            <td>{currency}</td>
-            <td>{quotedPrice}</td>
+            <td>{currency?.toUpperCase()}</td>
+            <td>{formatNumber(quotedPrice)}</td>
             <td>
                 {viewingAs === "viewer" ? (
                     <>

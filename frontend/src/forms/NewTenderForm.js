@@ -1,10 +1,9 @@
 import { useState, useLayoutEffect } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../contexts/AuthProvider"
 import Input from "../components/Input"
 import Button from "../components/Button"
+import OverlayWindow from "../components/OverlayWindow"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -27,6 +26,7 @@ function BidderFields({
             <Input
                 type="text"
                 value={bidder}
+                required
                 onChange={(e) =>
                     handleBidderChange(index, "bidder", e.target.value)
                 }
@@ -36,6 +36,7 @@ function BidderFields({
             <Input
                 type="text"
                 value={manufacturer}
+                required
                 onChange={(e) =>
                     handleBidderChange(index, "manufacturer", e.target.value)
                 }
@@ -45,6 +46,7 @@ function BidderFields({
             <Input
                 type="text"
                 value={currency}
+                required
                 onChange={(e) =>
                     handleBidderChange(index, "currency", e.target.value)
                 }
@@ -54,6 +56,7 @@ function BidderFields({
             <Input
                 type="number"
                 value={quotedPrice}
+                required
                 onChange={(e) =>
                     handleBidderChange(index, "quotedPrice", e.target.value)
                 }
@@ -63,6 +66,7 @@ function BidderFields({
             <Input
                 type="number"
                 value={packSize}
+                required
                 onChange={(e) =>
                     handleBidderChange(index, "packSize", e.target.value)
                 }
@@ -117,6 +121,7 @@ function BidderFields({
                     type="radio"
                     name={"pca-" + index}
                     value="na"
+                    defaultChecked={true}
                     onChange={(e) =>
                         e.target.checked &&
                         handleBidderChange(index, "pca", null)
@@ -209,10 +214,6 @@ export default function NewTenderForm({
         }))
     }
 
-    const closeForm = (evt) => {
-        setIsOpen(false)
-    }
-
     const handleConversionRateChange = (index, field, value) => {
         const newConversionRates = [...conversionRates]
         newConversionRates[index] = {
@@ -237,32 +238,7 @@ export default function NewTenderForm({
     }
 
     return (
-        <div
-            className="container"
-            style={{
-                display: isOpen ? "block" : "none",
-                position: "fixed",
-                width: "75%",
-                height: "70%",
-                top: "15%",
-                left: "12.5%",
-                zIndex: 9999,
-                boxShadow: "3px 3px 3px 3px rgba(0, 0, 0, 0.25)",
-                border: "1px solid grey",
-                overflow: "scroll",
-            }}
-        >
-            <div
-                style={{
-                    cursor: "pointer",
-                    position: "absolute",
-                    top: 6,
-                    right: 6,
-                }}
-                onClick={closeForm}
-            >
-                <FontAwesomeIcon icon={faXmark} />
-            </div>
+        <OverlayWindow isOpen={isOpen} setIsOpen={setIsOpen}>
             <form onSubmit={handleSubmit}>
                 <h3>New tender</h3>
                 <br />
@@ -377,6 +353,6 @@ export default function NewTenderForm({
                     Submit
                 </Button>
             </form>
-        </div>
+        </OverlayWindow>
     )
 }

@@ -27,6 +27,7 @@ export default function Index() {
     let [products, productFetchError, productsLoading] = useFetch(
         `${REACT_APP_API_URL}/api/tenders?q=${q}`,
         [],
+        refreshList,
     )
     let { user } = useAuth()
 

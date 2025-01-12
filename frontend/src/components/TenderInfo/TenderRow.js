@@ -18,8 +18,6 @@ export default function TenderRow({ row, index }) {
         currency: row.currency,
         quotedPrice: row.quotedPrice,
         packSize: row.packSize,
-        quotedPriceLKR: row.quotedPriceLKR,
-        quotedUnitPriceLKR: row.quotedUnitPriceLKR,
         bidBond: row.bidBond,
         pr: row.pr,
         pca: row.pca,
@@ -63,8 +61,6 @@ export default function TenderRow({ row, index }) {
                 currency: row.currency,
                 quotedPrice: row.quotedPrice,
                 packSize: row.packSize,
-                quotedPriceLKR: row.quotedPriceLKR,
-                quotedUnitPriceLKR: row.quotedUnitPriceLKR,
                 bidBond: row.bidBond,
                 pr: row.pr,
                 pca: row.pca,
@@ -120,6 +116,7 @@ export default function TenderRow({ row, index }) {
                         type="text"
                         placeholder="Currency"
                         name="currency"
+                        style={{ width: 30 }}
                         value={values.currency}
                         onChange={handleChanges}
                         required
@@ -148,6 +145,7 @@ export default function TenderRow({ row, index }) {
                         type="text"
                         placeholder="Pack size"
                         name="packSize"
+                        style={{ width: 70 }}
                         value={values.packSize}
                         onChange={handleChanges}
                         required
@@ -157,32 +155,10 @@ export default function TenderRow({ row, index }) {
                 )}
             </td>
             <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>
-                {editting ? (
-                    <Input
-                        type="number"
-                        placeholder="Quoted price in LKR"
-                        name="quotedPriceLKR"
-                        value={values.quotedPriceLKR}
-                        onChange={handleChanges}
-                        required
-                    />
-                ) : (
-                    formatNumber(row.quotedPriceLKR)
-                )}
+                {formatNumber(row.quotedPriceLKR)}
             </td>
             <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>
-                {editting ? (
-                    <Input
-                        type="number"
-                        placeholder="Quoted unit price in LKR"
-                        name="quotedUnitPriceLKR"
-                        value={values.quotedUnitPriceLKR}
-                        onChange={handleChanges}
-                        required
-                    />
-                ) : (
-                    formatNumber(row.quotedUnitPriceLKR)
-                )}
+                {formatNumber(row.quotedUnitPriceLKR)}
             </td>
             <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
                 {editting ? (
