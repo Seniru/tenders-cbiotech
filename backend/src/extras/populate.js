@@ -3,9 +3,9 @@ require("dotenv").config()
 const bcrypt = require("bcrypt")
 
 const mongoose = require("mongoose")
-const Tender = require("./models/Tender")
-const Bidder = require("./models/Bidder")
-const User = require("./models/User")
+const Tender = require("../models/Tender")
+const Bidder = require("../models/Bidder")
+const User = require("../models/User")
 
 const MONGO_URI = process.env.MONGO_URI
 
