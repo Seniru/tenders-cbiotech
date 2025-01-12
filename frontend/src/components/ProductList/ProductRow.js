@@ -3,7 +3,11 @@ import { Link } from "react-router-dom"
 import Button from "../Button"
 
 const formatNumber = (n) =>
-    n && n.toFixed(5).replace(/(?<=\.\d\d0*[1-9]*)0+$/, "")
+    n &&
+    n.toLocaleString("en-US", {
+        maximumFractionDigits: 5,
+        minimumFractionDigits: 2,
+    })
 
 export default function ProductRow({
     product,

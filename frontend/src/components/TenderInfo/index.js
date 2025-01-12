@@ -27,12 +27,12 @@ function RateComponent({ currency, rate }) {
     )
 }
 
-function TenderDetailsComponent({ icon, detail, value }) {
+function TenderDetailsComponent({ icon, detail, value, color }) {
     return (
         <div>
             {icon ? <FontAwesomeIcon icon={icon} color="#666666" /> : <span />}
             <div className="secondary-text">{detail}:</div>
-            <div>{value}</div>
+            <div style={{ color }}>{value}</div>
         </div>
     )
 }
@@ -79,6 +79,7 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                     display: "flex",
                     alignItems: "flex-start",
                     justifyContent: "space-between",
+                    flexWrap: "wrap",
                 }}
             >
                 <div style={{ display: "flex" }}>
@@ -86,12 +87,14 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                         <TenderDetailsComponent
                             icon={faCalendar}
                             detail="Closed on"
-                            value={details.closedOn}
+                            value={`${new Date(details.closedOn).toLocaleDateString("si-LK")} @ ${new Date(details.closedOn).toLocaleTimeString("si-LK")}`}
+                            color="deeppink"
                         />
                         <TenderDetailsComponent
                             icon={faPills}
                             detail="Item Name"
                             value={details.itemName}
+                            color="orangered"
                         />
                         <TenderDetailsComponent
                             detail="Tender Number"

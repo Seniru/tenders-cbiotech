@@ -9,7 +9,7 @@
 
 .tender-details > div {
     display: grid;
-    grid-template-columns: 8px 1fr 1fr;
+    grid-template-columns: 8px 150px auto;
     gap: 16px;
 }
 

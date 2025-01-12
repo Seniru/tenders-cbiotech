@@ -39,6 +39,7 @@ export default function Product() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginBottom: 10,
+                    flexWrap: "wrap",
                 }}
             >
                 <h1>{productName}</h1>

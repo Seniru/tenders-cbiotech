@@ -55,6 +55,7 @@ const createFromSheets = async () => {
         let dirent
         // read one file for now
         while ((dirent = await dir.read()) !== null) {
+            if (!dirent.isFile()) continue
             console.log("Opening", dirent.name)
 
             let workbook = new ExcelJS.Workbook()
@@ -83,9 +84,9 @@ const createFromSheets = async () => {
 
                     tenders.push({
                         closedOn: new Date(Date.UTC(y, m - 1, d, hours, mins)),
-                        itemName: worksheet.getRow(r + 1).values[3],
-                        tenderNumber: worksheet.getRow(r + 2).values[3],
-                        quantity: worksheet.getRow(r + 3).values[3],
+                        itemName: worksheet.getRow(r + 1).values[3].trim(),
+                        tenderNumber: worksheet.getRow(r + 2).values[3].trim(),
+                        quantity: worksheet.getRow(r + 3).values[3].trim(),
                         conversions: {},
                         bidders: [],
                     })

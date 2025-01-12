@@ -8,7 +8,11 @@ import Input from "../Input"
 const { REACT_APP_API_URL } = process.env
 
 const formatNumber = (n) =>
-    n && n.toFixed(5).replace(/(?<=\.\d\d0*[1-9]*)0+$/, "")
+    n &&
+    n.toLocaleString("en-US", {
+        maximumFractionDigits: 5,
+        minimumFractionDigits: 2,
+    })
 
 export default function TenderRow({ row, index }) {
     let [editting, setEditting] = useState(false)
@@ -188,6 +192,8 @@ export default function TenderRow({ row, index }) {
                     />
                 ) : row.pr ? (
                     "Yes"
+                ) : row.pr === null ? (
+                    "N/A"
                 ) : (
                     "No"
                 )}

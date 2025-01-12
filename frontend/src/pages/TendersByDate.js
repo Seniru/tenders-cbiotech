@@ -39,6 +39,7 @@ export default function TenderByDate() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginBottom: 10,
+                    flexWrap: "wrap",
                 }}
             >
                 <h1>Tenders on {date}</h1>
