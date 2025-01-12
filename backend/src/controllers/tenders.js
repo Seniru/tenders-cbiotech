@@ -18,9 +18,7 @@ const getTendersSummary = async (req, res) => {
 
                 latestTender = latestTender.applyDerivations()
                 if (latestTender && latestTender.bidders.length > 0) {
-                    latestTender.bidders.sort(
-                        (a, b) => a.quotedUnitPrice - b.quotedUnitPrice,
-                    )
+                    latestTender.bidders.sort((a, b) => a.quotedUnitPrice - b.quotedUnitPrice)
                     latestTender.bidders = latestTender.bidders[0]
                 }
 
@@ -37,11 +35,7 @@ const getTendersSummary = async (req, res) => {
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
         console.error(error)
-        return createResponse(
-            res,
-            StatusCodes.INTERNAL_SERVER_ERROR,
-            error.message,
-        )
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
     }
 }
 
@@ -61,18 +55,12 @@ const getTendersOnDate = async (req, res) => {
             .populate("bidders")
             .exec()
 
-        let afterDerivations = tenders.map((tender) =>
-            tender.applyDerivations(),
-        )
+        let afterDerivations = tenders.map((tender) => tender.applyDerivations())
         return createResponse(res, StatusCodes.OK, {
             tenders: afterDerivations,
         })
     } catch (error) {
-        return createResponse(
-            res,
-            StatusCodes.INTERNAL_SERVER_ERROR,
-            error.message,
-        )
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
     }
 }
 
@@ -80,11 +68,7 @@ const createTender = async (req, res) => {
     try {
         const { bidders } = req.body
         if (!Array.isArray(bidders))
-            return createResponse(
-                res,
-                StatusCodes.BAD_REQUEST,
-                "Request must include bidder data",
-            )
+            return createResponse(res, StatusCodes.BAD_REQUEST, "Request must include bidder data")
 
         const tender = new Tender({
             closedOn: req.body.closedOn,
@@ -110,11 +94,7 @@ const createTender = async (req, res) => {
 
         return createResponse(res, StatusCodes.CREATED, req.body)
     } catch (error) {
-        return createResponse(
-            res,
-            StatusCodes.INTERNAL_SERVER_ERROR,
-            error.message,
-        )
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
     }
 }
 
@@ -122,19 +102,10 @@ const editTenderBidder = async (req, res) => {
     try {
         let { tenderNumber, bidder: bidderName } = req.params
 
-        let tender = await Tender.findOne({ tenderNumber })
-            .populate("bidders")
-            .exec()
-        if (!tender)
-            return createResponse(
-                res,
-                StatusCodes.NOT_FOUND,
-                "Tender not found",
-            )
+        let tender = await Tender.findOne({ tenderNumber }).populate("bidders").exec()
+        if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
 
-        let bidderData = tender.bidders.filter(
-            (bidder) => bidder.bidder == bidderName,
-        )
+        let bidderData = tender.bidders.filter((bidder) => bidder.bidder == bidderName)
         if (bidderData.length == 0)
             return createResponse(
                 res,
@@ -166,11 +137,7 @@ const editTenderBidder = async (req, res) => {
             },
         })
     } catch (error) {
-        return createResponse(
-            res,
-            StatusCodes.INTERNAL_SERVER_ERROR,
-            error.message,
-        )
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
     }
 }
 
@@ -185,19 +152,10 @@ const deleteTender = async (req, res) => {
             )
 
         let tender = await Tender.findOneAndDelete({ tenderNumber })
-        if (!tender)
-            return createResponse(
-                res,
-                StatusCodes.NOT_FOUND,
-                "Tender not found",
-            )
+        if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
         return createResponse(res, StatusCodes.OK, { tender })
     } catch (error) {
-        return createResponse(
-            res,
-            StatusCodes.INTERNAL_SERVER_ERROR,
-            error.message,
-        )
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
     }
 }
 

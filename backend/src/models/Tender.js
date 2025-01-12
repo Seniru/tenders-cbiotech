@@ -17,8 +17,7 @@ TenderSchema.methods.applyDerivations = function () {
         packSize = packSize ? parseInt(packSize[1]) : 1
 
         let quotedPriceLKR =
-            bidder.quotedPrice *
-            (bidder.currency == "LKR" ? 1 : conversionRates[bidder.currency])
+            bidder.quotedPrice * (bidder.currency == "LKR" ? 1 : conversionRates[bidder.currency])
         let quotedUnitPriceLKR = quotedPriceLKR / packSize
 
         // for RES tenders there will be no PRs

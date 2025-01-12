@@ -28,10 +28,7 @@ const readBidders = (bidderDataColumns, worksheet, r) => {
             packSize: row.values[bidderDataColumns.packSize],
             bidBond: row.values[bidderDataColumns.bidBond] == "Yes",
             pr: row.values[bidderDataColumns.pr] == "Yes",
-            pca:
-                bidderDataColumns.pca == -1
-                    ? null
-                    : row.values[bidderDataColumns.pca],
+            pca: bidderDataColumns.pca == -1 ? null : row.values[bidderDataColumns.pca],
         })
         r++
     }
@@ -77,9 +74,7 @@ const createFromSheets = async () => {
 
                     closedOn[1] = closedOn[1].split(" ")
                     closedOn[1][0] = closedOn[1][0].split(".")
-                    let hours =
-                        parseInt(closedOn[1][0][0]) +
-                        (closedOn[1][1] == "PM" ? 12 : 0)
+                    let hours = parseInt(closedOn[1][0][0]) + (closedOn[1][1] == "PM" ? 12 : 0)
                     let mins = parseInt(closedOn[1][0][1])
 
                     tenders.push({
@@ -94,11 +89,7 @@ const createFromSheets = async () => {
                     r = skipUnnecessaryRows(worksheet, r + 4)
                     // currency conversion details
                     let i = 0
-                    while (
-                        !worksheet
-                            .getRow(r + i)
-                            .values.some((v) => v.match("Bidder"))
-                    ) {
+                    while (!worksheet.getRow(r + i).values.some((v) => v.match("Bidder"))) {
                         // conversion is in the last column (popping returns the last value)
                         let conversion = worksheet.getRow(r + i).values.pop()
                         i++
@@ -106,33 +97,23 @@ const createFromSheets = async () => {
                         conversion = conversion.split(/[:=]/)
                         tenders[tenderNumber].conversions[
                             conversion[0].match(/([a-zA-Z\s])+/)[0].trim()
-                        ] = parseFloat(
-                            conversion[1].match(/([\d.]+)/)[0].trim(),
-                        )
+                        ] = parseFloat(conversion[1].match(/([\d.]+)/)[0].trim())
                     }
                     r += i
 
                     // bidder details
-                    let availableBidderData = worksheet
-                        .getRow(r)
-                        .values.map((v) => v.trim())
+                    let availableBidderData = worksheet.getRow(r).values.map((v) => v.trim())
                     let bidderDataColumns = {
                         bidder: availableBidderData.indexOf("Bidder"),
-                        manufacturer:
-                            availableBidderData.indexOf("Manufacturer"),
+                        manufacturer: availableBidderData.indexOf("Manufacturer"),
                         currency: availableBidderData.indexOf("Currency"),
-                        quotedPrice:
-                            availableBidderData.indexOf("Quoted Price"),
+                        quotedPrice: availableBidderData.indexOf("Quoted Price"),
                         packSize: availableBidderData.indexOf("Pack Size"),
                         bidBond: availableBidderData.indexOf("Bid Bond"),
                         pr: availableBidderData.indexOf("PR"),
                         pca: availableBidderData.indexOf("PCA"),
                     }
-                    let { bidders, row: newR } = readBidders(
-                        bidderDataColumns,
-                        worksheet,
-                        r + 1,
-                    )
+                    let { bidders, row: newR } = readBidders(bidderDataColumns, worksheet, r + 1)
                     tenders[tenderNumber].bidders = bidders
                     r = newR
 
