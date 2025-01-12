@@ -8,6 +8,7 @@ const {
     createTender,
     editTenderBidder,
     deleteTender,
+    addTenderBidder,
 } = require("../controllers/tenders")
 
 router.get("/", requireRole("viewer"), getTendersSummary)
@@ -15,5 +16,6 @@ router.post("/", requireRole("contributor"), createTender)
 router.get("/:date", requireRole("viewer"), getTendersOnDate)
 router.put("/:tenderNumber/:bidder", requireRole("contributer"), editTenderBidder)
 router.delete("/:tenderNumber", requireRole("contributer"), deleteTender)
+router.post("/:tenderNumber/bidders", requireRole("contributor"), addTenderBidder)
 
 module.exports = router

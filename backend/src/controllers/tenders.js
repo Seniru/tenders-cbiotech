@@ -159,10 +159,45 @@ const deleteTender = async (req, res) => {
     }
 }
 
+const addTenderBidder = async (req, res) => {
+    try {
+        let { tenderNumber } = req.params
+        if (!tenderNumber)
+            return createResponse(
+                res,
+                StatusCodes.BAD_REQUEST,
+                "tenderNumber should be provided to delete",
+            )
+
+        let tender = await Tender.findOne({ tenderNumber }).exec()
+        if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
+
+        let bidder = new Bidder({
+            bidder: req.body.bidder,
+            manufacturer: req.body.manufacturer,
+            currency: req.body.currency,
+            quotedPrice: req.body.quotedPrice,
+            packSize: req.body.packSize,
+            bidBond: req.body.bidBond,
+            pr: req.body.pr,
+            pca: req.body.pca,
+        })
+
+        await bidder.save()
+        tender.bidders.push(bidder._id)
+        await tender.save()
+
+        return createResponse(res, StatusCodes.CREATED, { bidder })
+    } catch (error) {
+        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+    }
+}
+
 module.exports = {
     getTendersSummary,
     getTendersOnDate,
     createTender,
     editTenderBidder,
     deleteTender,
+    addTenderBidder,
 }

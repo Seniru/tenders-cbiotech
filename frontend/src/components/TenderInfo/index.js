@@ -161,6 +161,10 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                     tenderNumber={details.tenderNumber}
                     isOpen={addBidderFormOpen}
                     setIsOpen={setAddBidderFormOpen}
+                    setIsError={setIsError}
+                    setMessage={setMessage}
+                    refreshList={refreshList}
+                    setRefreshList={setRefreshList}
                 />
             </div>
         </div>
