@@ -5,7 +5,7 @@ const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
 const createResponse = require("../utils/createResponse")
 
-const getProduct = async (req, res) => {
+const getProduct = async (req, res, next) => {
     const token = req.headers.authorization
     if (!token) return createResponse(res, StatusCodes.UNAUTHORIZED, "You must log in to continue")
 
@@ -21,7 +21,7 @@ const getProduct = async (req, res) => {
             tenders: afterDerivations,
         })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 

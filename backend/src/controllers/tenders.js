@@ -3,7 +3,7 @@ const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
 const createResponse = require("../utils/createResponse")
 
-const getTendersSummary = async (req, res) => {
+const getTendersSummary = async (req, res, next) => {
     try {
         const searchString = req.query.q || ""
         const itemNames = await Tender.distinct("itemName", {
@@ -34,12 +34,11 @@ const getTendersSummary = async (req, res) => {
 
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
-        console.error(error)
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const getTendersOnDate = async (req, res) => {
+const getTendersOnDate = async (req, res, next) => {
     try {
         let { date } = req.params
         let startDate = new Date(date)
@@ -60,11 +59,11 @@ const getTendersOnDate = async (req, res) => {
             tenders: afterDerivations,
         })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const createTender = async (req, res) => {
+const createTender = async (req, res, next) => {
     try {
         const { bidders } = req.body
         if (!Array.isArray(bidders))
@@ -94,11 +93,11 @@ const createTender = async (req, res) => {
 
         return createResponse(res, StatusCodes.CREATED, req.body)
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const editTenderBidder = async (req, res) => {
+const editTenderBidder = async (req, res, next) => {
     try {
         let { tenderNumber, bidder: bidderName } = req.params
 
@@ -137,11 +136,11 @@ const editTenderBidder = async (req, res) => {
             },
         })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const deleteTender = async (req, res) => {
+const deleteTender = async (req, res, next) => {
     try {
         let { tenderNumber } = req.params
         if (!tenderNumber)
@@ -155,11 +154,11 @@ const deleteTender = async (req, res) => {
         if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
         return createResponse(res, StatusCodes.OK, { tender })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const addTenderBidder = async (req, res) => {
+const addTenderBidder = async (req, res, next) => {
     try {
         let { tenderNumber } = req.params
         if (!tenderNumber)
@@ -189,7 +188,7 @@ const addTenderBidder = async (req, res) => {
 
         return createResponse(res, StatusCodes.CREATED, { bidder })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 

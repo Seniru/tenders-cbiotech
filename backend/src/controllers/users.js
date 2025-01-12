@@ -5,16 +5,16 @@ const { StatusCodes } = require("http-status-codes")
 const User = require("../models/User")
 const createResponse = require("../utils/createResponse")
 
-const getUsers = async (req, res) => {
+const getUsers = async (req, res, next) => {
     try {
         const users = await User.find({})
         return createResponse(res, StatusCodes.OK, { users })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
     try {
         const { username, email, password, role } = req.body
         if (!password)
@@ -40,11 +40,11 @@ const createUser = async (req, res) => {
             let errMsg = error.errors[Object.keys(error.errors)[0]].message
             return createResponse(res, StatusCodes.BAD_REQUEST, errMsg)
         }
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     try {
         const { email } = req.body
         if (!email)
@@ -61,11 +61,11 @@ const deleteUser = async (req, res) => {
             role: user.role,
         })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
-const editUserPassword = async (req, res) => {
+const editUserPassword = async (req, res, next) => {
     try {
         let { email, password: newPassword } = req.body
         if (!email || !newPassword)
@@ -95,7 +95,7 @@ const editUserPassword = async (req, res) => {
             role: user.role,
         })
     } catch (error) {
-        return createResponse(res, StatusCodes.INTERNAL_SERVER_ERROR, error.message)
+        next(error)
     }
 }
 
