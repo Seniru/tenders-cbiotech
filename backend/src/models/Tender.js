@@ -4,7 +4,7 @@ const TenderSchema = new mongoose.Schema({
     closedOn: Date,
     itemName: String,
     tenderNumber: String,
-    quantity: Number,
+    quantity: String,
     conversionRates: Object,
     bidders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bidder" }],
 })
@@ -13,8 +13,8 @@ TenderSchema.methods.applyDerivations = function () {
     let conversionRates = this.conversionRates || {}
     let bidders = this.bidders
     let biddersAfterDerives = bidders.map((bidder) => {
-        let packSize = bidder.packSize.match(/(\d+)/)[1]
-        packSize = packSize ? parseInt(packSize) : 1
+        let packSize = bidder.packSize.match(/(\d+)/)
+        packSize = packSize ? parseInt(packSize[1]) : 1
 
         let quotedPriceLKR =
             bidder.quotedPrice *

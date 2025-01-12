@@ -11,12 +11,13 @@
     "start": "node src/app.js",
     "prettify": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\"",
     "check": "npx prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\"",
-    "populate": "node src/populate.js"
+    "populate": "node src/extras/populate.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",

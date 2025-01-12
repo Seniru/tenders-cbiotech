@@ -36,6 +36,7 @@ const getTendersSummary = async (req, res) => {
 
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
+        console.error(error)
         return createResponse(
             res,
             StatusCodes.INTERNAL_SERVER_ERROR,
