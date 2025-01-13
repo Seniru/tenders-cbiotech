@@ -323,7 +323,7 @@ export default function NewTenderForm({
                     <br />
                     <label>Closed On: </label>
                     <Input
-                        type="date"
+                        type="datetime-local"
                         name="closedOn"
                         value={inputs.closedOn}
                         onChange={handleChanges}

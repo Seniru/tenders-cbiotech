@@ -174,6 +174,34 @@ const editTenderBidder = async (req, res, next) => {
     }
 }
 
+const editTender = async (req, res, next) => {
+    try {
+        let { tenderNumber } = req.params
+        let tender = await Tender.findOneAndUpdate(
+            { tenderNumber },
+            {
+                tenderNumber: req.body.tenderNumber,
+                closedOn: req.body.closedOn,
+                itemName: req.body.itemName,
+                quantity: req.body.quantity,
+            },
+            { runValidators: true },
+        ).exec()
+        if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
+
+        return createResponse(res, StatusCodes.OK, {
+            previous: tender,
+            current: req.body,
+        })
+    } catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            let errMsg = error.errors[Object.keys(error.errors)[0]].message
+            return createResponse(res, StatusCodes.BAD_REQUEST, errMsg)
+        }
+        next(error)
+    }
+}
+
 const deleteTender = async (req, res, next) => {
     try {
         let { tenderNumber } = req.params
@@ -263,6 +291,7 @@ module.exports = {
     getTendersOnDate,
     createTender,
     editTenderBidder,
+    editTender,
     deleteTender,
     addTenderBidder,
     deleteTenderBidder,
