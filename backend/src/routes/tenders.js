@@ -9,13 +9,15 @@ const {
     editTenderBidder,
     deleteTender,
     addTenderBidder,
+    deleteTenderBidder,
 } = require("../controllers/tenders")
 
 router.get("/", requireRole("viewer"), getTendersSummary)
 router.post("/", requireRole("contributor"), createTender)
 router.get("/:date", requireRole("viewer"), getTendersOnDate)
-router.put("/:tenderNumber/:bidder", requireRole("contributer"), editTenderBidder)
-router.delete("/:tenderNumber", requireRole("contributer"), deleteTender)
+router.delete("/:tenderNumber", requireRole("contributor"), deleteTender)
 router.post("/:tenderNumber/bidders", requireRole("contributor"), addTenderBidder)
+router.put("/:tenderNumber/:bidder", requireRole("contributor"), editTenderBidder)
+router.delete("/:tenderNumber/:bidder", requireRole("contributor"), deleteTenderBidder)
 
 module.exports = router

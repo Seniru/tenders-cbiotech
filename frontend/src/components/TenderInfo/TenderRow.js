@@ -1,6 +1,11 @@
 import { useId, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCheck, faEdit, faXmark } from "@fortawesome/free-solid-svg-icons"
+import {
+    faCheck,
+    faEdit,
+    faTrash,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../../contexts/AuthProvider"
 import Input from "../Input"
@@ -71,6 +76,23 @@ export default function TenderRow({ row, index }) {
             })
         }
         setEditting(false)
+    }
+
+    const deleteTenderBidder = async () => {
+        let response = await fetch(
+            `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(row.tenderNumber)}/${encodeURIComponent(row.bidder)}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            },
+        )
+        let result = await response.json()
+        setIsError(!response.ok)
+        setMessage(response.ok ? "Removed!" : result.body)
+        setRefreshList(!refreshList)
     }
 
     return (
@@ -248,7 +270,7 @@ export default function TenderRow({ row, index }) {
             </td>
             <td
                 style={{
-                    width: user.role !== "viewer" ? 0 : "calc(2vw - 17px)",
+                    width: user.role === "viewer" ? 0 : "calc(3vw - 17px)",
                     textAlign: "center",
                 }}
             >
@@ -271,13 +293,22 @@ export default function TenderRow({ row, index }) {
                             />
                         </>
                     ) : (
-                        <FontAwesomeIcon
-                            icon={faEdit}
-                            color="var(--primary-color)"
-                            cursor="pointer"
-                            title="Edit"
-                            onClick={() => setEditting(true)}
-                        />
+                        <>
+                            <FontAwesomeIcon
+                                icon={faEdit}
+                                color="var(--primary-color)"
+                                cursor="pointer"
+                                title="Edit"
+                                onClick={() => setEditting(true)}
+                            />{" "}
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                color="red"
+                                cursor="pointer"
+                                title="Remove"
+                                onClick={deleteTenderBidder}
+                            />
+                        </>
                     ))}
             </td>
         </tr>
