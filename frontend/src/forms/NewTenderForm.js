@@ -4,6 +4,8 @@ import { useAuth } from "../contexts/AuthProvider"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import OverlayWindow from "../components/OverlayWindow"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUserMinus, faXmark } from "@fortawesome/free-solid-svg-icons"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -18,119 +20,159 @@ function BidderFields({
     pca,
     index,
     handleBidderChange,
+    removeFunction,
 }) {
     return (
         <>
             <br />
-            <label>Bidder </label>
-            <Input
-                type="text"
-                value={bidder}
-                required
-                onChange={(e) =>
-                    handleBidderChange(index, "bidder", e.target.value)
-                }
-            />
-            <br />
-            <label>Manufacturer </label>
-            <Input
-                type="text"
-                value={manufacturer}
-                required
-                onChange={(e) =>
-                    handleBidderChange(index, "manufacturer", e.target.value)
-                }
-            />
-            <br />
-            <label>Currency </label>
-            <Input
-                type="text"
-                value={currency}
-                required
-                onChange={(e) =>
-                    handleBidderChange(index, "currency", e.target.value)
-                }
-            />
-            <br />
-            <label>Quoted Price </label>
-            <Input
-                type="number"
-                value={quotedPrice}
-                required
-                onChange={(e) =>
-                    handleBidderChange(index, "quotedPrice", e.target.value)
-                }
-            />
-            <br />
-            <label>Pack Size: </label>
-            <Input
-                type="number"
-                value={packSize}
-                required
-                onChange={(e) =>
-                    handleBidderChange(index, "packSize", e.target.value)
-                }
-            />
-            <br />
-            <br />
-            <label>Bid Bond: </label>
-            <Input
-                type="checkbox"
-                value={bidBond}
-                onChange={(e) =>
-                    handleBidderChange(index, "bidBond", e.target.checked)
-                }
-            />
-            <br />
-            <label>PR: </label>
-            <Input
-                type="checkbox"
-                value={pr}
-                onChange={(e) =>
-                    handleBidderChange(index, "pr", e.target.checked)
-                }
-            />
-            <br />
-            <label>PCA: </label>
-            <label style={{ marginLeft: 6 }}>
-                <Input
-                    type="radio"
-                    name={"pca-" + index}
-                    value="yes"
-                    onChange={(e) =>
-                        e.target.checked &&
-                        handleBidderChange(index, "pca", true)
-                    }
-                />
-                Yes
-            </label>
-            <label style={{ marginLeft: 6 }}>
-                <Input
-                    type="radio"
-                    name={"pca-" + index}
-                    value="no"
-                    onChange={(e) =>
-                        e.target.checked &&
-                        handleBidderChange(index, "pca", false)
-                    }
-                />
-                No
-            </label>
-            <label style={{ marginLeft: 6 }}>
-                <Input
-                    type="radio"
-                    name={"pca-" + index}
-                    value="na"
-                    defaultChecked={true}
-                    onChange={(e) =>
-                        e.target.checked &&
-                        handleBidderChange(index, "pca", null)
-                    }
-                />
-                N/A
-            </label>
-            <br />
-            <br />
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                }}
+            >
+                <div>
+                    <label>Bidder </label>
+                    <Input
+                        type="text"
+                        value={bidder}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(index, "bidder", e.target.value)
+                        }
+                    />
+                    <br />
+                    <label>Manufacturer </label>
+                    <Input
+                        type="text"
+                        value={manufacturer}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "manufacturer",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>Currency </label>
+                    <Input
+                        type="text"
+                        value={currency}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "currency",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>Quoted Price </label>
+                    <Input
+                        type="number"
+                        value={quotedPrice}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "quotedPrice",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>Pack Size: </label>
+                    <Input
+                        type="number"
+                        value={packSize}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "packSize",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <br />
+                    <label>Bid Bond: </label>
+                    <Input
+                        type="checkbox"
+                        value={bidBond}
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "bidBond",
+                                e.target.checked,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>PR: </label>
+                    <Input
+                        type="checkbox"
+                        value={pr}
+                        onChange={(e) =>
+                            handleBidderChange(index, "pr", e.target.checked)
+                        }
+                    />
+                    <br />
+                    <label>PCA: </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pca-" + index}
+                            value="yes"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pca", true)
+                            }
+                        />
+                        Yes
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pca-" + index}
+                            value="no"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pca", false)
+                            }
+                        />
+                        No
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pca-" + index}
+                            value="na"
+                            defaultChecked={true}
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pca", null)
+                            }
+                        />
+                        N/A
+                    </label>
+                    <br />
+                    <br />
+                </div>
+                <div>
+                    <Button
+                        type="button"
+                        kind="danger-secondary"
+                        onClick={(e) => removeFunction(index)}
+                    >
+                        <FontAwesomeIcon icon={faUserMinus} /> Remove this
+                        bidder
+                    </Button>
+                </div>
+            </div>
             <hr />
         </>
     )
@@ -214,6 +256,13 @@ export default function NewTenderForm({
         }))
     }
 
+    const removeBidder = (index) => {
+        setInputs((values) => ({
+            ...values,
+            bidders: values.bidders.filter((_, i) => i !== index),
+        }))
+    }
+
     const handleConversionRateChange = (index, field, value) => {
         const newConversionRates = [...conversionRates]
         newConversionRates[index] = {
@@ -221,6 +270,12 @@ export default function NewTenderForm({
             [field]: value,
         }
         setConversionRates(newConversionRates)
+    }
+
+    const removeConversionRate = (index) => {
+        // https://stackoverflow.com/questions/36326612/how-to-delete-an-item-from-state-array
+        // how to remove an element from a state array
+        setConversionRates(conversionRates.filter((_, i) => index !== i))
     }
 
     const addRate = (evt) => {
@@ -242,7 +297,7 @@ export default function NewTenderForm({
             <form onSubmit={handleSubmit}>
                 <h3>New tender</h3>
                 <br />
-                <fieldset>
+                <fieldset style={{ backgroundColor: "white" }}>
                     <legend>
                         <b>Tender details</b>
                     </legend>
@@ -315,6 +370,15 @@ export default function NewTenderForm({
                                 }
                                 required
                             />
+                            <FontAwesomeIcon
+                                icon={faXmark}
+                                style={{
+                                    marginLeft: 5,
+                                    cursor: "pointer",
+                                    color: "red",
+                                }}
+                                onClick={() => removeConversionRate(index)}
+                            />
                             <br />
                         </div>
                     ))}
@@ -323,7 +387,7 @@ export default function NewTenderForm({
                     </Button>
                 </fieldset>
                 <br />
-                <fieldset>
+                <fieldset style={{ backgroundColor: "white" }}>
                     <legend>
                         <b>Bidders</b>
                     </legend>
@@ -341,6 +405,7 @@ export default function NewTenderForm({
                                   pr={bidder.pr}
                                   pca={bidder.pca}
                                   handleBidderChange={handleBidderChange}
+                                  removeFunction={removeBidder}
                                   index={index}
                               />
                           ))}
