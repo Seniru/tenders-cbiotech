@@ -1,3 +1,4 @@
+const mongoose = require("mongoose")
 const { StatusCodes } = require("http-status-codes")
 const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
@@ -65,9 +66,25 @@ const getTendersOnDate = async (req, res, next) => {
 
 const createTender = async (req, res, next) => {
     try {
-        const { bidders } = req.body
+        const { bidders, conversionRates: conversions } = req.body
         if (!Array.isArray(bidders))
             return createResponse(res, StatusCodes.BAD_REQUEST, "Request must include bidder data")
+        if (typeof conversions !== "object")
+            return createResponse(res, StatusCodes.BAD_REQUEST, "Request must include conversions")
+
+        let givenCurrencies = Object.keys(conversions)
+        for (let currency of new Set(
+            bidders.map((bidder) => bidder.currency).filter((bidder) => bidder),
+        )) {
+            if (currency !== "LKR" && !givenCurrencies.includes(currency)) {
+                return createResponse(
+                    res,
+                    StatusCodes.BAD_REQUEST,
+                    `A bidder has quoted in ${currency} but it's conversion rates are not given. ` +
+                        `Please include ${currency} to LKR conversions`,
+                )
+            }
+        }
 
         const tender = new Tender({
             closedOn: req.body.closedOn,
@@ -88,11 +105,20 @@ const createTender = async (req, res, next) => {
                 })(),
             )
         }
-        await Promise.all(bidderPromises)
-        await tender.save()
+        try {
+            await Promise.all(bidderPromises)
+            await tender.save()
+        } catch (error) {
+            await tender.deleteOne().exec()
+            throw error
+        }
 
         return createResponse(res, StatusCodes.CREATED, req.body)
     } catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            let errMsg = error.errors[Object.keys(error.errors)[0]].message
+            return createResponse(res, StatusCodes.BAD_REQUEST, errMsg)
+        }
         next(error)
     }
 }
@@ -112,16 +138,20 @@ const editTenderBidder = async (req, res, next) => {
                 "Bidder not found for the given tender",
             )
 
-        let bidder = await Bidder.findByIdAndUpdate(bidderData[0]._id, {
-            bidder: req.body.bidder,
-            manufacturer: req.body.manufacturer,
-            currency: req.body.currency,
-            quotedPrice: req.body.quotedPrice,
-            packSize: req.body.packSize,
-            bidBond: req.body.bidBond,
-            pr: req.body.pr,
-            pca: req.body.pca,
-        }).exec()
+        let bidder = await Bidder.findByIdAndUpdate(
+            bidderData[0]._id,
+            {
+                bidder: req.body.bidder,
+                manufacturer: req.body.manufacturer,
+                currency: req.body.currency,
+                quotedPrice: req.body.quotedPrice,
+                packSize: req.body.packSize,
+                bidBond: req.body.bidBond,
+                pr: req.body.pr,
+                pca: req.body.pca,
+            },
+            { runValidators: true },
+        ).exec()
 
         if (!bidder)
             return createResponse(
@@ -136,6 +166,10 @@ const editTenderBidder = async (req, res, next) => {
             },
         })
     } catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            let errMsg = error.errors[Object.keys(error.errors)[0]].message
+            return createResponse(res, StatusCodes.BAD_REQUEST, errMsg)
+        }
         next(error)
     }
 }
@@ -188,6 +222,10 @@ const addTenderBidder = async (req, res, next) => {
 
         return createResponse(res, StatusCodes.CREATED, { bidder })
     } catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            let errMsg = error.errors[Object.keys(error.errors)[0]].message
+            return createResponse(res, StatusCodes.BAD_REQUEST, errMsg)
+        }
         next(error)
     }
 }

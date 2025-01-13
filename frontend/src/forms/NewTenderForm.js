@@ -224,11 +224,13 @@ export default function NewTenderForm({
         // display the result
         setIsError(!response.ok)
         setMessage(response.ok ? result.statusMessage : result.body)
-        setRefreshList(!refreshList)
         // clear old values and close the window
-        setInputs({ conversionRates: {}, bidders: [], itemName: "" })
-        setConversionRates([])
-        setIsOpen(false)
+        if (response.ok) {
+            setRefreshList(!refreshList)
+            setInputs({ conversionRates: {}, bidders: [], itemName: "" })
+            setConversionRates([])
+            setIsOpen(false)
+        }
     }
 
     const handleChanges = (evt) => {

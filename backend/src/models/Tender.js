@@ -1,11 +1,11 @@
 const mongoose = require("mongoose")
 
 const TenderSchema = new mongoose.Schema({
-    closedOn: Date,
-    itemName: String,
-    tenderNumber: String,
-    quantity: String,
-    conversionRates: Object,
+    closedOn: { type: Date, required: true, minlength: 1 },
+    itemName: { type: String, required: true, minlength: 1 },
+    tenderNumber: { type: String, required: true, unique: true, minlength: 1 },
+    quantity: { type: String, default: "1", minLength: 1 },
+    conversionRates: { type: Object, default: {} },
     bidders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bidder" }],
 })
 
