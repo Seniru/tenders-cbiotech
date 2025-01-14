@@ -174,6 +174,59 @@ const editTenderBidder = async (req, res, next) => {
     }
 }
 
+const editTenderConversionRates = async (req, res, next) => {
+    try {
+        let { tenderNumber } = req.params
+        let { conversionRates } = req.body
+
+        if (!conversionRates)
+            return createResponse(
+                res,
+                StatusCodes.BAD_REQUEST,
+                "Request must include conversionRates field",
+            )
+
+        let tender = await Tender.findOne({ tenderNumber }).populate("bidders").exec()
+        if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
+
+        for (let [currency, rate] of Object.entries(conversionRates)) {
+            if (currency.length <= 1)
+                return createResponse(
+                    res,
+                    StatusCodes.BAD_REQUEST,
+                    "Currency should not be an empty value",
+                )
+            if (isNaN(rate))
+                return createResponse(
+                    res,
+                    StatusCodes.BAD_REQUEST,
+                    "Conversion rate should be a number",
+                )
+        }
+
+        let quotedCurrencies = new Set(
+            tender.bidders.map((bidder) => bidder.currency).filter((bidder) => bidder),
+        )
+        let givenCurrencies = Object.keys(conversionRates)
+        for (let currency of quotedCurrencies) {
+            if (currency !== "LKR" && !givenCurrencies.includes(currency)) {
+                return createResponse(
+                    res,
+                    StatusCodes.BAD_REQUEST,
+                    `A bidder has quoted in ${currency} but it's conversion rates are not given. ` +
+                        `Please include ${currency} to LKR conversions`,
+                )
+            }
+        }
+
+        tender.conversionRates = conversionRates
+        await tender.save()
+        return createResponse(res, StatusCodes.OK, tender.conversionRates)
+    } catch (error) {
+        next(error)
+    }
+}
+
 const editTender = async (req, res, next) => {
     try {
         let { tenderNumber } = req.params
@@ -292,6 +345,7 @@ module.exports = {
     createTender,
     editTenderBidder,
     editTender,
+    editTenderConversionRates,
     deleteTender,
     addTenderBidder,
     deleteTenderBidder,

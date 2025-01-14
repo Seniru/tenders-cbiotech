@@ -2,7 +2,6 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
     faCalendar,
-    faCoins,
     faEdit,
     faPills,
     faTrash,
@@ -15,56 +14,11 @@ import MessageBox from "../MessageBox"
 import { useAuth } from "../../contexts/AuthProvider"
 import "./TenderInfo.css"
 import TenderTable from "./TenderTable"
+import TenderDetailsComponent from "./TenderDetailsComponent"
 import AddBidderForm from "../../forms/AddBidderForm"
-import Input from "../Input"
+import TenderCurrencyInfo from "./TenderCurrencyInfo"
 
 const { REACT_APP_API_URL } = process.env
-
-function RateComponent({ currency, rate }) {
-    return (
-        <div>
-            <span className="secondary-text">
-                1 {currency.toUpperCase()} ={" "}
-            </span>
-            <span>{rate} LKR</span>
-        </div>
-    )
-}
-
-function TenderDetailsComponent({
-    name,
-    icon,
-    detail,
-    value,
-    color,
-    dataType,
-    isEdittingTenderInformation,
-    onChange,
-}) {
-    return (
-        <div>
-            {icon ? <FontAwesomeIcon icon={icon} color="#666666" /> : <span />}
-            <div className="secondary-text">{detail}:</div>
-            <div style={{ color }}>
-                {!isEdittingTenderInformation ? (
-                    value
-                ) : (
-                    <Input
-                        type={dataType}
-                        name={name}
-                        value={value}
-                        style={{
-                            marginTop: 0,
-                            width: "-webkit-fill-available",
-                        }}
-                        onChange={onChange}
-                        required
-                    />
-                )}
-            </div>
-        </div>
-    )
-}
 
 export default function TenderInfo({ details, refreshList, setRefreshList }) {
     let [isError, setIsError] = useState(false)
@@ -251,29 +205,13 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                             />
                         ))}
                     <div className="currency-conversions">
-                        <h4 style={{ marginTop: 0 }}>
-                            <FontAwesomeIcon
-                                icon={faCoins}
-                                style={{ marginRight: 5 }}
-                            />
-                            Conversion rates
-                        </h4>
-                        {details.conversionRates ? (
-                            Object.entries(details.conversionRates).map(
-                                (rates) => (
-                                    <RateComponent
-                                        currency={rates[0]}
-                                        rate={rates[1]}
-                                    />
-                                ),
-                            )
-                        ) : (
-                            <span
-                                style={{ color: "var(--secondary-text-color)" }}
-                            >
-                                N/A
-                            </span>
-                        )}
+                        <TenderCurrencyInfo
+                            details={details}
+                            setIsError={setIsError}
+                            setMessage={setMessage}
+                            refreshList={refreshList}
+                            setRefreshList={setRefreshList}
+                        />
                     </div>
                 </div>
                 {user.role !== "viewer" && (
