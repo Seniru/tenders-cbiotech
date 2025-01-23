@@ -36,7 +36,7 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
 
     const deleteTender = async (tenderNumber) => {
         let request = await fetch(
-            `${REACT_APP_API_URL}/api/tenders/${tenderNumber}`,
+            `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(tenderNumber)}`,
             {
                 method: "DELETE",
                 headers: {
