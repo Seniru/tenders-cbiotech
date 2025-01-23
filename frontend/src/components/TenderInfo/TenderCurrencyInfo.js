@@ -94,7 +94,9 @@ export default function TenderCurrencyInfo({
 
     useEffect(() => {
         let cList = []
-        for (let [currency, rate] of Object.entries(details.conversionRates)) {
+        for (let [currency, rate] of Object.entries(
+            details.conversionRates || {},
+        )) {
             cList.push([currency, rate])
         }
         setCurrencies(cList)

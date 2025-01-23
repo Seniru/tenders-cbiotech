@@ -14,7 +14,7 @@ export default function Product() {
     const { productName } = useParams()
     let [refreshList, setRefreshList] = useState(false)
     let [tenderDetails, tenderFetchError] = useFetch(
-        `${REACT_APP_API_URL}/api/product/${productName}`,
+        `${REACT_APP_API_URL}/api/product/${encodeURIComponent(productName)}`,
         [],
         refreshList,
     )

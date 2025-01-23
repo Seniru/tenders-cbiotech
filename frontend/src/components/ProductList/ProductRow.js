@@ -22,7 +22,7 @@ export default function ProductRow({
         <tr className="product-row">
             <td>
                 <Link
-                    to={`/product/${product}`}
+                    to={`/product/${encodeURIComponent(product)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
