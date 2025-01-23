@@ -91,13 +91,15 @@ const createFromSheets = async () => {
                     let i = 0
                     while (!worksheet.getRow(r + i).values.some((v) => v.match("Bidder"))) {
                         // conversion is in the last column (popping returns the last value)
-                        let conversion = worksheet.getRow(r + i).values.pop()
+                        let conversions = worksheet.getRow(r + i).values.filter((c) => c) // remove all the empty cell values
                         i++
-                        if (!conversion) continue
-                        conversion = conversion.split(/[:=]/)
-                        tenders[tenderNumber].conversions[
-                            conversion[0].match(/([a-zA-Z\s])+/)[0].trim()
-                        ] = parseFloat(conversion[1].match(/([\d.]+)/)[0].trim())
+                        if (conversions.length == 0) continue
+                        for (let conversion of conversions) {
+                            conversion = conversion.split(/[:=]/)
+                            tenders[tenderNumber].conversions[
+                                conversion[0].match(/([a-zA-Z\s])+/)[0].trim()
+                            ] = parseFloat(conversion[1].match(/([\d.]+)/)[0].trim())
+                        }
                     }
                     r += i
 
@@ -116,7 +118,6 @@ const createFromSheets = async () => {
                     let { bidders, row: newR } = readBidders(bidderDataColumns, worksheet, r + 1)
                     tenders[tenderNumber].bidders = bidders
                     r = newR
-
                     // save the tender
                     // saving the tender could be done in the above steps aswell
                     // but I find it much safer this way as I can see every data being read
