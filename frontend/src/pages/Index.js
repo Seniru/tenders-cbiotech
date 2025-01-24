@@ -11,6 +11,8 @@ import Input from "../components/Input"
 import MessageBox from "../components/MessageBox"
 import NewTenderForm from "../forms/NewTenderForm"
 
+import "./styles/Index.css"
+
 const { REACT_APP_API_URL } = process.env
 
 export default function Index() {
@@ -21,11 +23,13 @@ export default function Index() {
     let [addingProduct, setAddingProduct] = useState("")
     let [query, setQuery] = useState("")
     let [q, setQ] = useState("")
+    let [options, setOptions] = useState("")
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
     let [refreshList, setRefreshList] = useState(false)
     let [products, productFetchError, productsLoading] = useFetch(
-        `${REACT_APP_API_URL}/api/tenders?q=${q}`,
+        `${REACT_APP_API_URL}/api/tenders?q=${q}` +
+            (options === "" ? "" : "&" + options),
         [],
         refreshList,
     )
@@ -100,6 +104,45 @@ export default function Index() {
                 <Button kind="primary" onClick={(evt) => setQ(query)}>
                     Go
                 </Button>
+            </div>
+            <br />
+            <div style={{ marginBottom: 10 }}>
+                <label className="view-options">
+                    <Input
+                        type="radio"
+                        name="options"
+                        onChange={() => setOptions("")}
+                        defaultChecked={true}
+                    />
+                    Default view
+                </label>
+
+                <label className="view-options">
+                    <Input
+                        type="radio"
+                        name="options"
+                        onChange={() => setOptions("maxBidders=0")}
+                    />
+                    No offers
+                </label>
+                <label className="view-options">
+                    <Input
+                        type="radio"
+                        name="options"
+                        onChange={() => setOptions("maxBidders=2")}
+                    />
+                    2 bidders
+                </label>
+                <label className="view-options">
+                    <Input
+                        type="radio"
+                        name="options"
+                        onChange={() =>
+                            setOptions("matchBidders=slim,cliniqon")
+                        }
+                    />
+                    Bidders: Slim or Cliniqon
+                </label>
             </div>
             <div className="secondary-text">
                 {productsLoading

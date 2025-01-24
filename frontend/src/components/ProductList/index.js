@@ -22,19 +22,20 @@ export default function ProductList({ products, onAdd, viewingAs, isLoading }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {products.map((p) => {
-                        return (
-                            <ProductRow
-                                product={p.itemName}
-                                bidder={p.bidder || "No listing"}
-                                manufacturer={p.manufacturer}
-                                currency={p.currency}
-                                quotedPrice={p.quotedPrice}
-                                onAdd={onAdd}
-                                viewingAs={viewingAs}
-                            />
-                        )
-                    })}
+                    {!isLoading &&
+                        products.map((p) => {
+                            return (
+                                <ProductRow
+                                    product={p.itemName}
+                                    bidder={p.bidder || "No listing"}
+                                    manufacturer={p.manufacturer}
+                                    currency={p.currency}
+                                    quotedPrice={p.quotedPrice}
+                                    onAdd={onAdd}
+                                    viewingAs={viewingAs}
+                                />
+                            )
+                        })}
                 </tbody>
             </table>
             <ProductListSkeleton rows={10} isLoading={isLoading} />

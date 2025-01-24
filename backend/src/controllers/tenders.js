@@ -7,10 +7,14 @@ const createResponse = require("../utils/createResponse")
 const getTendersSummary = async (req, res, next) => {
     try {
         const searchString = req.query.q || ""
+        const maxBidders = req.query.maxBidders || Infinity
+        const matchBidders = req.query.matchBidders?.split(",") || []
+
         const itemNames = await Tender.distinct("itemName", {
             itemName: { $regex: searchString, $options: "i" },
         })
-        const latestTenders = await Promise.all(
+
+        let latestTenders = await Promise.all(
             itemNames.map(async (itemName) => {
                 let latestTender = await Tender.findOne({ itemName })
                     .populate("bidders")
@@ -18,20 +22,57 @@ const getTendersSummary = async (req, res, next) => {
                     .exec()
 
                 latestTender = latestTender.applyDerivations()
+                let bidderCount = 0
+                let lowestBidder = null
                 if (latestTender && latestTender.bidders.length > 0) {
                     latestTender.bidders.sort((a, b) => a.quotedUnitPrice - b.quotedUnitPrice)
-                    latestTender.bidders = latestTender.bidders[0]
+                    bidderCount = latestTender.bidders.length
+                    lowestBidder = latestTender.bidders[0]
                 }
 
                 return {
                     itemName: latestTender.itemName,
-                    bidder: latestTender.bidders.bidder,
-                    manufacturer: latestTender.bidders.manufacturer,
-                    currency: latestTender.bidders.currency,
-                    quotedPrice: latestTender.bidders.quotedPrice,
+                    closedOn: latestTender.closedOn,
+                    bidder: lowestBidder?.bidder,
+                    bidderCount,
+                    bidders: latestTender.bidders,
+                    manufacturer: lowestBidder?.manufacturer,
+                    currency: lowestBidder?.currency,
+                    quotedPrice: lowestBidder?.quotedPrice,
                 }
             }),
         )
+
+        // apply filters
+        // only filter if the flags are present to save computation time
+
+        // max tenders count
+        if (maxBidders !== Infinity)
+            latestTenders = latestTenders.filter((tender) => tender.bidderCount <= maxBidders)
+        // match bidders
+        if (matchBidders.length != 0) {
+            latestTenders = latestTenders.filter((tender) =>
+                tender.bidders.some((bidder) => {
+                    for (let includeBidder of matchBidders) {
+                        if (bidder.bidder.toLowerCase().includes(includeBidder)) return true
+                    }
+                    return false
+                }),
+            )
+        }
+
+        // sort according to latest date if option flags are found
+        if (maxBidders !== Infinity || matchBidders.length != 0)
+            latestTenders = latestTenders.sort((a, b) => b.closedOn - a.closedOn)
+
+        // remove unneccessary data
+        latestTenders = latestTenders.map((tender) => ({
+            itemName: tender.itemName,
+            bidder: tender.bidder,
+            manufacturer: tender.manufacturer,
+            currency: tender.currency,
+            quotedPrice: tender.quotedPrice,
+        }))
 
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {

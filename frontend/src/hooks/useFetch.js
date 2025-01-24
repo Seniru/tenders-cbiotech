@@ -12,6 +12,7 @@ const useFetch = (url, initialValue, refreshFlag) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let headers = token ? { Authorization: "Bearer " + token } : {}
                 let response = await fetch(url, { headers })
                 let result = await response.json()
