@@ -9,6 +9,8 @@ const getTendersSummary = async (req, res, next) => {
         const searchString = req.query.q || ""
         const maxBidders = req.query.maxBidders || Infinity
         const matchBidders = req.query.matchBidders?.split(",") || []
+        const fromDate = req.query.fromDate ? new Date(req.query.fromDate) : null
+        const toDate = req.query.toDate ? new Date(req.query.toDate) : null
 
         const itemNames = await Tender.distinct("itemName", {
             itemName: { $regex: searchString, $options: "i" },
@@ -60,6 +62,13 @@ const getTendersSummary = async (req, res, next) => {
                 }),
             )
         }
+        // date range
+        if (fromDate || toDate)
+            latestTenders = latestTenders.filter(
+                (tender) =>
+                    (!fromDate || tender.closedOn >= fromDate) &&
+                    (!toDate || tender.closedOn <= toDate),
+            )
 
         // sort according to latest date if option flags are found
         if (maxBidders !== Infinity || matchBidders.length != 0)

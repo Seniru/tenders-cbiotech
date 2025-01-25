@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 
@@ -24,12 +24,20 @@ export default function Index() {
     let [query, setQuery] = useState("")
     let [q, setQ] = useState("")
     let [options, setOptions] = useState("")
+    let fromDateRef = useRef()
+    let toDateRef = useRef()
+    let [fromDate, setFromDate] = useState(null)
+    let [toDate, setToDate] = useState(null)
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
     let [refreshList, setRefreshList] = useState(false)
     let [products, productFetchError, productsLoading] = useFetch(
         `${REACT_APP_API_URL}/api/tenders?q=${q}` +
-            (options === "" ? "" : "&" + options),
+            (options === "" ? "" : "&" + options) +
+            (fromDate || toDate
+                ? (fromDate ? `&fromDate=${fromDate}` : "") +
+                  (toDate ? `&toDate=${toDate}` : "")
+                : ""),
         [],
         refreshList,
     )
@@ -53,6 +61,18 @@ export default function Index() {
     const addTender = (product) => {
         setAddTenderFormOpen(true)
         setAddingProduct(product)
+    }
+
+    const filterDateRange = () => {
+        setFromDate(fromDateRef.current.value)
+        setToDate(toDateRef.current.value)
+    }
+
+    const resetDateRanges = () => {
+        setFromDate(null)
+        setToDate(null)
+        fromDateRef.current.value = ""
+        toDateRef.current.value = ""
     }
 
     return (
@@ -92,18 +112,38 @@ export default function Index() {
                 </div>
             </div>
 
-            <div>
-                <SearchBar
-                    placeholder="Search products..."
-                    style={{ width: "60%", marginRight: 6 }}
-                    onChange={(evt) => setQuery(evt.target.value)}
-                    onKeyDown={(evt) => {
-                        if (evt.code === "Enter") setQ(query)
-                    }}
-                />
-                <Button kind="primary" onClick={(evt) => setQ(query)}>
-                    Go
-                </Button>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                }}
+            >
+                <div>
+                    <SearchBar
+                        placeholder="Search products..."
+                        style={{ width: "55vw", marginRight: 6 }}
+                        onChange={(evt) => setQuery(evt.target.value)}
+                        onKeyDown={(evt) => {
+                            if (evt.code === "Enter") setQ(query)
+                        }}
+                    />
+                    <Button kind="primary" onClick={(evt) => setQ(query)}>
+                        Go
+                    </Button>
+                </div>
+                <div>
+                    From:
+                    <Input type="date" ref={fromDateRef} />
+                    To:
+                    <Input type="date" ref={toDateRef} />
+                    <Button kind="primary" onClick={filterDateRange}>
+                        <FontAwesomeIcon icon={faCalendar} /> Apply
+                    </Button>
+                    <Button kind="secondary" onClick={resetDateRanges}>
+                        Reset
+                    </Button>
+                </div>
             </div>
             <br />
             <div style={{ marginBottom: 10 }}>
