@@ -7,6 +7,7 @@ const createResponse = require("../utils/createResponse")
 const getTendersSummary = async (req, res, next) => {
     try {
         const searchString = req.query.q || ""
+        const minBidders = req.query.minBidders || 0
         const maxBidders = req.query.maxBidders || Infinity
         const matchBidders = req.query.matchBidders?.split(",") || []
         const fromDate = req.query.fromDate ? new Date(req.query.fromDate) : null
@@ -48,9 +49,11 @@ const getTendersSummary = async (req, res, next) => {
         // apply filters
         // only filter if the flags are present to save computation time
 
-        // max tenders count
-        if (maxBidders !== Infinity)
-            latestTenders = latestTenders.filter((tender) => tender.bidderCount <= maxBidders)
+        // max/min tenders count
+        if (maxBidders !== Infinity || minBidders != 0)
+            latestTenders = latestTenders.filter(
+                (tender) => minBidders <= tender.bidderCount && tender.bidderCount <= maxBidders,
+            )
         // match bidders
         if (matchBidders.length != 0) {
             latestTenders = latestTenders.filter((tender) =>

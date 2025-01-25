@@ -17,12 +17,13 @@ export default function ProductRow({
     quotedPrice,
     onAdd,
     viewingAs,
+    options,
 }) {
     return (
         <tr className="product-row">
             <td>
                 <Link
-                    to={`/product/${encodeURIComponent(product)}`}
+                    to={`/product/${encodeURIComponent(product)}?${options}`}
                     target="_blank"
                     rel="noopener noreferrer"
                 >

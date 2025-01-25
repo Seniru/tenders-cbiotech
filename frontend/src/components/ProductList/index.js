@@ -2,7 +2,13 @@ import ProductRow from "./ProductRow"
 import "./List.css"
 import ProductListSkeleton from "./ProductListSkeleton"
 
-export default function ProductList({ products, onAdd, viewingAs, isLoading }) {
+export default function ProductList({
+    products,
+    onAdd,
+    viewingAs,
+    isLoading,
+    options,
+}) {
     return (
         <>
             <table className="product-list">
@@ -33,6 +39,7 @@ export default function ProductList({ products, onAdd, viewingAs, isLoading }) {
                                     quotedPrice={p.quotedPrice}
                                     onAdd={onAdd}
                                     viewingAs={viewingAs}
+                                    options={options}
                                 />
                             )
                         })}

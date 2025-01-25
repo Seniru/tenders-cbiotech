@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
+import { useSearchParams } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 
@@ -31,13 +32,23 @@ export default function Index() {
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
     let [refreshList, setRefreshList] = useState(false)
+    let [, setSearchParams] = useSearchParams()
+
+    const queryParams = useMemo(() => {
+        const params = {
+            q,
+            ...options,
+        }
+
+        if (fromDate) params.fromDate = fromDate
+        if (toDate) params.toDate = toDate
+
+        return params
+    }, [q, options, fromDate, toDate])
+
     let [products, productFetchError, productsLoading] = useFetch(
-        `${REACT_APP_API_URL}/api/tenders?q=${q}` +
-            (options === "" ? "" : "&" + options) +
-            (fromDate || toDate
-                ? (fromDate ? `&fromDate=${fromDate}` : "") +
-                  (toDate ? `&toDate=${toDate}` : "")
-                : ""),
+        `${REACT_APP_API_URL}/api/tenders?` +
+            new URLSearchParams(queryParams).toString(),
         [],
         refreshList,
     )
@@ -53,6 +64,10 @@ export default function Index() {
     useEffect(() => {
         document.title = "Tenders | Cliniqon Biotech"
     }, [])
+
+    useEffect(() => {
+        setSearchParams(new URLSearchParams(queryParams).toString())
+    }, [queryParams, setSearchParams])
 
     const handleSearchByDate = () => {
         if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
@@ -151,7 +166,7 @@ export default function Index() {
                     <Input
                         type="radio"
                         name="options"
-                        onChange={() => setOptions("")}
+                        onChange={() => setOptions({})}
                         defaultChecked={true}
                     />
                     Default view
@@ -161,7 +176,7 @@ export default function Index() {
                     <Input
                         type="radio"
                         name="options"
-                        onChange={() => setOptions("maxBidders=0")}
+                        onChange={() => setOptions({ maxBidders: 0 })}
                     />
                     No offers
                 </label>
@@ -169,7 +184,9 @@ export default function Index() {
                     <Input
                         type="radio"
                         name="options"
-                        onChange={() => setOptions("maxBidders=2")}
+                        onChange={() =>
+                            setOptions({ minBidders: 1, maxBidders: 2 })
+                        }
                     />
                     2 bidders
                 </label>
@@ -178,7 +195,7 @@ export default function Index() {
                         type="radio"
                         name="options"
                         onChange={() =>
-                            setOptions("matchBidders=slim,cliniqon")
+                            setOptions({ matchBidders: "slim,cliniqon" })
                         }
                     />
                     Bidders: Slim or Cliniqon
@@ -198,6 +215,29 @@ export default function Index() {
                     onAdd={addTender}
                     viewingAs={user.role}
                     isLoading={productsLoading}
+                    options={
+                        new URLSearchParams(
+                            Object.fromEntries(
+                                Object.entries({
+                                    fromDate: queryParams.fromDate,
+                                    toDate: queryParams.toDate,
+                                    latestOnly:
+                                        Object.hasOwn(
+                                            queryParams,
+                                            "minBidders",
+                                        ) ||
+                                        Object.hasOwn(
+                                            queryParams,
+                                            "maxBidders",
+                                        ) ||
+                                        Object.hasOwn(
+                                            queryParams,
+                                            "matchBidders",
+                                        ),
+                                }).filter(([_, v]) => v != null),
+                            ),
+                        )
+                    }
                 />
             </div>
         </>
