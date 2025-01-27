@@ -36,6 +36,7 @@ const getTendersSummary = async (req, res, next) => {
                 return {
                     itemName: latestTender.itemName,
                     closedOn: latestTender.closedOn,
+                    quantity: latestTender.quantity,
                     bidder: lowestBidder?.bidder,
                     bidderCount,
                     bidders: latestTender.bidders,
@@ -84,6 +85,7 @@ const getTendersSummary = async (req, res, next) => {
             manufacturer: tender.manufacturer,
             currency: tender.currency,
             quotedPrice: tender.quotedPrice,
+            quantity: tender.quantity,
         }))
 
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })

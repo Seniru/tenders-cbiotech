@@ -33,7 +33,9 @@ export default function ProductList({
                             return (
                                 <ProductRow
                                     product={p.itemName}
-                                    bidder={p.bidder || "No listing"}
+                                    bidder={
+                                        p.bidder || `No listing (${p.quantity})`
+                                    }
                                     manufacturer={p.manufacturer}
                                     currency={p.currency}
                                     quotedPrice={p.quotedPrice}
