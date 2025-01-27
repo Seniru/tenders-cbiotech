@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const determinePackSize = require("../utils/determinePackSize")
 
 const TenderSchema = new mongoose.Schema({
     closedOn: { type: Date, required: true, minlength: 1 },
@@ -13,9 +14,7 @@ TenderSchema.methods.applyDerivations = function () {
     let conversionRates = this.conversionRates || {}
     let bidders = this.bidders
     let biddersAfterDerives = bidders.map((bidder) => {
-        let packSize = bidder.packSize.match(/(\d+)/)
-        packSize = packSize ? parseInt(packSize[1]) : 1
-
+        let packSize = determinePackSize(bidder.packSize)
         let quotedPriceLKR =
             bidder.quotedPrice * (bidder.currency == "LKR" ? 1 : conversionRates[bidder.currency])
         let quotedUnitPriceLKR = quotedPriceLKR / packSize
