@@ -92,7 +92,7 @@ const createFromSheets = async () => {
 
                     tenders.push({
                         closedOn: new Date(Date.UTC(y, m - 1, d, hours, mins)),
-                        itemName: itemName,
+                        itemName: dirent.name.substring(0, dirent.name.length - 5),
                         tenderNumber: tNumberFixed,
                         quantity: worksheet
                             .getRow(r + 3)

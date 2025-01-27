@@ -4,6 +4,41 @@ const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
 const createResponse = require("../utils/createResponse")
 
+const applyFilters = (tenders, options) => {
+    let { minBidders, maxBidders, matchBidders, fromDate, toDate } = options
+    // only filter if the flags are present to save computation time
+
+    // max/min tenders count
+    if (maxBidders !== Infinity || minBidders != 0)
+        tenders = tenders.filter(
+            (tender) => minBidders <= tender.bidders.length && tender.bidders.length <= maxBidders,
+        )
+    // match bidders
+    if (matchBidders.length != 0) {
+        tenders = tenders.filter((tender) =>
+            tender.bidders.some((bidder) => {
+                for (let includeBidder of matchBidders) {
+                    if (bidder.bidder.toLowerCase().includes(includeBidder)) return true
+                }
+                return false
+            }),
+        )
+    }
+    // date range
+    if (fromDate || toDate)
+        tenders = tenders.filter(
+            (tender) =>
+                (!fromDate || tender.closedOn >= fromDate) &&
+                (!toDate || tender.closedOn <= toDate),
+        )
+
+    // sort according to latest date if option flags are found
+    if (maxBidders !== Infinity || matchBidders.length != 0)
+        tenders = tenders.sort((a, b) => b.closedOn - a.closedOn)
+
+    return tenders
+}
+
 const getTendersSummary = async (req, res, next) => {
     try {
         const searchString = req.query.q || ""
@@ -25,11 +60,9 @@ const getTendersSummary = async (req, res, next) => {
                     .exec()
 
                 latestTender = latestTender.applyDerivations()
-                let bidderCount = 0
                 let lowestBidder = null
                 if (latestTender && latestTender.bidders.length > 0) {
                     latestTender.bidders.sort((a, b) => a.quotedUnitPrice - b.quotedUnitPrice)
-                    bidderCount = latestTender.bidders.length
                     lowestBidder = latestTender.bidders[0]
                 }
 
@@ -38,7 +71,6 @@ const getTendersSummary = async (req, res, next) => {
                     closedOn: latestTender.closedOn,
                     quantity: latestTender.quantity,
                     bidder: lowestBidder?.bidder,
-                    bidderCount,
                     bidders: latestTender.bidders,
                     manufacturer: lowestBidder?.manufacturer,
                     currency: lowestBidder?.currency,
@@ -47,36 +79,13 @@ const getTendersSummary = async (req, res, next) => {
             }),
         )
 
-        // apply filters
-        // only filter if the flags are present to save computation time
-
-        // max/min tenders count
-        if (maxBidders !== Infinity || minBidders != 0)
-            latestTenders = latestTenders.filter(
-                (tender) => minBidders <= tender.bidderCount && tender.bidderCount <= maxBidders,
-            )
-        // match bidders
-        if (matchBidders.length != 0) {
-            latestTenders = latestTenders.filter((tender) =>
-                tender.bidders.some((bidder) => {
-                    for (let includeBidder of matchBidders) {
-                        if (bidder.bidder.toLowerCase().includes(includeBidder)) return true
-                    }
-                    return false
-                }),
-            )
-        }
-        // date range
-        if (fromDate || toDate)
-            latestTenders = latestTenders.filter(
-                (tender) =>
-                    (!fromDate || tender.closedOn >= fromDate) &&
-                    (!toDate || tender.closedOn <= toDate),
-            )
-
-        // sort according to latest date if option flags are found
-        if (maxBidders !== Infinity || matchBidders.length != 0)
-            latestTenders = latestTenders.sort((a, b) => b.closedOn - a.closedOn)
+        latestTenders = applyFilters(latestTenders, {
+            minBidders,
+            maxBidders,
+            matchBidders,
+            fromDate,
+            toDate,
+        })
 
         // remove unneccessary data
         latestTenders = latestTenders.map((tender) => ({
@@ -97,6 +106,11 @@ const getTendersSummary = async (req, res, next) => {
 const getTendersOnDate = async (req, res, next) => {
     try {
         let { date } = req.params
+        let minBidders = req.query.minBidders !== undefined ? parseInt(req.query.minBidders) : 0
+        let maxBidders =
+            req.query.maxBidders !== undefined ? parseInt(req.query.maxBidders) : Infinity
+        let matchBidders = req.query.matchBidders?.split(",") || []
+
         let startDate
         let endDate
 
@@ -121,6 +135,13 @@ const getTendersOnDate = async (req, res, next) => {
             .exec()
 
         let afterDerivations = tenders.map((tender) => tender.applyDerivations())
+
+        afterDerivations = applyFilters(afterDerivations, {
+            minBidders,
+            maxBidders,
+            matchBidders,
+        })
+
         return createResponse(res, StatusCodes.OK, {
             tenders: afterDerivations,
         })

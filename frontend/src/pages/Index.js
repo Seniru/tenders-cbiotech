@@ -85,7 +85,11 @@ export default function Index() {
     }, [queryParams, setSearchParams])
 
     const handleSearchByDate = () => {
-        if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
+        if (tendersOnDate)
+            window.open(
+                `/tenders/${tendersOnDate}?${new URLSearchParams(queryParams).toString()}`,
+                "_blank",
+            )
     }
 
     const handleSearchByDateRange = () => {
@@ -99,7 +103,7 @@ export default function Index() {
             return
         }
         window.open(
-            `/tenders/${fromDateRef.current.value}:${toDateRef.current.value}`,
+            `/tenders/${fromDateRef.current.value}:${toDateRef.current.value}?${new URLSearchParams(queryParams).toString()}`,
             "_blank",
         )
     }

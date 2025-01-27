@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useState, useEffect, useMemo } from "react"
+import { useParams, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPrint } from "@fortawesome/free-solid-svg-icons"
 
@@ -12,9 +12,23 @@ const { REACT_APP_API_URL } = process.env
 
 export default function TenderByDate() {
     const { date } = useParams()
+    const searchParams = new URLSearchParams(useLocation().search)
+    const minBidders = searchParams.get("minBidders")
+    const maxBidders = searchParams.get("maxBidders")
+    const matchBidders = searchParams.get("matchBidders")
+    let queryParams = useMemo(() => {
+        let params = {}
+        if (minBidders) params.minBidders = minBidders
+        if (maxBidders) params.maxBidders = maxBidders
+        if (matchBidders) params.matchBidders = matchBidders
+
+        return params
+    }, [minBidders, maxBidders, matchBidders])
+
     let [refreshList, setRefreshList] = useState(false)
+
     let [tenderDetails, tenderFetchError] = useFetch(
-        `${REACT_APP_API_URL}/api/tenders/${date}`,
+        `${REACT_APP_API_URL}/api/tenders/${date}?${new URLSearchParams(queryParams).toString()}`,
         [],
         refreshList,
     )
