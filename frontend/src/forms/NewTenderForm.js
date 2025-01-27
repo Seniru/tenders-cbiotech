@@ -332,7 +332,7 @@ export default function NewTenderForm({
                     <br />
                     <label>Quantity: </label>
                     <Input
-                        type="number"
+                        type="text"
                         name="quantity"
                         value={inputs.quantity}
                         onChange={handleChanges}

@@ -95,8 +95,17 @@ const getTendersSummary = async (req, res, next) => {
 const getTendersOnDate = async (req, res, next) => {
     try {
         let { date } = req.params
-        let startDate = new Date(date)
-        let endDate = new Date(date)
+        let startDate
+        let endDate
+
+        if (date.includes(":")) {
+            date = date.split(":")
+            startDate = new Date(date[0])
+            endDate = new Date(date[1])
+        } else {
+            startDate = new Date(date)
+            endDate = new Date(date)
+        }
         endDate.setDate(endDate.getDate() + 1)
 
         let tenders = await Tender.find({
@@ -106,6 +115,7 @@ const getTendersOnDate = async (req, res, next) => {
             },
         })
             .populate("bidders")
+            .sort({ closedOn: -1 })
             .exec()
 
         let afterDerivations = tenders.map((tender) => tender.applyDerivations())

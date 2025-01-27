@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef, useMemo } from "react"
 import { useSearchParams } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCalendar } from "@fortawesome/free-solid-svg-icons"
+import {
+    faCalendar,
+    faCalendarAlt,
+    faCalendarDay,
+    faFilter,
+} from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../contexts/AuthProvider"
 import useFetch from "../hooks/useFetch"
@@ -73,6 +78,22 @@ export default function Index() {
         if (tendersOnDate) window.open(`/tenders/${tendersOnDate}`, "_blank")
     }
 
+    const handleSearchByDateRange = () => {
+        if (!fromDateRef.current.value) {
+            setIsError(true)
+            setMessage("You should set the starting date")
+            return
+        } else if (!toDateRef.current.value) {
+            setIsError(true)
+            setMessage("You should set the end date")
+            return
+        }
+        window.open(
+            `/tenders/${fromDateRef.current.value}:${toDateRef.current.value}`,
+            "_blank",
+        )
+    }
+
     const addTender = (product) => {
         setAddTenderFormOpen(true)
         setAddingProduct(product)
@@ -106,32 +127,12 @@ export default function Index() {
                 refreshList={refreshList}
                 setRefreshList={setRefreshList}
             />
+            <h1>Index</h1>
             <div
                 style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                }}
-            >
-                <h1>Index</h1>
-                <div>
-                    <Input
-                        type="date"
-                        value={tendersOnDate}
-                        onChange={(e) => setTendersOnDate(e.target.value)}
-                    />
-                    <Button kind="primary" onClick={handleSearchByDate}>
-                        <FontAwesomeIcon icon={faCalendar} />
-                        <span style={{ marginLeft: 5 }}>Search by date</span>
-                    </Button>
-                </div>
-            </div>
-
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexWrap: "wrap",
                 }}
             >
                 <div>
@@ -148,59 +149,83 @@ export default function Index() {
                     </Button>
                 </div>
                 <div>
+                    <Input
+                        type="date"
+                        value={tendersOnDate}
+                        onChange={(e) => setTendersOnDate(e.target.value)}
+                    />
+                    <Button kind="primary" onClick={handleSearchByDate}>
+                        <FontAwesomeIcon icon={faCalendarDay} />
+                        <span style={{ marginLeft: 5 }}>Browse date</span>
+                    </Button>
+                </div>
+            </div>
+            <br />
+            <div
+                style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                }}
+            >
+                <div style={{ marginBottom: 10 }}>
+                    <label className="view-options">
+                        <Input
+                            type="radio"
+                            name="options"
+                            onChange={() => setOptions({})}
+                            defaultChecked={true}
+                        />
+                        Default view
+                    </label>
+
+                    <label className="view-options">
+                        <Input
+                            type="radio"
+                            name="options"
+                            onChange={() => setOptions({ maxBidders: 0 })}
+                        />
+                        No offers
+                    </label>
+                    <label className="view-options">
+                        <Input
+                            type="radio"
+                            name="options"
+                            onChange={() =>
+                                setOptions({ minBidders: 1, maxBidders: 2 })
+                            }
+                        />
+                        2 bidders
+                    </label>
+                    <label className="view-options">
+                        <Input
+                            type="radio"
+                            name="options"
+                            onChange={() =>
+                                setOptions({ matchBidders: "slim,cliniqon" })
+                            }
+                        />
+                        Bidders: Slim or Cliniqon
+                    </label>
+                </div>
+                <div>
                     From:
                     <Input type="date" ref={fromDateRef} />
                     To:
                     <Input type="date" ref={toDateRef} />
                     <Button kind="primary" onClick={filterDateRange}>
-                        <FontAwesomeIcon icon={faCalendar} /> Apply
+                        <FontAwesomeIcon icon={faFilter} /> Apply
+                    </Button>
+                    <Button kind="primary" onClick={handleSearchByDateRange}>
+                        <FontAwesomeIcon icon={faCalendar} /> Browse date range
                     </Button>
                     <Button kind="secondary" onClick={resetDateRanges}>
                         Reset
                     </Button>
                 </div>
             </div>
-            <br />
-            <div style={{ marginBottom: 10 }}>
-                <label className="view-options">
-                    <Input
-                        type="radio"
-                        name="options"
-                        onChange={() => setOptions({})}
-                        defaultChecked={true}
-                    />
-                    Default view
-                </label>
-
-                <label className="view-options">
-                    <Input
-                        type="radio"
-                        name="options"
-                        onChange={() => setOptions({ maxBidders: 0 })}
-                    />
-                    No offers
-                </label>
-                <label className="view-options">
-                    <Input
-                        type="radio"
-                        name="options"
-                        onChange={() =>
-                            setOptions({ minBidders: 1, maxBidders: 2 })
-                        }
-                    />
-                    2 bidders
-                </label>
-                <label className="view-options">
-                    <Input
-                        type="radio"
-                        name="options"
-                        onChange={() =>
-                            setOptions({ matchBidders: "slim,cliniqon" })
-                        }
-                    />
-                    Bidders: Slim or Cliniqon
-                </label>
-            </div>
+            <hr />
             <div className="secondary-text">
                 {productsLoading
                     ? "Loading..."
