@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
     faCalendar,
@@ -21,6 +21,8 @@ import "./styles/Index.css"
 const { REACT_APP_API_URL } = process.env
 
 export default function Index() {
+    const searchParams = new URLSearchParams(useLocation().search)
+
     let [tendersOnDate, setTendersOnDate] = useState(
         new Date().toISOString().split("T")[0],
     )
@@ -28,11 +30,20 @@ export default function Index() {
     let [addingProduct, setAddingProduct] = useState("")
     let [query, setQuery] = useState("")
     let [q, setQ] = useState("")
-    let [options, setOptions] = useState("")
     let fromDateRef = useRef()
     let toDateRef = useRef()
-    let [fromDate, setFromDate] = useState(null)
-    let [toDate, setToDate] = useState(null)
+    let [fromDate, setFromDate] = useState(searchParams.get("fromDate"))
+    let [toDate, setToDate] = useState(searchParams.get("toDate"))
+    let [options, setOptions] = useState(() => {
+        let minBidders = searchParams.get("minBidders")
+        let maxBidders = searchParams.get("maxBidders")
+        let matchBidders = searchParams.get("matchBidders")
+        let opt = {}
+        if (matchBidders) opt.matchBidders = matchBidders
+        if (maxBidders) opt.maxBidders = parseInt(maxBidders)
+        if (minBidders) opt.minBidders = parseInt(minBidders)
+        return opt
+    })
     let [message, setMessage] = useState(null)
     let [isError, setIsError] = useState(false)
     let [refreshList, setRefreshList] = useState(false)
@@ -174,7 +185,11 @@ export default function Index() {
                             type="radio"
                             name="options"
                             onChange={() => setOptions({})}
-                            defaultChecked={true}
+                            defaultChecked={
+                                options.maxBidders === undefined &&
+                                options.minBidders === undefined &&
+                                options.matchBidders === undefined
+                            }
                         />
                         Default view
                     </label>
@@ -184,6 +199,7 @@ export default function Index() {
                             type="radio"
                             name="options"
                             onChange={() => setOptions({ maxBidders: 0 })}
+                            defaultChecked={options.maxBidders === 0}
                         />
                         No offers
                     </label>
@@ -193,6 +209,10 @@ export default function Index() {
                             name="options"
                             onChange={() =>
                                 setOptions({ minBidders: 1, maxBidders: 2 })
+                            }
+                            defaultChecked={
+                                options.minBidders === 1 &&
+                                options.maxBidders === 2
                             }
                         />
                         2 bidders
@@ -204,15 +224,20 @@ export default function Index() {
                             onChange={() =>
                                 setOptions({ matchBidders: "slim,cliniqon" })
                             }
+                            defaultChecked={options.matchBidders}
                         />
                         Bidders: Slim or Cliniqon
                     </label>
                 </div>
                 <div>
                     From:
-                    <Input type="date" ref={fromDateRef} />
+                    <Input
+                        type="date"
+                        ref={fromDateRef}
+                        defaultValue={fromDate}
+                    />
                     To:
-                    <Input type="date" ref={toDateRef} />
+                    <Input type="date" ref={toDateRef} defaultValue={toDate} />
                     <Button kind="primary" onClick={filterDateRange}>
                         <FontAwesomeIcon icon={faFilter} /> Apply
                     </Button>
