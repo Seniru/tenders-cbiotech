@@ -88,6 +88,18 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
         })
     }
 
+    const formatDateTimeLocal = (date) => {
+        const tzOffset = date.getTimezoneOffset() * 60000
+        const localISOTime = new Date(date - tzOffset)
+            .toISOString()
+            .slice(0, 16)
+        return localISOTime
+    }
+
+    const formatDateTimeDisplay = (date) => {
+        return `${date.toLocaleDateString("si-LK")} @ ${date.toLocaleTimeString("si-LK")}`
+    }
+
     return (
         <div className="container tender-info-container">
             <MessageBox
@@ -111,10 +123,12 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                             name="closedOn"
                             value={
                                 isEdittingTenderInformation
-                                    ? new Date(tenderValues.closedOn)
-                                          .toISOString()
-                                          .slice(0, 16)
-                                    : `${new Date(details.closedOn).toLocaleDateString("si-LK")} @ ${new Date(details.closedOn).toLocaleTimeString("si-LK")}`
+                                    ? formatDateTimeLocal(
+                                          new Date(tenderValues.closedOn),
+                                      )
+                                    : formatDateTimeDisplay(
+                                          new Date(details.closedOn),
+                                      )
                             }
                             color="deeppink"
                             dataType="datetime-local"

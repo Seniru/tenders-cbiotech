@@ -90,8 +90,12 @@ const createFromSheets = async () => {
                     }
                     if (tNumberFixed.includes("Urgent Purchase")) tNumberFixed += `/${itemName}`
 
+                    const tzOffset = 5.5 * 60 * 60 * 1000
+                    let adjustedClosedOn = new Date(Date.UTC(y, m - 1, d, hours, mins))
+                    adjustedClosedOn = new Date(adjustedClosedOn.getTime() - tzOffset)
+
                     tenders.push({
-                        closedOn: new Date(Date.UTC(y, m - 1, d, hours, mins)),
+                        closedOn: adjustedClosedOn,
                         itemName: dirent.name.substring(0, dirent.name.length - 5),
                         tenderNumber: tNumberFixed,
                         quantity: worksheet
