@@ -14,6 +14,8 @@ services:
       - "5000:5000"
     depends_on:
       - mongo
+    environment:
+      - TZ=Asia/Colombo
 
   frontend:
     build: ./frontend

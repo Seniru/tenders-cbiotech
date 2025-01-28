@@ -72,8 +72,9 @@ function BidderFields({
                     <br />
                     <label>Quoted Price </label>
                     <Input
-                        type="number"
-                        value={quotedPrice}
+                        type="text"
+                        value={quotedPrice || ""}
+                        defaultValue=""
                         required
                         onChange={(e) =>
                             handleBidderChange(
@@ -86,8 +87,9 @@ function BidderFields({
                     <br />
                     <label>Pack Size: </label>
                     <Input
-                        type="number"
-                        value={packSize}
+                        type="text"
+                        value={packSize || ""}
+                        defaultValue=""
                         required
                         onChange={(e) =>
                             handleBidderChange(
