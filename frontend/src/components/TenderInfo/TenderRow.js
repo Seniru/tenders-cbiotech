@@ -198,6 +198,8 @@ export default function TenderRow({ row, index }) {
                     />
                 ) : row.bidBond ? (
                     "Yes"
+                ) : row.bidBond === null ? (
+                    "N/A"
                 ) : (
                     "No"
                 )}
