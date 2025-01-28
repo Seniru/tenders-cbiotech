@@ -1,10 +1,11 @@
 import { useState, useLayoutEffect } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../contexts/AuthProvider"
 import Input from "../components/Input"
 import Button from "../components/Button"
+import OverlayWindow from "../components/OverlayWindow"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUserMinus, faXmark } from "@fortawesome/free-solid-svg-icons"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -19,84 +20,159 @@ function BidderFields({
     pca,
     index,
     handleBidderChange,
+    removeFunction,
 }) {
     return (
         <>
             <br />
-            <label>Bidder </label>
-            <Input
-                type="text"
-                value={bidder}
-                onChange={(e) =>
-                    handleBidderChange(index, "bidder", e.target.value)
-                }
-            />
-            <br />
-            <label>Manufacturer </label>
-            <Input
-                type="text"
-                value={manufacturer}
-                onChange={(e) =>
-                    handleBidderChange(index, "manufacturer", e.target.value)
-                }
-            />
-            <br />
-            <label>Currency </label>
-            <Input
-                type="text"
-                value={currency}
-                onChange={(e) =>
-                    handleBidderChange(index, "currency", e.target.value)
-                }
-            />
-            <br />
-            <label>Quoted Price </label>
-            <Input
-                type="number"
-                value={quotedPrice}
-                onChange={(e) =>
-                    handleBidderChange(index, "quotedPrice", e.target.value)
-                }
-            />
-            <br />
-            <label>Pack Size: </label>
-            <Input
-                type="number"
-                value={packSize}
-                onChange={(e) =>
-                    handleBidderChange(index, "packSize", e.target.value)
-                }
-            />
-            <br />
-            <br />
-            <label>Bid Bond: </label>
-            <Input
-                type="checkbox"
-                value={bidBond}
-                onChange={(e) =>
-                    handleBidderChange(index, "bidBond", e.target.checked)
-                }
-            />
-            <br />
-            <label>PR: </label>
-            <Input
-                type="checkbox"
-                value={pr}
-                onChange={(e) =>
-                    handleBidderChange(index, "pr", e.target.checked)
-                }
-            />
-            <br />
-            <label>PCA: </label>
-            <Input
-                type="checkbox"
-                value={pca}
-                onChange={(e) =>
-                    handleBidderChange(index, "pca", e.target.checked)
-                }
-            />
-            <br />
-            <br />
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                }}
+            >
+                <div>
+                    <label>Bidder </label>
+                    <Input
+                        type="text"
+                        value={bidder}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(index, "bidder", e.target.value)
+                        }
+                    />
+                    <br />
+                    <label>Manufacturer </label>
+                    <Input
+                        type="text"
+                        value={manufacturer}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "manufacturer",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>Currency </label>
+                    <Input
+                        type="text"
+                        value={currency}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "currency",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>Quoted Price </label>
+                    <Input
+                        type="number"
+                        value={quotedPrice}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "quotedPrice",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>Pack Size: </label>
+                    <Input
+                        type="number"
+                        value={packSize}
+                        required
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "packSize",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <br />
+                    <label>Bid Bond: </label>
+                    <Input
+                        type="checkbox"
+                        value={bidBond}
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "bidBond",
+                                e.target.checked,
+                            )
+                        }
+                    />
+                    <br />
+                    <label>PR: </label>
+                    <Input
+                        type="checkbox"
+                        value={pr}
+                        onChange={(e) =>
+                            handleBidderChange(index, "pr", e.target.checked)
+                        }
+                    />
+                    <br />
+                    <label>PCA: </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pca-" + index}
+                            value="yes"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pca", true)
+                            }
+                        />
+                        Yes
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pca-" + index}
+                            value="no"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pca", false)
+                            }
+                        />
+                        No
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pca-" + index}
+                            value="na"
+                            defaultChecked={true}
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pca", null)
+                            }
+                        />
+                        N/A
+                    </label>
+                    <br />
+                    <br />
+                </div>
+                <div>
+                    <Button
+                        type="button"
+                        kind="danger-secondary"
+                        onClick={(e) => removeFunction(index)}
+                    >
+                        <FontAwesomeIcon icon={faUserMinus} /> Remove this
+                        bidder
+                    </Button>
+                </div>
+            </div>
             <hr />
         </>
     )
@@ -108,6 +184,8 @@ export default function NewTenderForm({
     addingProduct,
     setIsError,
     setMessage,
+    refreshList,
+    setRefreshList,
 }) {
     let [inputs, setInputs] = useState({
         itemName: addingProduct,
@@ -147,9 +225,12 @@ export default function NewTenderForm({
         setIsError(!response.ok)
         setMessage(response.ok ? result.statusMessage : result.body)
         // clear old values and close the window
-        setInputs({ conversionRates: {}, bidders: [], itemName: "" })
-        setConversionRates([])
-        setIsOpen(false)
+        if (response.ok) {
+            setRefreshList(!refreshList)
+            setInputs({ conversionRates: {}, bidders: [], itemName: "" })
+            setConversionRates([])
+            setIsOpen(false)
+        }
     }
 
     const handleChanges = (evt) => {
@@ -177,8 +258,11 @@ export default function NewTenderForm({
         }))
     }
 
-    const closeForm = (evt) => {
-        setIsOpen(false)
+    const removeBidder = (index) => {
+        setInputs((values) => ({
+            ...values,
+            bidders: values.bidders.filter((_, i) => i !== index),
+        }))
     }
 
     const handleConversionRateChange = (index, field, value) => {
@@ -188,6 +272,12 @@ export default function NewTenderForm({
             [field]: value,
         }
         setConversionRates(newConversionRates)
+    }
+
+    const removeConversionRate = (index) => {
+        // https://stackoverflow.com/questions/36326612/how-to-delete-an-item-from-state-array
+        // how to remove an element from a state array
+        setConversionRates(conversionRates.filter((_, i) => index !== i))
     }
 
     const addRate = (evt) => {
@@ -205,36 +295,11 @@ export default function NewTenderForm({
     }
 
     return (
-        <div
-            className="container"
-            style={{
-                display: isOpen ? "block" : "none",
-                position: "fixed",
-                width: "75%",
-                height: "70%",
-                top: "15%",
-                left: "12.5%",
-                zIndex: 9999,
-                boxShadow: "3px 3px 3px 3px rgba(0, 0, 0, 0.25)",
-                border: "1px solid grey",
-                overflow: "scroll",
-            }}
-        >
-            <div
-                style={{
-                    cursor: "pointer",
-                    position: "absolute",
-                    top: 6,
-                    right: 6,
-                }}
-                onClick={closeForm}
-            >
-                <FontAwesomeIcon icon={faXmark} />
-            </div>
+        <OverlayWindow isOpen={isOpen} setIsOpen={setIsOpen}>
             <form onSubmit={handleSubmit}>
                 <h3>New tender</h3>
                 <br />
-                <fieldset>
+                <fieldset style={{ backgroundColor: "white" }}>
                     <legend>
                         <b>Tender details</b>
                     </legend>
@@ -258,7 +323,7 @@ export default function NewTenderForm({
                     <br />
                     <label>Closed On: </label>
                     <Input
-                        type="date"
+                        type="datetime-local"
                         name="closedOn"
                         value={inputs.closedOn}
                         onChange={handleChanges}
@@ -267,7 +332,7 @@ export default function NewTenderForm({
                     <br />
                     <label>Quantity: </label>
                     <Input
-                        type="number"
+                        type="text"
                         name="quantity"
                         value={inputs.quantity}
                         onChange={handleChanges}
@@ -307,15 +372,24 @@ export default function NewTenderForm({
                                 }
                                 required
                             />
+                            <FontAwesomeIcon
+                                icon={faXmark}
+                                style={{
+                                    marginLeft: 5,
+                                    cursor: "pointer",
+                                    color: "red",
+                                }}
+                                onClick={() => removeConversionRate(index)}
+                            />
                             <br />
                         </div>
                     ))}
-                    <Button isPrimary={true} onClick={addRate}>
+                    <Button type="button" kind="primary" onClick={addRate}>
                         Add rate
                     </Button>
                 </fieldset>
                 <br />
-                <fieldset>
+                <fieldset style={{ backgroundColor: "white" }}>
                     <legend>
                         <b>Bidders</b>
                     </legend>
@@ -333,16 +407,19 @@ export default function NewTenderForm({
                                   pr={bidder.pr}
                                   pca={bidder.pca}
                                   handleBidderChange={handleBidderChange}
+                                  removeFunction={removeBidder}
                                   index={index}
                               />
                           ))}
                 </fieldset>
                 <br />
-                <Button isPrimary={true} type="button" onClick={addBidderRow}>
+                <Button kind="primary" type="button" onClick={addBidderRow}>
                     Add bidder
                 </Button>
-                <Button isPrimary={true}>Submit</Button>
+                <Button kind="primary" type="submit">
+                    Submit
+                </Button>
             </form>
-        </div>
+        </OverlayWindow>
     )
 }

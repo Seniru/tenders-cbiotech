@@ -1,25 +1,15 @@
 import Table from "../Table"
+import TenderRow from "./TenderRow"
 import "./TenderInfo.css"
 
-function TenderRow({ row, index }) {
-    return (
-        <tr>
-            <td>{index + 1}</td>
-            <td>{row.bidder || "No offers"}</td>
-            <td>{row.manufacturer}</td>
-            <td>{row.currency}</td>
-            <td>{row.quotedPrice}</td>
-            <td>{row.packSize}</td>
-            <td>{row.quotedPriceLKR}</td>
-            <td>{row.quotedUnitPriceLKR}</td>
-            <td>{row.bindBond ? "Yes" : "No"}</td>
-            <td>{row.pr ? "Yes" : "No"}</td>
-            <td>{row.pca ? "Yes" : "No"}</td>
-        </tr>
-    )
-}
-
-export default function TenderTable({ tenders }) {
+export default function TenderTable({
+    tenderNumber,
+    tenders,
+    setIsError,
+    setMessage,
+    refreshList,
+    setRefreshList,
+}) {
     return (
         <Table
             headers={[
@@ -34,10 +24,18 @@ export default function TenderTable({ tenders }) {
                 "Bid Bond",
                 "PR",
                 "PCA",
+                "",
             ]}
-            rows={tenders}
+            rows={tenders.map((tender) => ({
+                ...tender,
+                tenderNumber,
+                setIsError,
+                setMessage,
+                refreshList,
+                setRefreshList,
+            }))}
             renderRowWith={TenderRow}
-            emptyTableText="No offering"
+            emptyTableText="No offers"
         />
     )
 }

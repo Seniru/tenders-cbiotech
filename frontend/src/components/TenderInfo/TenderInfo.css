@@ -1,5 +1,6 @@
 .tender-info-container {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+    box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.25);
 }
 
 .tender-details {
@@ -8,8 +9,12 @@
 
 .tender-details > div {
     display: grid;
-    grid-template-columns: 8px 1fr 1fr;
+    grid-template-columns: 8px 150px auto;
     gap: 16px;
+}
+
+.tender-info-container > div:nth-child(2) {
+    overflow: auto;
 }
 
 .currency-conversions {
@@ -62,5 +67,9 @@
     th {
         font-weight: bold;
         color: black;
+    }
+
+    .tender-info-container > div:nth-child(2) {
+        overflow: visible;
     }
 }

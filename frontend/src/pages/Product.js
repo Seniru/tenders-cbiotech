@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useState, useEffect, useMemo } from "react"
+import { useParams, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPrint } from "@fortawesome/free-solid-svg-icons"
 
@@ -12,9 +12,26 @@ const { REACT_APP_API_URL } = process.env
 
 export default function Product() {
     const { productName } = useParams()
+    const searchParams = new URLSearchParams(useLocation().search)
+    const latestOnly = searchParams.get("latestOnly")
+    const fromDate = searchParams.get("fromDate")
+    const toDate = searchParams.get("toDate")
+
+    let [refreshList, setRefreshList] = useState(false)
+
+    let queryParams = useMemo(() => {
+        let params = {}
+        if (latestOnly) params.latestOnly = latestOnly
+        if (fromDate) params.fromDate = fromDate
+        if (toDate) params.toDate = toDate
+
+        return params
+    }, [latestOnly, fromDate, toDate])
+
     let [tenderDetails, tenderFetchError] = useFetch(
-        `${REACT_APP_API_URL}/api/product/${productName}`,
+        `${REACT_APP_API_URL}/api/product/${encodeURIComponent(productName)}?${new URLSearchParams(queryParams).toString()}`,
         [],
+        refreshList,
     )
     let [error, setError] = useState(null)
 
@@ -37,18 +54,31 @@ export default function Product() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginBottom: 10,
+                    flexWrap: "wrap",
                 }}
             >
                 <h1>{productName}</h1>
-                <Button isPrimary={true} onClick={window.print}>
+                <Button kind="primary" onClick={window.print}>
                     <FontAwesomeIcon icon={faPrint} />
                     <span style={{ marginLeft: 5 }}>Print</span>
                 </Button>
             </div>
-
+            {(fromDate || toDate) && (
+                <div>
+                    <span class="secondary-text">Showing tenders </span>
+                    {fromDate && <span class="secondary-text">from </span>}
+                    {fromDate}
+                    {toDate && <span class="secondary-text"> upto </span>}
+                    {toDate}
+                </div>
+            )}
             <div>
                 {tenderDetails?.body?.tenders.map((detail) => (
-                    <TenderInfo details={detail} />
+                    <TenderInfo
+                        details={detail}
+                        refreshList={refreshList}
+                        setRefreshList={setRefreshList}
+                    />
                 ))}
             </div>
         </>

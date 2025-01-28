@@ -82,7 +82,7 @@ export default function EditPasswordForm() {
                 />
                 <br />
                 <br />
-                <Button isPrimary={true}>Change Password</Button>
+                <Button kind="primary">Change Password</Button>
             </form>
         </>
     )

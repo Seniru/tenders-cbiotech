@@ -5,8 +5,9 @@ export default function Components() {
     return (
         <>
             <h1>Components</h1>
-            <Button isPrimary={true}>Primary Button</Button>
-            <Button isPrimary={false}>Secondary Button</Button>
+            <Button kind="primary">Primary Button</Button>
+            <Button kind="secondary">Secondary Button</Button>
+            <Button kind="danger">Danger Button</Button>
             <br />
             <br />
             <SearchBar placeholder="Search here..." />

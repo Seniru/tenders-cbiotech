@@ -2,6 +2,13 @@ import { Link } from "react-router-dom"
 
 import Button from "../Button"
 
+const formatNumber = (n) =>
+    n &&
+    n.toLocaleString("en-US", {
+        maximumFractionDigits: 5,
+        minimumFractionDigits: 2,
+    })
+
 export default function ProductRow({
     product,
     bidder,
@@ -10,12 +17,13 @@ export default function ProductRow({
     quotedPrice,
     onAdd,
     viewingAs,
+    options,
 }) {
     return (
         <tr className="product-row">
             <td>
                 <Link
-                    to={`/product/${product}`}
+                    to={`/product/${encodeURIComponent(product)}?${options}`}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -24,8 +32,8 @@ export default function ProductRow({
             </td>
             <td>{bidder}</td>
             <td>{manufacturer}</td>
-            <td>{currency}</td>
-            <td>{quotedPrice}</td>
+            <td>{currency?.toUpperCase()}</td>
+            <td>{formatNumber(quotedPrice)}</td>
             <td>
                 {viewingAs === "viewer" ? (
                     <>
@@ -33,7 +41,7 @@ export default function ProductRow({
                         <br />
                     </>
                 ) : (
-                    <Button isPrimary={true} onClick={() => onAdd(product)}>
+                    <Button kind="primary" onClick={() => onAdd(product)}>
                         + Add
                     </Button>
                 )}

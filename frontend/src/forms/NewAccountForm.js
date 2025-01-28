@@ -84,7 +84,7 @@ export default function NewAccountForm({ refreshUsers, setRefreshUsers }) {
                 <br />
                 <br />
 
-                <Button isPrimary={true}>Create new user</Button>
+                <Button kind="primary">Create new user</Button>
             </form>
         </>
     )
