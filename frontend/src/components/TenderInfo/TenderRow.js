@@ -1,4 +1,4 @@
-import { useId, useState } from "react"
+import { useId, useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
     faCheck,
@@ -35,6 +35,19 @@ export default function TenderRow({ row, index }) {
     let id = useId()
     const { user, token } = useAuth()
 
+    useEffect(() => {
+        setValues({
+            bidder: row.bidder,
+            manufacturer: row.manufacturer,
+            currency: row.currency,
+            quotedPrice: row.quotedPrice,
+            packSize: row.packSize,
+            bidBond: row.bidBond,
+            pr: row.pr,
+            pca: row.pca,
+        })
+    }, [row])
+
     const handleChanges = (evt) => {
         let { name, value } = evt.target
         setValues({
@@ -45,7 +58,7 @@ export default function TenderRow({ row, index }) {
 
     const submitEdits = async () => {
         let response = await fetch(
-            `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(row.tenderNumber)}/${encodeURIComponent(row.bidder)}`,
+            `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(row.tenderNumber)}/${encodeURIComponent(row._id)}`,
             {
                 method: "PUT",
                 headers: {
@@ -80,7 +93,7 @@ export default function TenderRow({ row, index }) {
 
     const deleteTenderBidder = async () => {
         let response = await fetch(
-            `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(row.tenderNumber)}/${encodeURIComponent(row.bidder)}`,
+            `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(row.tenderNumber)}/${encodeURIComponent(row._id)}`,
             {
                 method: "DELETE",
                 headers: {
@@ -226,10 +239,10 @@ export default function TenderRow({ row, index }) {
                             />
                         </label>
                     </>
-                ) : row.bidBond ? (
-                    "Yes"
                 ) : row.bidBond === null ? (
                     "N/A"
+                ) : row.bidBond ? (
+                    "Yes"
                 ) : (
                     "No"
                 )}
@@ -274,10 +287,10 @@ export default function TenderRow({ row, index }) {
                             />
                         </label>
                     </>
-                ) : row.pr ? (
-                    "Yes"
                 ) : row.pr === null ? (
                     "N/A"
+                ) : row.pr ? (
+                    "Yes"
                 ) : (
                     "No"
                 )}

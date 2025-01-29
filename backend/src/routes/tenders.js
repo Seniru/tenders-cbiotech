@@ -21,7 +21,7 @@ router.delete("/:tenderNumber", requireRole("contributor"), deleteTender)
 router.put("/:tenderNumber", requireRole("contributor"), editTender)
 router.post("/:tenderNumber/bidders", requireRole("contributor"), addTenderBidder)
 router.put("/:tenderNumber/conversionRates", requireRole("contributor"), editTenderConversionRates)
-router.put("/:tenderNumber/:bidder", requireRole("contributor"), editTenderBidder)
-router.delete("/:tenderNumber/:bidder", requireRole("contributor"), deleteTenderBidder)
+router.put("/:tenderNumber/:bidderId", requireRole("contributor"), editTenderBidder)
+router.delete("/:tenderNumber/:bidderId", requireRole("contributor"), deleteTenderBidder)
 
 module.exports = router

@@ -211,12 +211,12 @@ const createTender = async (req, res, next) => {
 
 const editTenderBidder = async (req, res, next) => {
     try {
-        let { tenderNumber, bidder: bidderName } = req.params
+        let { tenderNumber, bidderId } = req.params
 
         let tender = await Tender.findOne({ tenderNumber }).populate("bidders").exec()
         if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
 
-        let bidderData = tender.bidders.filter((bidder) => bidder.bidder == bidderName)
+        let bidderData = tender.bidders.filter((bidder) => bidder._id == bidderId)
         if (bidderData.length == 0)
             return createResponse(
                 res,
@@ -225,7 +225,7 @@ const editTenderBidder = async (req, res, next) => {
             )
 
         let bidder = await Bidder.findByIdAndUpdate(
-            bidderData[0]._id,
+            bidderId,
             {
                 bidder: req.body.bidder,
                 manufacturer: req.body.manufacturer,
@@ -399,12 +399,12 @@ const addTenderBidder = async (req, res, next) => {
 
 const deleteTenderBidder = async (req, res, next) => {
     try {
-        let { tenderNumber, bidder: bidderName } = req.params
+        let { tenderNumber, bidderId } = req.params
 
         let tender = await Tender.findOne({ tenderNumber }).populate("bidders").exec()
         if (!tender) return createResponse(res, StatusCodes.NOT_FOUND, "Tender not found")
 
-        let bidderData = tender.bidders.filter((bidder) => bidder.bidder == bidderName)
+        let bidderData = tender.bidders.filter((bidder) => bidder._id == bidderId)
         if (bidderData.length == 0)
             return createResponse(
                 res,
@@ -412,7 +412,7 @@ const deleteTenderBidder = async (req, res, next) => {
                 "Bidder not found for the given tender",
             )
 
-        let bidder = await Bidder.findByIdAndDelete(bidderData[0]._id).exec()
+        let bidder = await Bidder.findByIdAndDelete(bidderId).exec()
         if (!bidder)
             return createResponse(
                 res,
