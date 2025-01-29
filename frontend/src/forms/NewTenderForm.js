@@ -74,7 +74,6 @@ function BidderFields({
                     <Input
                         type="text"
                         value={quotedPrice || ""}
-                        defaultValue=""
                         required
                         onChange={(e) =>
                             handleBidderChange(
@@ -89,7 +88,6 @@ function BidderFields({
                     <Input
                         type="text"
                         value={packSize || ""}
-                        defaultValue=""
                         required
                         onChange={(e) =>
                             handleBidderChange(
@@ -107,6 +105,7 @@ function BidderFields({
                             type="radio"
                             name={"bidBond-" + index}
                             value="yes"
+                            checked={bidBond === true}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "bidBond", true)
@@ -119,6 +118,7 @@ function BidderFields({
                             type="radio"
                             name={"bidBond-" + index}
                             value="no"
+                            checked={bidBond === false}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "bidBond", false)
@@ -131,7 +131,7 @@ function BidderFields({
                             type="radio"
                             name={"bidBond-" + index}
                             value="na"
-                            defaultChecked={true}
+                            checked={bidBond === null}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "bidBond", null)
@@ -146,6 +146,7 @@ function BidderFields({
                             type="radio"
                             name={"pr-" + index}
                             value="yes"
+                            checked={pr === true}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "pr", true)
@@ -158,6 +159,7 @@ function BidderFields({
                             type="radio"
                             name={"pr-" + index}
                             value="no"
+                            checked={pr === false}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "pr", false)
@@ -170,7 +172,7 @@ function BidderFields({
                             type="radio"
                             name={"pr-" + index}
                             value="na"
-                            defaultChecked={true}
+                            checked={pr === null}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "pr", null)
@@ -185,6 +187,7 @@ function BidderFields({
                             type="radio"
                             name={"pca-" + index}
                             value="yes"
+                            checked={pca === true}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "pca", true)
@@ -197,6 +200,7 @@ function BidderFields({
                             type="radio"
                             name={"pca-" + index}
                             value="no"
+                            checked={pca === false}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "pca", false)
@@ -209,7 +213,7 @@ function BidderFields({
                             type="radio"
                             name={"pca-" + index}
                             value="na"
-                            defaultChecked={true}
+                            checked={pca === null}
                             onChange={(e) =>
                                 e.target.checked &&
                                 handleBidderChange(index, "pca", null)
@@ -257,10 +261,13 @@ export default function NewTenderForm({
         setInputs((values) => ({
             ...values,
             itemName: addingProduct,
+            tenderNumber: "",
+            closedOn: "",
+            quantity: "",
             conversionRates: {},
             bidders: [],
         }))
-    }, [addingProduct])
+    }, [addingProduct, refreshList])
 
     const handleSubmit = async (evt) => {
         evt.preventDefault()
@@ -308,9 +315,9 @@ export default function NewTenderForm({
                     currency: "",
                     quotedPrice: 0,
                     packSize: 0,
-                    bidBond: false,
-                    pr: false,
-                    pca: false,
+                    bidBond: null,
+                    pr: null,
+                    pca: null,
                 },
             ],
         }))
