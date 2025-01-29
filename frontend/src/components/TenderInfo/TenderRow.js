@@ -188,14 +188,44 @@ export default function TenderRow({ row, index }) {
             </td>
             <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
                 {editting ? (
-                    <Input
-                        type="checkbox"
-                        name="bidBond"
-                        checked={values.bidBond}
-                        onChange={(e) => {
-                            setValues({ ...values, bidBond: e.target.checked })
-                        }}
-                    />
+                    <>
+                        <label>
+                            Yes
+                            <Input
+                                type="radio"
+                                name={"bidBond" + id}
+                                value="yes"
+                                checked={values.bidBond === true}
+                                onChange={(e) => {
+                                    setValues({ ...values, bidBond: true })
+                                }}
+                            />
+                        </label>
+                        <label>
+                            No
+                            <Input
+                                type="radio"
+                                name={"bidBond" + id}
+                                value="no"
+                                checked={values.bidBond === false}
+                                onChange={(e) => {
+                                    setValues({ ...values, bidBond: false })
+                                }}
+                            />
+                        </label>
+                        <label>
+                            N/A
+                            <Input
+                                type="radio"
+                                name={"bidBond" + id}
+                                value="na"
+                                checked={values.bidBond === null}
+                                onChange={(e) => {
+                                    setValues({ ...values, bidBond: null })
+                                }}
+                            />
+                        </label>
+                    </>
                 ) : row.bidBond ? (
                     "Yes"
                 ) : row.bidBond === null ? (
@@ -206,14 +236,44 @@ export default function TenderRow({ row, index }) {
             </td>
             <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
                 {editting ? (
-                    <Input
-                        type="checkbox"
-                        name="pr"
-                        checked={values.pr}
-                        onChange={(e) => {
-                            setValues({ ...values, pr: e.target.checked })
-                        }}
-                    />
+                    <>
+                        <label>
+                            Yes
+                            <Input
+                                type="radio"
+                                name={"pr" + id}
+                                value="yes"
+                                checked={values.pr === true}
+                                onChange={(e) => {
+                                    setValues({ ...values, pr: true })
+                                }}
+                            />
+                        </label>
+                        <label>
+                            No
+                            <Input
+                                type="radio"
+                                name={"pr" + id}
+                                value="no"
+                                checked={values.pr === false}
+                                onChange={(e) => {
+                                    setValues({ ...values, pr: false })
+                                }}
+                            />
+                        </label>
+                        <label>
+                            N/A
+                            <Input
+                                type="radio"
+                                name={"pr" + id}
+                                value="na"
+                                checked={values.pr === null}
+                                onChange={(e) => {
+                                    setValues({ ...values, pr: null })
+                                }}
+                            />
+                        </label>
+                    </>
                 ) : row.pr ? (
                     "Yes"
                 ) : row.pr === null ? (

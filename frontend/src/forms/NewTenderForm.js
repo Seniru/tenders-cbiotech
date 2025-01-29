@@ -102,26 +102,82 @@ function BidderFields({
                     <br />
                     <br />
                     <label>Bid Bond: </label>
-                    <Input
-                        type="checkbox"
-                        value={bidBond}
-                        onChange={(e) =>
-                            handleBidderChange(
-                                index,
-                                "bidBond",
-                                e.target.checked,
-                            )
-                        }
-                    />
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"bidBond-" + index}
+                            value="yes"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "bidBond", true)
+                            }
+                        />
+                        Yes
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"bidBond-" + index}
+                            value="no"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "bidBond", false)
+                            }
+                        />
+                        No
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"bidBond-" + index}
+                            value="na"
+                            defaultChecked={true}
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "bidBond", null)
+                            }
+                        />
+                        N/A
+                    </label>
                     <br />
                     <label>PR: </label>
-                    <Input
-                        type="checkbox"
-                        value={pr}
-                        onChange={(e) =>
-                            handleBidderChange(index, "pr", e.target.checked)
-                        }
-                    />
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pr-" + index}
+                            value="yes"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pr", true)
+                            }
+                        />
+                        Yes
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pr-" + index}
+                            value="no"
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pr", false)
+                            }
+                        />
+                        No
+                    </label>
+                    <label style={{ marginLeft: 6 }}>
+                        <Input
+                            type="radio"
+                            name={"pr-" + index}
+                            value="na"
+                            defaultChecked={true}
+                            onChange={(e) =>
+                                e.target.checked &&
+                                handleBidderChange(index, "pr", null)
+                            }
+                        />
+                        N/A
+                    </label>
                     <br />
                     <label>PCA: </label>
                     <label style={{ marginLeft: 6 }}>
