@@ -18,6 +18,7 @@ function BidderFields({
     bidBond,
     pr,
     pca,
+    comments,
     index,
     handleBidderChange,
     removeFunction,
@@ -223,6 +224,20 @@ function BidderFields({
                     </label>
                     <br />
                     <br />
+                    <label>Comments: </label>
+                    <Input
+                        type="text"
+                        value={comments}
+                        onChange={(e) =>
+                            handleBidderChange(
+                                index,
+                                "comments",
+                                e.target.value,
+                            )
+                        }
+                    />
+                    <br />
+                    <br />
                 </div>
                 <div>
                     <Button
@@ -318,6 +333,7 @@ export default function NewTenderForm({
                     bidBond: null,
                     pr: null,
                     pca: null,
+                    comments: "",
                 },
             ],
         }))
@@ -471,6 +487,7 @@ export default function NewTenderForm({
                                   bidBond={bidder.bidBond}
                                   pr={bidder.pr}
                                   pca={bidder.pca}
+                                  comments={bidder.comments}
                                   handleBidderChange={handleBidderChange}
                                   removeFunction={removeBidder}
                                   index={index}

@@ -235,6 +235,7 @@ const editTenderBidder = async (req, res, next) => {
                 bidBond: req.body.bidBond,
                 pr: req.body.pr,
                 pca: req.body.pca,
+                comments: req.body.comments,
             },
             { runValidators: true },
         ).exec()
@@ -381,6 +382,7 @@ const addTenderBidder = async (req, res, next) => {
             bidBond: req.body.bidBond,
             pr: req.body.pr,
             pca: req.body.pca,
+            comments: req.body.comments,
         })
 
         await bidder.save()

@@ -6,6 +6,7 @@ import {
     faTrash,
     faXmark,
 } from "@fortawesome/free-solid-svg-icons"
+import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons"
 
 import { useAuth } from "../../contexts/AuthProvider"
 import Input from "../Input"
@@ -45,6 +46,7 @@ export default function TenderRow({ row, index }) {
             bidBond: row.bidBond,
             pr: row.pr,
             pca: row.pca,
+            comments: row.comments,
         })
     }, [row])
 
@@ -180,17 +182,37 @@ export default function TenderRow({ row, index }) {
             </td>
             <td style={{ width: "calc(10vw - 17px)", textAlign: "center" }}>
                 {editting ? (
-                    <Input
-                        type="text"
-                        placeholder="Pack size"
-                        name="packSize"
-                        style={{ width: 70 }}
-                        value={values.packSize}
-                        onChange={handleChanges}
-                        required
-                    />
+                    <>
+                        <Input
+                            type="text"
+                            placeholder="Pack size"
+                            name="packSize"
+                            style={{ width: 70 }}
+                            value={values.packSize}
+                            onChange={handleChanges}
+                            required
+                        />
+                        <br />
+                        <Input
+                            type="text"
+                            placeholder="Comments"
+                            name="comments"
+                            style={{ width: 70 }}
+                            value={values.comments}
+                            onChange={handleChanges}
+                        />
+                    </>
                 ) : (
-                    row.packSize
+                    <>
+                        <span>{row.packSize}</span>{" "}
+                        {row.comments && (
+                            <FontAwesomeIcon
+                                icon={faCircleQuestion}
+                                cursor="pointer"
+                                title={row.comments}
+                            />
+                        )}
+                    </>
                 )}
             </td>
             <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>

@@ -160,6 +160,16 @@ export default function AddBidderForm({
                 </label>
                 <br />
                 <br />
+                <label>Comments: </label>
+                <Input
+                    name="comments"
+                    type="text"
+                    value={values.comments}
+                    onChange={handleChanges}
+                />
+                <br />
+                <br />
+
                 <Button kind="primary">Submit</Button>
             </form>
         </OverlayWindow>
