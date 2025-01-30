@@ -29,6 +29,7 @@ const readBidders = (bidderDataColumns, worksheet, r) => {
             bidBond: row.values[bidderDataColumns.bidBond] == "Yes",
             pr: row.values[bidderDataColumns.pr] == "Yes",
             pca: bidderDataColumns.pca == -1 ? null : row.values[bidderDataColumns.pca] == "Yes",
+            comments: bidderDataColumns.comments ? row.values[bidderDataColumns.comments] : null,
         })
         r++
     }
@@ -135,6 +136,8 @@ const createFromSheets = async () => {
                     let manufacturerCol = availableBidderData.indexOf("Manufacturer")
                     if (manufacturerCol == -1)
                         manufacturerCol = availableBidderData.indexOf("Manufacture")
+                    let commentsCol = availableBidderData.indexOf("Comments")
+                    if (commentsCol == -1) commentsCol = availableBidderData.indexOf("Comment")
                     let bidderDataColumns = {
                         bidder: availableBidderData.indexOf("Bidder"),
                         manufacturer: manufacturerCol,
@@ -144,6 +147,7 @@ const createFromSheets = async () => {
                         bidBond: availableBidderData.indexOf("Bid Bond"),
                         pr: availableBidderData.indexOf("PR"),
                         pca: availableBidderData.indexOf("PCA"),
+                        comments: commentsCol,
                     }
                     let { bidders, row: newR } = readBidders(bidderDataColumns, worksheet, r + 1)
                     tenders[tenderNumber].bidders = bidders

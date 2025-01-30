@@ -9,6 +9,7 @@ const BidderSchema = new mongoose.Schema({
     bidBond: Boolean,
     pr: Boolean,
     pca: Boolean,
+    comments: String,
 })
 
 const Bidder = mongoose.model("Bidder", BidderSchema)
