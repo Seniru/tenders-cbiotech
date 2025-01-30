@@ -73,3 +73,10 @@ a:hover {
     padding: 12px;
     margin: 5px;
 }
+
+@media print {
+    .no-print {
+        display: none;
+    }
+}
+

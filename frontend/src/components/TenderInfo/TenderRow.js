@@ -397,6 +397,7 @@ export default function TenderRow({ row, index }) {
                                 cursor="pointer"
                                 title="Edit"
                                 onClick={() => setEditting(true)}
+                                className="no-print"
                             />{" "}
                             <FontAwesomeIcon
                                 icon={faTrash}
@@ -404,6 +405,7 @@ export default function TenderRow({ row, index }) {
                                 cursor="pointer"
                                 title="Remove"
                                 onClick={deleteTenderBidder}
+                                className="no-print"
                             />
                         </>
                     ))}

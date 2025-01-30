@@ -5,6 +5,7 @@ import {
     faCalendar,
     faCalendarDay,
     faFilter,
+    faPrint,
 } from "@fortawesome/free-solid-svg-icons"
 
 import { useAuth } from "../contexts/AuthProvider"
@@ -141,7 +142,19 @@ export default function Index() {
                 refreshList={refreshList}
                 setRefreshList={setRefreshList}
             />
-            <h1>Index</h1>
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                }}
+            >
+                <h1>Index</h1>
+                <Button kind="primary" onClick={window.print}>
+                    <FontAwesomeIcon icon={faPrint} />
+                    <span style={{ marginLeft: 5 }}>Print</span>
+                </Button>
+            </div>
             <div
                 style={{
                     display: "flex",
@@ -167,6 +180,7 @@ export default function Index() {
                         type="date"
                         value={tendersOnDate}
                         onChange={(e) => setTendersOnDate(e.target.value)}
+                        className="no-print"
                     />
                     <Button kind="primary" onClick={handleSearchByDate}>
                         <FontAwesomeIcon icon={faCalendarDay} />

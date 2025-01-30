@@ -69,6 +69,10 @@
         color: black;
     }
 
+    .tender-info-container {
+        box-shadow: none;
+    }
+
     .tender-info-container > div:nth-child(2) {
         overflow: visible;
     }

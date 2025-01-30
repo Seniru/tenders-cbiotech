@@ -174,6 +174,7 @@ export default function TenderCurrencyInfo({
                                 color: "var(--primary-color)",
                                 cursor: "pointer",
                             }}
+                            className="no-print"
                             onClick={() => setEditting(true)}
                         />
                     ))}

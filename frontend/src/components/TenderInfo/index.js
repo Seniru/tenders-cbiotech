@@ -211,6 +211,7 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                                     marginLeft: 5,
                                     color: "var(--primary-color)",
                                 }}
+                                className="no-print"
                                 title="Edit tender information"
                                 cursor="pointer"
                                 onClick={() =>
