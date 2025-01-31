@@ -11,12 +11,30 @@ const TenderSchema = new mongoose.Schema({
 })
 
 TenderSchema.methods.applyDerivations = function () {
+    const DISCOUNTED_RATE = 1.0105
+
     let conversionRates = this.conversionRates || {}
     let bidders = this.bidders
+    let shouldApplyDiscountedRate =
+        bidders.find(
+            (bidder) =>
+                bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/) &&
+                bidder.currency.toUpperCase() == "LKR",
+        ) !== undefined && bidders.some((bidder) => bidder.currency.toUpperCase() != "LKR")
+
     let biddersAfterDerives = bidders.map((bidder) => {
         let packSize = determinePackSize(bidder.packSize)
         let quotedPriceLKR =
             bidder.quotedPrice * (bidder.currency == "LKR" ? 1 : conversionRates[bidder.currency])
+
+        // apply discounted rate
+        if (
+            shouldApplyDiscountedRate &&
+            bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/) &&
+            bidder.currency == "LKR"
+        )
+            quotedPriceLKR /= DISCOUNTED_RATE
+
         let quotedUnitPriceLKR = quotedPriceLKR / packSize
 
         // for RES tenders there will be no PRs

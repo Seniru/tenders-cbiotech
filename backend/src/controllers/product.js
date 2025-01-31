@@ -26,7 +26,6 @@ const getProduct = async (req, res, next) => {
             .exec()
 
         let afterDerivations = tenders.map((tender) => tender.applyDerivations())
-        console.log({ minBidders, maxBidders })
         afterDerivations = applyFilters(afterDerivations, {
             minBidders,
             maxBidders,
