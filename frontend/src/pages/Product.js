@@ -16,6 +16,9 @@ export default function Product() {
     const latestOnly = searchParams.get("latestOnly")
     const fromDate = searchParams.get("fromDate")
     const toDate = searchParams.get("toDate")
+    const minBidders = searchParams.get("minBidders")
+    const maxBidders = searchParams.get("maxBidders")
+    const matchBidders = searchParams.get("matchBidders")
 
     let [refreshList, setRefreshList] = useState(false)
 
@@ -24,9 +27,12 @@ export default function Product() {
         if (latestOnly) params.latestOnly = latestOnly
         if (fromDate) params.fromDate = fromDate
         if (toDate) params.toDate = toDate
+        if (minBidders) params.minBidders = minBidders
+        if (maxBidders) params.maxBidders = maxBidders
+        if (matchBidders) params.matchBidders = matchBidders
 
         return params
-    }, [latestOnly, fromDate, toDate])
+    }, [latestOnly, fromDate, toDate, minBidders, maxBidders, matchBidders])
 
     let [tenderDetails, tenderFetchError] = useFetch(
         `${REACT_APP_API_URL}/api/product/${encodeURIComponent(productName)}?${new URLSearchParams(queryParams).toString()}`,

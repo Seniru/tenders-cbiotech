@@ -288,19 +288,9 @@ export default function Index() {
                                 Object.entries({
                                     fromDate: queryParams.fromDate,
                                     toDate: queryParams.toDate,
-                                    latestOnly:
-                                        Object.hasOwn(
-                                            queryParams,
-                                            "minBidders",
-                                        ) ||
-                                        Object.hasOwn(
-                                            queryParams,
-                                            "maxBidders",
-                                        ) ||
-                                        Object.hasOwn(
-                                            queryParams,
-                                            "matchBidders",
-                                        ),
+                                    minBidders: queryParams.minBidders,
+                                    maxBidders: queryParams.maxBidders,
+                                    matchBidders: queryParams.matchBidders,
                                 }).filter(([_, v]) => v != null),
                             ),
                         )
