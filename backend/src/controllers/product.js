@@ -5,13 +5,17 @@ const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
 const createResponse = require("../utils/createResponse")
 const applyFilters = require("../utils/applyFilters")
+const prepareSheets = require("../utils/prepareSheets")
 
 const getProduct = async (req, res, next) => {
     const token = req.headers.authorization
     if (!token) return createResponse(res, StatusCodes.UNAUTHORIZED, "You must log in to continue")
 
     try {
-        const { productName } = req.params
+        let { productName } = req.params
+        let requestingSpreadsheet = productName.includes(".xlsx")
+        if (requestingSpreadsheet) productName = productName.substring(0, productName.length - 5)
+
         const { latestOnly } = req.query
         const fromDate = req.query.fromDate ? new Date(req.query.fromDate) : null
         const toDate = req.query.toDate ? new Date(req.query.toDate) : null
@@ -36,6 +40,8 @@ const getProduct = async (req, res, next) => {
 
         // latest only
         if (latestOnly === "true") afterDerivations = [afterDerivations[0]]
+
+        if (requestingSpreadsheet) return prepareSheets(afterDerivations, res)
 
         return createResponse(res, StatusCodes.OK, {
             tenders: afterDerivations,

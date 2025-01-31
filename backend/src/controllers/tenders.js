@@ -4,6 +4,7 @@ const Bidder = require("../models/Bidder")
 const Tender = require("../models/Tender")
 const createResponse = require("../utils/createResponse")
 const applyFilters = require("../utils/applyFilters")
+const prepareSheets = require("../utils/prepareSheets")
 
 const getTendersSummary = async (req, res, next) => {
     try {
@@ -72,6 +73,9 @@ const getTendersSummary = async (req, res, next) => {
 const getTendersOnDate = async (req, res, next) => {
     try {
         let { date } = req.params
+        let requestingSpreadsheet = date.includes(".xlsx")
+        if (requestingSpreadsheet) date = date.substring(0, date.length - 5)
+
         let minBidders = req.query.minBidders !== undefined ? parseInt(req.query.minBidders) : 0
         let maxBidders =
             req.query.maxBidders !== undefined ? parseInt(req.query.maxBidders) : Infinity
@@ -107,6 +111,8 @@ const getTendersOnDate = async (req, res, next) => {
             maxBidders,
             matchBidders,
         })
+
+        if (requestingSpreadsheet) return prepareSheets(afterDerivations, res)
 
         return createResponse(res, StatusCodes.OK, {
             tenders: afterDerivations,
