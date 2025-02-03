@@ -12,16 +12,21 @@ services:
     container_name: backend
     ports:
       - "5000:5000"
+    volumes:
+      - type: bind
+        source: ./backend/logs
+        target: /logs
     depends_on:
       - mongo
     environment:
       - TZ=Asia/Colombo
-
+      
   frontend:
     build: ./frontend
     container_name: frontend
     ports:
       - "3000:3000"
+
     depends_on:
       - backend
 
