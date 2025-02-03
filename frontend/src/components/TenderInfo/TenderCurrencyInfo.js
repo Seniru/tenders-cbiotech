@@ -179,7 +179,7 @@ export default function TenderCurrencyInfo({
                         />
                     ))}
             </h4>
-            {details.conversionRates ? (
+            {editting || details.conversionRates ? (
                 (editting
                     ? currencies
                     : Object.entries(details.conversionRates)
