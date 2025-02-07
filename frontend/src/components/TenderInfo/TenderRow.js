@@ -16,7 +16,7 @@ const { REACT_APP_API_URL } = process.env
 const formatNumber = (n) =>
     n &&
     n.toLocaleString("en-US", {
-        maximumFractionDigits: 5,
+        maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     })
 

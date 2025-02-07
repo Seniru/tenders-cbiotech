@@ -5,7 +5,7 @@ import Button from "../Button"
 const formatNumber = (n) =>
     n &&
     n.toLocaleString("en-US", {
-        maximumFractionDigits: 5,
+        maximumFractionDigits: 2,
         minimumFractionDigits: 2,
     })
 
