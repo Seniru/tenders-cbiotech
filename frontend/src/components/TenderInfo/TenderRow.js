@@ -13,11 +13,11 @@ import Input from "../Input"
 
 const { REACT_APP_API_URL } = process.env
 
-const formatNumber = (n) =>
+const formatNumber = (n, min, max) =>
     n &&
     n.toLocaleString("en-US", {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
+        maximumFractionDigits: max,
+        minimumFractionDigits: min,
     })
 
 export default function TenderRow({ row, index }) {
@@ -177,7 +177,7 @@ export default function TenderRow({ row, index }) {
                         required
                     />
                 ) : (
-                    formatNumber(row.quotedPrice)
+                    formatNumber(row.quotedPrice, 2, 4)
                 )}
             </td>
             <td style={{ width: "calc(10vw - 17px)", textAlign: "center" }}>
@@ -216,10 +216,10 @@ export default function TenderRow({ row, index }) {
                 )}
             </td>
             <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>
-                {formatNumber(row.quotedPriceLKR)}
+                {formatNumber(row.quotedPriceLKR, 2, 2)}
             </td>
             <td style={{ width: "calc(10vw - 17px)", textAlign: "right" }}>
-                {formatNumber(row.quotedUnitPriceLKR)}
+                {formatNumber(row.quotedUnitPriceLKR, 2, 2)}
             </td>
             <td style={{ width: "calc(5vw - 17px)", textAlign: "center" }}>
                 {editting ? (

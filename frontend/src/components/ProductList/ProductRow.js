@@ -2,11 +2,11 @@ import { Link } from "react-router-dom"
 
 import Button from "../Button"
 
-const formatNumber = (n) =>
+const formatNumber = (n, min, max) =>
     n &&
     n.toLocaleString("en-US", {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
+        maximumFractionDigits: max,
+        minimumFractionDigits: min,
     })
 
 export default function ProductRow({
@@ -33,7 +33,7 @@ export default function ProductRow({
             <td>{bidder}</td>
             <td>{manufacturer}</td>
             <td>{currency?.toUpperCase()}</td>
-            <td>{formatNumber(quotedPrice)}</td>
+            <td>{formatNumber(quotedPrice, 2, 4)}</td>
             <td>
                 {viewingAs === "viewer" ? (
                     <>
