@@ -60,19 +60,19 @@ let isConnected = false
 mongoose.set("strictQuery", false)
 
 async function connectDB() {
-  if (isConnected) return;
-  const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost/test"
-  try {
-    await mongoose.connect(MONGO_URI)
-    isConnected = true
-    logger.info("Connected to MongoDB")
-  } catch (error) {
-    logger.error("MongoDB connection error:", error)
-  }
+    if (isConnected) return
+    const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost/test"
+    try {
+        await mongoose.connect(MONGO_URI)
+        isConnected = true
+        logger.info("Connected to MongoDB")
+    } catch (error) {
+        logger.error("MongoDB connection error:", error)
+    }
 }
 
 // Vercel serverless handler
 module.exports = async (req, res) => {
-  if (!isConnected) await connectDB()
-  return app(req, res);
+    if (!isConnected) await connectDB()
+    return app(req, res)
 }
