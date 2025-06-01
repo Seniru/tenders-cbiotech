@@ -151,7 +151,7 @@ export default function Index() {
             >
                 <h1>Index</h1>
                 <div>
-                    <Button kind="primary" onClick={addTender}></Button>
+                    <Button kind="primary" onClick={() => addTender("")}>New tender</Button>
                     <Button kind="primary" onClick={window.print}>
                         <FontAwesomeIcon icon={faPrint} />
                         <span style={{ marginLeft: 5 }}>Print</span>
