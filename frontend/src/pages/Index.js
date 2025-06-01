@@ -154,8 +154,8 @@ export default function Index() {
                     <Button kind="primary" onClick={addTender}></Button>
                     <Button kind="primary" onClick={window.print}>
                         <FontAwesomeIcon icon={faPrint} />
-                    <span style={{ marginLeft: 5 }}>Print</span>
-                </Button>
+                        <span style={{ marginLeft: 5 }}>Print</span>
+                    </Button>
                 </div>
             </div>
             <div
