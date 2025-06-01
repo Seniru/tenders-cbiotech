@@ -150,10 +150,13 @@ export default function Index() {
                 }}
             >
                 <h1>Index</h1>
-                <Button kind="primary" onClick={window.print}>
-                    <FontAwesomeIcon icon={faPrint} />
+                <div>
+                    <Button kind="primary" onClick={addTender}></Button>
+                    <Button kind="primary" onClick={window.print}>
+                        <FontAwesomeIcon icon={faPrint} />
                     <span style={{ marginLeft: 5 }}>Print</span>
                 </Button>
+                </div>
             </div>
             <div
                 style={{
