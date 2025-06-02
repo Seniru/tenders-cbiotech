@@ -1,5 +1,7 @@
 require("dotenv").config()
 
+process.env.TZ = 'UTC'
+
 const os = require("os")
 const express = require("express")
 const app = express()
