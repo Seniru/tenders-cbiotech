@@ -18,6 +18,10 @@ const { StatusCodes } = require("http-status-codes")
 const createResponse = require("./utils/createResponse")
 
 // middlewares
+app.use((req, res, next) => {
+    process.env.TZ = "UTC"
+    next()
+})
 app.use(cors())
 app.use(express.json())
 app.use(
