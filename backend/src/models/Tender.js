@@ -38,7 +38,7 @@ TenderSchema.methods.applyDerivations = function () {
         let quotedUnitPriceLKR = quotedPriceLKR / packSize
 
         // for RES tenders there will be no PRs
-        if (this.tenderNumber.startsWith("RES")) bidder.pr = null
+        // if (this.tenderNumber.startsWith("RES")) bidder.pr = null
         // no bid bond and pr for SPC/CPU tenders
         if (this.tenderNumber.includes("CPU")) {
             bidder.pr = null

@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
     next()
 })
 
-/*const start = async () => {
+const start = async () => {
     const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost/test"
     const SERVER_PORT = process.env.SERVER_PORT || 8888
 
@@ -59,8 +59,6 @@ app.use((err, req, res, next) => {
         address && logger.info(`\tIP:\thttp://${address}:${SERVER_PORT}`)
     })
 }
-
-start()*/
 
 let isConnected = false
 mongoose.set("strictQuery", false)
@@ -82,3 +80,5 @@ module.exports = async (req, res) => {
     if (!isConnected) await connectDB()
     return app(req, res)
 }
+
+if (require.main === module) start()

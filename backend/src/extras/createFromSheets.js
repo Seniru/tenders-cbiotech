@@ -19,7 +19,6 @@ const readBidders = (bidderDataColumns, worksheet, r) => {
         let row = worksheet.getRow(r)
         let bidder = row.values[bidderDataColumns.bidder]
         if (bidder.toLowerCase().startsWith("no offer")) return { bidders: [], row: r }
-
         bidders.push({
             bidder: row.values[bidderDataColumns.bidder],
             manufacturer: row.values[bidderDataColumns.manufacturer],
