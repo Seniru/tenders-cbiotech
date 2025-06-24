@@ -231,14 +231,28 @@ export default function Index() {
                             type="radio"
                             name="options"
                             onChange={() =>
-                                setOptions({ minBidders: 1, maxBidders: 2 })
+                                setOptions({ minBidders: 1, maxBidders: 1 })
                             }
                             defaultChecked={
                                 options.minBidders === 1 &&
-                                options.maxBidders === 2
+                                options.maxBidders === 1
                             }
                         />
-                        2 bidders
+                        1 bidder
+                    </label>
+                    <label className="view-options">
+                        <Input
+                            type="radio"
+                            name="options"
+                            onChange={() =>
+                                setOptions({ minBidders: 2, maxBidders: 3 })
+                            }
+                            defaultChecked={
+                                options.minBidders === 2 &&
+                                options.maxBidders === 3
+                            }
+                        />
+                        3 bidders
                     </label>
                     <label className="view-options">
                         <Input
