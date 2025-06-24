@@ -60,8 +60,10 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
 
     const editTenderInformation = async () => {
         if (tenderValues.closedOn)
-            tenderValues.closedOn = new Date(tenderValues.closedOn).toISOString()
-        
+            tenderValues.closedOn = new Date(
+                tenderValues.closedOn,
+            ).toISOString()
+
         let response = await fetch(
             `${REACT_APP_API_URL}/api/tenders/${encodeURIComponent(details.tenderNumber)}`,
             {
