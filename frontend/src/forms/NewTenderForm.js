@@ -292,6 +292,9 @@ export default function NewTenderForm({
             data.conversionRates[rate.currency] = rate.rate
         }
 
+        if (data.closedOn)
+            data.closedOn = new Date(data.closedOn).toISOString()
+    
         let response = await fetch(`${REACT_APP_API_URL}/api/tenders`, {
             method: "POST",
             headers: {
