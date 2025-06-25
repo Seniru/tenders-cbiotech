@@ -11,7 +11,7 @@ const TenderSchema = new mongoose.Schema({
 })
 
 TenderSchema.methods.applyDerivations = function () {
-    const DISCOUNTED_RATE = 1.0105
+    const DISCOUNTED_RATE = 1.0511
 
     let conversionRates = this.conversionRates || {}
     let bidders = this.bidders
