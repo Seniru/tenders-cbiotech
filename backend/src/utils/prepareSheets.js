@@ -19,7 +19,7 @@ const addBidder = (worksheet, bidder, index) => {
         bidder.bidder,
         bidder.manufacturer,
         bidder.currency,
-        formatNumber(bidder.quotedPrice, 2, 5),
+        formatNumber(bidder.quotedPrice, 2),
         bidder.packSize,
         formatNumber(bidder.quotedPriceLKR, 2, 2),
         formatNumber(bidder.quotedUnitPriceLKR, 2, 2),
