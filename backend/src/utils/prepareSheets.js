@@ -5,11 +5,11 @@ const formatDateTimeDisplay = (date) => {
     return `${date.toLocaleDateString("si-LK")} @ ${date.toLocaleTimeString("si-LK")}`
 }
 
-const formatNumber = (n) =>
+const formatNumber = (n, min, max) =>
     n &&
     n.toLocaleString("en-US", {
-        maximumFractionDigits: 5,
-        minimumFractionDigits: 2,
+        maximumFractionDigits: max,
+        minimumFractionDigits: min,
     })
 
 const addBidder = (worksheet, bidder, index) => {
@@ -19,10 +19,10 @@ const addBidder = (worksheet, bidder, index) => {
         bidder.bidder,
         bidder.manufacturer,
         bidder.currency,
-        formatNumber(bidder.quotedPrice),
+        formatNumber(bidder.quotedPrice, 2, 5),
         bidder.packSize,
-        formatNumber(bidder.quotedPriceLKR),
-        formatNumber(bidder.quotedUnitPriceLKR),
+        formatNumber(bidder.quotedPriceLKR, 2, 2),
+        formatNumber(bidder.quotedUnitPriceLKR, 2, 2),
         bidder.bidBond === null ? "N/A" : bidder.bidBond ? "Yes" : "No",
         bidder.pr === null ? "N/A" : bidder.pr ? "Yes" : "No",
         bidder.pca === null ? "N/A" : bidder.pca ? "Yes" : "No",
