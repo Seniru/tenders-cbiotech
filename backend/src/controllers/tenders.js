@@ -135,6 +135,7 @@ const getTendersOnDate = async (req, res, next) => {
     try {
         let { date } = req.params
         let requestingSpreadsheet = date.includes(".xlsx")
+        let spreadToMultipleSheets = false
         if (requestingSpreadsheet) date = date.substring(0, date.length - 5)
 
         let minBidders = req.query.minBidders !== undefined ? parseInt(req.query.minBidders) : 0
@@ -152,6 +153,7 @@ const getTendersOnDate = async (req, res, next) => {
         } else {
             startDate = new Date(date)
             endDate = new Date(date)
+            spreadToMultipleSheets = true
         }
         endDate.setDate(endDate.getDate() + 1)
 
@@ -173,7 +175,8 @@ const getTendersOnDate = async (req, res, next) => {
             matchBidders,
         })
 
-        if (requestingSpreadsheet) return prepareSheets(afterDerivations, res)
+        if (requestingSpreadsheet)
+            return prepareSheets(afterDerivations, res, spreadToMultipleSheets)
 
         return createResponse(res, StatusCodes.OK, {
             tenders: afterDerivations,

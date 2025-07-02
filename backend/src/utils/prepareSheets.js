@@ -159,11 +159,11 @@ const addTender = (worksheet, tender) => {
     worksheet.getRow(worksheet.rowCount + 1).values = [""]
 }
 
-const prepareSheets = async (tenders, res) => {
+const prepareSheets = async (tenders, res, spreadToMultipleSheets) => {
     const workbook = new ExcelJS.Workbook()
-    const worksheet = workbook.addWorksheet()
+    const worksheet = !spreadToMultipleSheets ? workbook.addWorksheet() : null
 
-    worksheet.columns = [
+    const columnSizes = [
         { width: 6 },
         { width: 35 },
         { width: 35 },
@@ -177,8 +177,15 @@ const prepareSheets = async (tenders, res) => {
         { width: 10 },
     ]
 
+    if (!spreadToMultipleSheets) worksheet.columns = columnSizes
+
     for (let tender of tenders) {
-        addTender(worksheet, tender)
+        let sheet = worksheet
+        if (spreadToMultipleSheets) {
+            sheet = workbook.addWorksheet(tender.itemName)
+            sheet.columns = columnSizes
+        }
+        addTender(sheet, tender)
     }
 
     let fileStream = new stream.PassThrough()
