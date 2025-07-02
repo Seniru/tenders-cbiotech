@@ -60,19 +60,24 @@ async function getFilteredItems({
                 as: "bidders",
             },
         },
-        { $match: matchQuery },
-        { $sort: { closedOn: -1 } },
         {
-            $group: {
-                _id: "$itemName",
-                latestTender: { $first: "$$ROOT" },
+            $facet: {
+                data: [
+                    { $match: matchQuery },
+                    { $sort: { closedOn: -1 } },
+                    {
+                        $group: {
+                            _id: "$itemName",
+                            latestTender: { $first: "$$ROOT" },
+                        },
+                    },
+                    {
+                        $replaceRoot: { newRoot: "$latestTender" },
+                    },
+                    { $sort: { itemName: 1 } },
+                ],
+                count: [{ $match: matchQuery }, { $count: "tenderCount" }],
             },
-        },
-        {
-            $replaceRoot: { newRoot: "$latestTender" },
-        },
-        {
-            $sort: { itemName: 1 },
         },
     ]
 
@@ -88,16 +93,19 @@ const getTendersSummary = async (req, res, next) => {
         const fromDate = req.query.fromDate ? new Date(req.query.fromDate) : null
         const toDate = req.query.toDate ? new Date(req.query.toDate) : null
 
-        let latestTenders = (
-            await getFilteredItems({
-                searchString,
-                fromDate,
-                toDate,
-                minBidders,
-                maxBidders,
-                matchBidders,
-            })
-        ).map((tender) => Tender.hydrate(tender).applyDerivations())
+        let result = await getFilteredItems({
+            searchString,
+            fromDate,
+            toDate,
+            minBidders,
+            maxBidders,
+            matchBidders,
+        })
+
+        let latestTenders = result[0].data
+        let tenderCount = result[0].count[0]?.tenderCount || 0
+
+        latestTenders = latestTenders.map((tender) => Tender.hydrate(tender).applyDerivations())
 
         // remove unnecessary data
         latestTenders = latestTenders.map((tender) => {
@@ -117,7 +125,7 @@ const getTendersSummary = async (req, res, next) => {
             }
         })
 
-        return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
+        return createResponse(res, StatusCodes.OK, { tenders: latestTenders, tenderCount })
     } catch (error) {
         next(error)
     }

@@ -290,9 +290,7 @@ export default function Index() {
             <div className="secondary-text">
                 {productsLoading
                     ? "Loading..."
-                    : "Showing " +
-                      (products?.body ? products?.body?.tenders?.length : 0) +
-                      " products"}
+                    : `Showing ${products?.body?.tenders?.length || 0} products (${products?.body?.tenderCount || 0} tenders)`}
             </div>
 
             <div className="container" style={{ marginTop: 10 }}>
