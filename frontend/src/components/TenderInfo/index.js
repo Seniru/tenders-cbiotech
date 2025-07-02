@@ -102,7 +102,7 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
     }
 
     const formatDateTimeDisplay = (date) => {
-        return `${date.toLocaleDateString("si-LK")} @ ${date.toLocaleTimeString("si-LK")}`
+        return `${date.toLocaleDateString("en-GB")} @ ${date.toLocaleTimeString("si-LK")}`
     }
 
     return (
