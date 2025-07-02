@@ -6,63 +6,116 @@ const createResponse = require("../utils/createResponse")
 const applyFilters = require("../utils/applyFilters")
 const prepareSheets = require("../utils/prepareSheets")
 
+async function getFilteredItems({
+    searchString,
+    fromDate,
+    toDate,
+    minBidders,
+    maxBidders,
+    matchBidders,
+}) {
+    const matchQuery = {
+        itemName: {
+            $regex: searchString,
+            $options: "i",
+        },
+    }
+
+    if (minBidders != null || maxBidders != null) {
+        matchQuery.bidderCount = {}
+        if (minBidders != null) matchQuery.bidderCount.$gte = parseInt(minBidders)
+        if (maxBidders != null) matchQuery.bidderCount.$lte = parseInt(maxBidders)
+    }
+
+    if (fromDate || toDate) {
+        matchQuery.closedOn = {}
+        if (fromDate != null) matchQuery.closedOn.$gte = fromDate
+        if (toDate != null) matchQuery.closedOn.$lte = toDate
+    }
+
+    if (matchBidders.length > 0) {
+        matchQuery.bidders = {
+            $elemMatch: {
+                bidder: {
+                    $regex: matchBidders.join("|"),
+                    $options: "i",
+                },
+            },
+        }
+    }
+
+    const pipeline = [
+        {
+            $addFields: {
+                bidderCount: {
+                    $size: "$bidders",
+                },
+            },
+        },
+        {
+            $lookup: {
+                from: "bidders",
+                localField: "bidders",
+                foreignField: "_id",
+                as: "bidders",
+            },
+        },
+        { $match: matchQuery },
+        { $sort: { closedOn: -1 } },
+        {
+            $group: {
+                _id: "$itemName",
+                latestTender: { $first: "$$ROOT" },
+            },
+        },
+        {
+            $replaceRoot: { newRoot: "$latestTender" },
+        },
+        {
+            $sort: { itemName: 1 },
+        },
+    ]
+
+    return await Tender.aggregate(pipeline)
+}
+
 const getTendersSummary = async (req, res, next) => {
     try {
         const searchString = req.query.q || ""
-        const minBidders = req.query.minBidders || 0
-        const maxBidders = req.query.maxBidders || Infinity
+        const minBidders = req.query.minBidders
+        const maxBidders = req.query.maxBidders
         const matchBidders = req.query.matchBidders?.split(",") || []
         const fromDate = req.query.fromDate ? new Date(req.query.fromDate) : null
         const toDate = req.query.toDate ? new Date(req.query.toDate) : null
 
-        const itemNames = await Tender.distinct("itemName", {
-            itemName: { $regex: searchString, $options: "i" },
+        let latestTenders = (
+            await getFilteredItems({
+                searchString,
+                fromDate,
+                toDate,
+                minBidders,
+                maxBidders,
+                matchBidders,
+            })
+        ).map((tender) => Tender.hydrate(tender).applyDerivations())
+
+        // remove unnecessary data
+        latestTenders = latestTenders.map((tender) => {
+            let lowestBidder = null
+            if (tender && tender.bidders.length > 0) {
+                tender.bidders.sort((a, b) => a.quotedUnitPrice - b.quotedUnitPrice)
+                lowestBidder = tender.bidders[0]
+            }
+
+            return {
+                itemName: tender.itemName,
+                bidder: lowestBidder?.bidder,
+                manufacturer: lowestBidder?.manufacturer,
+                currency: lowestBidder?.currency,
+                quotedPrice: lowestBidder?.quotedPrice,
+                quantity: tender.quantity,
+            }
         })
-
-        let latestTenders = await Promise.all(
-            itemNames.map(async (itemName) => {
-                let latestTender = await Tender.findOne({ itemName })
-                    .populate("bidders")
-                    .sort({ closedOn: -1 })
-                    .exec()
-
-                latestTender = latestTender.applyDerivations()
-                let lowestBidder = null
-                if (latestTender && latestTender.bidders.length > 0) {
-                    latestTender.bidders.sort((a, b) => a.quotedUnitPrice - b.quotedUnitPrice)
-                    lowestBidder = latestTender.bidders[0]
-                }
-
-                return {
-                    itemName: latestTender.itemName,
-                    closedOn: latestTender.closedOn,
-                    quantity: latestTender.quantity,
-                    bidder: lowestBidder?.bidder,
-                    bidders: latestTender.bidders,
-                    manufacturer: lowestBidder?.manufacturer,
-                    currency: lowestBidder?.currency,
-                    quotedPrice: lowestBidder?.quotedPrice,
-                }
-            }),
-        )
-
-        latestTenders = applyFilters(latestTenders, {
-            minBidders,
-            maxBidders,
-            matchBidders,
-            fromDate,
-            toDate,
-        })
-
-        // remove unneccessary data
-        latestTenders = latestTenders.map((tender) => ({
-            itemName: tender.itemName,
-            bidder: tender.bidder,
-            manufacturer: tender.manufacturer,
-            currency: tender.currency,
-            quotedPrice: tender.quotedPrice,
-            quantity: tender.quantity,
-        }))
 
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders })
     } catch (error) {
