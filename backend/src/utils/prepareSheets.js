@@ -182,7 +182,12 @@ const prepareSheets = async (tenders, res, spreadToMultipleSheets) => {
     for (let tender of tenders) {
         let sheet = worksheet
         if (spreadToMultipleSheets) {
-            sheet = workbook.addWorksheet(tender.itemName)
+            sheet = workbook.addWorksheet(
+                tender.itemName
+                    .replaceAll(/[*?:\\/[\]]/g, " ")
+                    .replaceAll(/\s+/g, " ")
+                    .trim()
+            )
             sheet.columns = columnSizes
         }
         addTender(sheet, tender)
