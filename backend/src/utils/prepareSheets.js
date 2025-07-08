@@ -186,7 +186,7 @@ const prepareSheets = async (tenders, res, spreadToMultipleSheets) => {
                 tender.itemName
                     .replaceAll(/[*?:\\/[\]]/g, " ")
                     .replaceAll(/\s+/g, " ")
-                    .trim()
+                    .trim(),
             )
             sheet.columns = columnSizes
         }

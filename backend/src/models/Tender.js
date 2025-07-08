@@ -13,14 +13,19 @@ const TenderSchema = new mongoose.Schema({
 TenderSchema.methods.applyDerivations = function () {
     const DISCOUNTED_RATE = 1.0511
 
+    const overriddenDiscountRate = Object.entries(this.conversionRates).find((entry) =>
+        entry[0].toUpperCase().includes("DISCOUNT"),
+    )?.[1]
+
+    const discount = Number(overriddenDiscountRate || DISCOUNTED_RATE)
+
     let conversionRates = this.conversionRates || {}
     let bidders = this.bidders
-    let shouldApplyDiscountedRate =
-        bidders.find(
-            (bidder) =>
-                bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/) &&
-                bidder.currency.toUpperCase() == "LKR",
-        ) !== undefined && bidders.some((bidder) => bidder.currency.toUpperCase() != "LKR")
+    let shouldApplyDiscountedRate = bidders.every((bidder) =>
+        bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/)
+            ? bidder.currency.toUpperCase() == "LKR"
+            : bidder.currency.toUpperCase() != "LKR",
+    )
 
     let biddersAfterDerives = bidders.map((bidder) => {
         let packSize = determinePackSize(bidder.packSize)
@@ -33,7 +38,7 @@ TenderSchema.methods.applyDerivations = function () {
             bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/) &&
             bidder.currency == "LKR"
         )
-            quotedPriceLKR /= DISCOUNTED_RATE
+            quotedPriceLKR /= discount
 
         let quotedUnitPriceLKR = quotedPriceLKR / packSize
 
