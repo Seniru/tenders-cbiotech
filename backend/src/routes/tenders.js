@@ -15,6 +15,7 @@ const {
 } = require("../controllers/tenders")
 
 router.get("/", requireRole("viewer"), getTendersSummary)
+router.get("/summary.xlsx", requireRole("viewer"), getTendersSummary)
 router.post("/", requireRole("contributor"), createTender)
 router.get("/:date", requireRole("viewer"), getTendersOnDate)
 router.delete("/:tenderNumber", requireRole("contributor"), deleteTender)

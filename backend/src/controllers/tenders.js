@@ -5,6 +5,7 @@ const Tender = require("../models/Tender")
 const createResponse = require("../utils/createResponse")
 const applyFilters = require("../utils/applyFilters")
 const prepareSheets = require("../utils/prepareSheets")
+const prepareIndexSheets = require("../utils/prepareIndexSheet")
 
 async function getFilteredItems({
     searchString,
@@ -86,6 +87,7 @@ async function getFilteredItems({
 
 const getTendersSummary = async (req, res, next) => {
     try {
+        const requestingSpreadsheet = req.path.endsWith(".xlsx")
         const searchString = req.query.q || ""
         const minBidders = req.query.minBidders
         const maxBidders = req.query.maxBidders
@@ -124,6 +126,8 @@ const getTendersSummary = async (req, res, next) => {
                 quantity: tender.quantity,
             }
         })
+
+        if (requestingSpreadsheet) return prepareIndexSheets(latestTenders, res)
 
         return createResponse(res, StatusCodes.OK, { tenders: latestTenders, tenderCount })
     } catch (error) {

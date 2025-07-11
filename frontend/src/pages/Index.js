@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
     faCalendar,
     faCalendarDay,
+    faFileExcel,
     faFilter,
     faPrint,
 } from "@fortawesome/free-solid-svg-icons"
@@ -23,6 +24,7 @@ const { REACT_APP_API_URL } = process.env
 
 export default function Index() {
     const searchParams = new URLSearchParams(useLocation().search)
+    const { token } = useAuth()
 
     let [tendersOnDate, setTendersOnDate] = useState(
         new Date().toISOString().split("T")[0],
@@ -126,6 +128,30 @@ export default function Index() {
         toDateRef.current.value = ""
     }
 
+    const downloadSheet = async () => {
+        const response = await fetch(
+            `${REACT_APP_API_URL}/api/tenders/summary.xlsx?` +
+                new URLSearchParams(queryParams).toString(),
+            {
+                headers: {
+                    "Content-Type":
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    Authorization: "Bearer " + token,
+                },
+            },
+        )
+
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = `index.xlsx`
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        window.URL.revokeObjectURL(url)
+    }
+
     return (
         <>
             <MessageBox
@@ -157,6 +183,9 @@ export default function Index() {
                     <Button kind="primary" onClick={window.print}>
                         <FontAwesomeIcon icon={faPrint} />
                         <span style={{ marginLeft: 5 }}>Print</span>
+                    </Button>
+                    <Button kind="primary" onClick={downloadSheet}>
+                        <FontAwesomeIcon icon={faFileExcel} /> Download sheet
                     </Button>
                 </div>
             </div>
