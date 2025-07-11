@@ -26,5 +26,7 @@ yarn-error.log*
 
 */migrate/*
 
+*/dump/*
+
 */logs/*
 *.log
