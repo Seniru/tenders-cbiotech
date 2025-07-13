@@ -7,7 +7,14 @@ const prepareIndexSheets = async (tenders, res) => {
     const workbook = new ExcelJS.Workbook()
     const worksheet = workbook.addWorksheet()
 
-    worksheet.columns = [{ width: 60 }, { width: 35 }, { width: 35 }, { width: 10 }, { width: 24 }]
+    worksheet.columns = [
+        { width: 60 },
+        { width: 35 },
+        { width: 35 },
+        { width: 10 },
+        { width: 24 },
+        { width: 24 },
+    ]
 
     worksheet.addTable({
         name: "Product index",
@@ -24,6 +31,7 @@ const prepareIndexSheets = async (tenders, res) => {
             { name: "Manufacturer", filterButton: true },
             { name: "Currency", filterButton: true },
             { name: "Quoted Price", filterButton: true },
+            { name: "Quantity", filterButton: true },
         ],
         rows: tenders.map((tender) => [
             {
@@ -34,6 +42,7 @@ const prepareIndexSheets = async (tenders, res) => {
             tender.manufacturer,
             tender.currency,
             tender.quotedPrice?.toFixed(2),
+            tender.quantity,
         ]),
     })
 
@@ -41,6 +50,7 @@ const prepareIndexSheets = async (tenders, res) => {
         let row = worksheet.getRow(r)
         row.getCell(4).alignment = { horizontal: "center" }
         row.getCell(5).alignment = { horizontal: "right" }
+        row.getCell(6).alignment = { horizontal: "right" }
     }
 
     let fileStream = new stream.PassThrough()
