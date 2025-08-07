@@ -21,13 +21,14 @@ TenderSchema.methods.applyDerivations = function () {
 
     let conversionRates = this.conversionRates || {}
     let bidders = this.bidders
-    let shouldApplyDiscountedRate = overriddenDiscountRate != null ||
-        bidders.length > 1 &&
-        bidders.every((bidder) =>
-            bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/)
-                ? bidder.currency.toUpperCase() == "LKR"
-                : bidder.currency.toUpperCase() != "LKR",
-        )
+    let shouldApplyDiscountedRate =
+        overriddenDiscountRate != null ||
+        (bidders.length > 1 &&
+            bidders.every((bidder) =>
+                bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/)
+                    ? bidder.currency.toUpperCase() == "LKR"
+                    : bidder.currency.toUpperCase() != "LKR",
+            ))
 
     let biddersAfterDerives = bidders.map((bidder) => {
         let packSize = determinePackSize(bidder.packSize)
