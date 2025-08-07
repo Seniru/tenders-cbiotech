@@ -21,7 +21,7 @@ TenderSchema.methods.applyDerivations = function () {
 
     let conversionRates = this.conversionRates || {}
     let bidders = this.bidders
-    let shouldApplyDiscountedRate =
+    let shouldApplyDiscountedRate = overriddenDiscountRate != null ||
         bidders.length > 1 &&
         bidders.every((bidder) =>
             bidder.bidder.toLowerCase().match(/.*(slim|cliniqon).*/)
