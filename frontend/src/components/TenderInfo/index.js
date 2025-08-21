@@ -291,7 +291,7 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                     </Button>
                 )}
             </div>
-            <div>
+            <div style={{ overflowX: "scroll" }}>
                 <TenderTable
                     tenderNumber={details.tenderNumber}
                     tenders={details.bidders}
