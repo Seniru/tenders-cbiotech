@@ -379,7 +379,7 @@ export default function NewTenderForm({
 
     return (
         <OverlayWindow isOpen={isOpen} setIsOpen={setIsOpen}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ width: "75vh" }}>
                 <h3>New tender</h3>
                 <br />
                 <fieldset style={{ backgroundColor: "white" }}>

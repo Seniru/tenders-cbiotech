@@ -17,12 +17,16 @@ import TenderTable from "./TenderTable"
 import TenderDetailsComponent from "./TenderDetailsComponent"
 import AddBidderForm from "../../forms/AddBidderForm"
 import TenderCurrencyInfo from "./TenderCurrencyInfo"
+import OverlayWindow from "../OverlayWindow"
 
 const { REACT_APP_API_URL } = process.env
 
 export default function TenderInfo({ details, refreshList, setRefreshList }) {
     let [isError, setIsError] = useState(false)
     let [message, setMessage] = useState(null)
+    let [isDeleteConfirmationWindowOpen, setIsDeleteConfirmationWindowOpen] =
+        useState(false)
+    let [deletingTender, setDeletingTender] = useState(null)
     let [addBidderFormOpen, setAddBidderFormOpen] = useState(false)
     let [tenderValues, setTenderValues] = useState({
         itemName: details.itemName,
@@ -33,6 +37,11 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
     let [isEdittingTenderInformation, setIsEdittingTenderInformation] =
         useState(false)
     let { user, token } = useAuth()
+
+    const showDeleteTenderConfirmationWindow = async (tenderNumber) => {
+        setDeletingTender(tenderNumber)
+        setIsDeleteConfirmationWindowOpen(true)
+    }
 
     const deleteTender = async (tenderNumber) => {
         let request = await fetch(
@@ -112,6 +121,41 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                 message={message}
                 setMessage={setMessage}
             />
+            <OverlayWindow
+                isOpen={isDeleteConfirmationWindowOpen}
+                setIsOpen={setIsDeleteConfirmationWindowOpen}
+            >
+                {deletingTender && (
+                    <>
+                        <h3>Confirmation</h3>
+                        <hr />
+                        Are you sure to delete tender <b>{deletingTender}?</b>
+                        <br />
+                        <br />
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                            }}
+                        >
+                            <Button
+                                kind="danger"
+                                onClick={() => deleteTender(deletingTender)}
+                            >
+                                Delete
+                            </Button>
+                            <Button
+                                kind="secondary"
+                                onClick={() =>
+                                    setIsDeleteConfirmationWindowOpen(false)
+                                }
+                            >
+                                Cancel
+                            </Button>
+                        </div>
+                    </>
+                )}
+            </OverlayWindow>
             <div
                 style={{
                     display: "flex",
@@ -237,7 +281,11 @@ export default function TenderInfo({ details, refreshList, setRefreshList }) {
                 {user.role !== "viewer" && (
                     <Button
                         kind="danger"
-                        onClick={() => deleteTender(details.tenderNumber)}
+                        onClick={() =>
+                            showDeleteTenderConfirmationWindow(
+                                details.tenderNumber,
+                            )
+                        }
                     >
                         <FontAwesomeIcon icon={faTrash} /> Delete
                     </Button>

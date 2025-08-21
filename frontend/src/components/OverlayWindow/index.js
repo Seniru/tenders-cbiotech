@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark } from "@fortawesome/free-solid-svg-icons"
+import "./OverlayWindow.css"
+import { faX } from "@fortawesome/free-solid-svg-icons"
 
 export default function OverlayWindow({ isOpen, setIsOpen, children }) {
     const closeWindow = (evt) => {
@@ -8,30 +9,16 @@ export default function OverlayWindow({ isOpen, setIsOpen, children }) {
 
     return (
         <div
-            className="container"
-            style={{
-                display: isOpen ? "block" : "none",
-                position: "fixed",
-                width: "75%",
-                height: "70%",
-                top: "15%",
-                left: "12.5%",
-                zIndex: 9999,
-                boxShadow: "0px 0px 0px 1000000px rgba(0, 0, 0, 0.25)",
-                overflow: "scroll",
-            }}
+            className="container overlay-window"
+            style={{ display: isOpen ? "block" : "none" }}
         >
-            <div
-                style={{
-                    cursor: "pointer",
-                    position: "absolute",
-                    top: 6,
-                    right: 6,
-                }}
+            <FontAwesomeIcon
+                icon={faX}
+                color="red"
                 onClick={closeWindow}
-            >
-                <FontAwesomeIcon icon={faXmark} />
-            </div>
+                cursor="pointer"
+                className="overlay-window-close-button"
+            />
             {children}
         </div>
     )
