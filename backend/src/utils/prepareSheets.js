@@ -182,14 +182,15 @@ const prepareSheets = async (tenders, res, spreadToMultipleSheets) => {
     for (let tender of tenders) {
         let sheet = worksheet
         if (spreadToMultipleSheets) {
-            let sheetName = tender.itemName
+            const baseName = tender.itemName
                 .replaceAll(/[*?:\\/[\]]/g, " ")
                 .replaceAll(/\s+/g, " ")
                 .trim()
 
+            let sheetName = baseName
             let i = 2
             while (workbook.getWorksheet(sheetName)) {
-                sheetName = `(${i++}) ${sheetName}`
+                sheetName = `(${i++}) ${baseName}`
             }
 
             sheet = workbook.addWorksheet(sheetName)
