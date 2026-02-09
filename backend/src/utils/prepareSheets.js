@@ -189,7 +189,7 @@ const prepareSheets = async (tenders, res, spreadToMultipleSheets) => {
 
             let i = 2
             while (workbook.getWorksheet(sheetName)) {
-                sheetName = `${baseName} (${i++})`
+                sheetName = `${sheetName} (${i++})`
             }
 
             sheet = workbook.addWorksheet(sheetName)
