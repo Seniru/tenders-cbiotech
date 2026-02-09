@@ -189,7 +189,9 @@ const prepareSheets = async (tenders, res, spreadToMultipleSheets) => {
 
             let sheetName = baseName
             let i = 2
-            while (workbook.getWorksheet(sheetName)) {
+            // excel truncates the sheetname to first 31 characters
+            // therefore, we need to slice our result first before checking
+            while (workbook.getWorksheet(sheetName.slice(0, 31))) {
                 sheetName = `(${i++}) ${baseName}`
             }
 
