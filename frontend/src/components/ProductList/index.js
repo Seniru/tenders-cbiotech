@@ -38,7 +38,7 @@ export default function ProductList({
                                     }
                                     manufacturer={p.manufacturer}
                                     currency={p.currency}
-                                    quotedPrice={p.quotedPrice}
+                                    quotedPrice={p.quotedPrice && `${p.quotedPrice} (${p.quantity})`}
                                     onAdd={onAdd}
                                     viewingAs={viewingAs}
                                     options={options}
