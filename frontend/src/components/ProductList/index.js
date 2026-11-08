@@ -32,7 +32,7 @@ export default function ProductList({
   }, [products, sortBy, sortAscending])
 
   const updateSortingMethod = (field) => {
-    if (field == sortBy) return setSortAscending((prev) => !prev)
+    if (field === sortBy) return setSortAscending((prev) => !prev)
     setSortBy(field)
     setSortAscending(true)
   }
