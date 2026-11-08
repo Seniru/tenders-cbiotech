@@ -78,8 +78,8 @@ export default function Index() {
   let [biddersBody, bidderFetchError, biddersLoading] = useFetch(
     `${REACT_APP_API_URL}/api/tenders/bidders`,
   )
-  let [matchBidders, setMatchBidders] = useState("slim,cliniqon")
-  let [matchManufacturers, setMatchManufacturers] = useState("")
+  let [matchBidders, setMatchBidders] = useState(options.matchBidders || "slim,cliniqon")
+  let [matchManufacturers, setMatchManufacturers] = useState(options.matchManufacturers)
 
   const bidders = [
     ...new Set(["slim", "cliniqon", ...(biddersBody?.body?.bidders || [])]),
@@ -256,7 +256,8 @@ export default function Index() {
               defaultChecked={
                 options.maxBidders === undefined &&
                 options.minBidders === undefined &&
-                options.matchBidders === undefined
+                options.matchBidders === undefined &&
+                options.matchManufacturers === undefined
               }
             />
             Default view
@@ -303,7 +304,7 @@ export default function Index() {
             <div style={{ display: "flex" }}>
               Bidders:
               <MultiSelectDropdown
-                value={["slim", "cliniqon"]}
+                value={matchBidders?.split(",") || []}
                 onChange={(bidders) => {
                   setOptions({ matchBidders: bidders.join(",") })
                   setMatchBidders(bidders.join(","))
@@ -326,6 +327,7 @@ export default function Index() {
             <div style={{ display: "flex" }}>
               Manufacturers:
               <MultiSelectDropdown
+                value={matchManufacturers?.split(",") || []}
                 onChange={(mnf) => {
                   setOptions({ matchManufacturers: mnf.join(",") })
                   setMatchManufacturers(mnf.join(","))
