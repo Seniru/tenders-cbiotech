@@ -12,37 +12,29 @@ import Profile from "./pages/Profile"
 import Admin from "./pages/Admin"
 
 function App() {
-    return (
-        <div className="App">
-            <AuthProvider>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<Layout />}>
-                            <Route path="components" element={<Components />} />
-                            <Route path="login" element={<Login />} />
-                            <Route element={<PrivateRoute />}>
-                                <Route index element={<Index />} />
-                                <Route path="profile" element={<Profile />} />
-                                <Route
-                                    path="product/:productName"
-                                    element={<Product />}
-                                />
-                                <Route
-                                    path="tenders/:date"
-                                    element={<TenderByDate />}
-                                />
-                            </Route>
-                            <Route
-                                element={<PrivateRoute minimumRole="admin" />}
-                            >
-                                <Route path="admin" element={<Admin />} />
-                            </Route>
-                        </Route>
-                    </Routes>
-                </BrowserRouter>
-            </AuthProvider>
-        </div>
-    )
+  return (
+    <div className="App">
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route path="components" element={<Components />} />
+              <Route path="login" element={<Login />} />
+              <Route element={<PrivateRoute />}>
+                <Route index element={<Index />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="product/:productName" element={<Product />} />
+                <Route path="tenders/:date" element={<TenderByDate />} />
+              </Route>
+              <Route element={<PrivateRoute minimumRole="admin" />}>
+                <Route path="admin" element={<Admin />} />
+              </Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </div>
+  )
 }
 
 export default App

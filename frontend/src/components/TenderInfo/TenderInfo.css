@@ -1,79 +1,79 @@
 .tender-info-container {
-    margin-bottom: 30px;
-    box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.25);
+  margin-bottom: 30px;
+  box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.25);
 }
 
 .tender-details {
-    display: inline-block;
+  display: inline-block;
 }
 
 .tender-details > div {
-    display: grid;
-    grid-template-columns: 8px 150px auto;
-    gap: 16px;
+  display: grid;
+  grid-template-columns: 8px 150px auto;
+  gap: 16px;
 }
 
 .tender-info-container > div:nth-child(2) {
-    overflow: auto;
+  overflow: auto;
 }
 
 .currency-conversions {
-    margin-left: 70px;
+  margin-left: 70px;
 }
 
 .tender-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    padding: 5px;
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  padding: 5px;
 }
 
 .tender-table > thead {
-    background-color: var(--primary-color);
-    color: white;
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .tender-table th,
 .tender-table td {
-    padding: 5px;
-    padding-right: 12px;
+  padding: 5px;
+  padding-right: 12px;
 }
 
 .tender-table th {
-    padding-bottom: 12px;
-    text-align: left;
+  padding-bottom: 12px;
+  text-align: left;
 }
 
 .tender-table > tbody > tr:nth-child(odd) {
-    background-color: #d9d9d9;
+  background-color: #d9d9d9;
 }
 
 .tender-table > tbody > tr:nth-child(even) {
-    background-color: white;
+  background-color: white;
 }
 
 @media print {
-    table {
-        border-collapse: collapse;
-        border: 1px solid black;
-    }
+  table {
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
 
-    tr,
-    td,
-    th {
-        border: 1px solid black;
-    }
+  tr,
+  td,
+  th {
+    border: 1px solid black;
+  }
 
-    th {
-        font-weight: bold;
-        color: black;
-    }
+  th {
+    font-weight: bold;
+    color: black;
+  }
 
-    .tender-info-container {
-        box-shadow: none;
-    }
+  .tender-info-container {
+    box-shadow: none;
+  }
 
-    .tender-info-container > div:nth-child(2) {
-        overflow: visible;
-    }
+  .tender-info-container > div:nth-child(2) {
+    overflow: visible;
+  }
 }
