@@ -13,10 +13,12 @@ const {
     addTenderBidder,
     deleteTenderBidder,
     getAllBidders,
+    getAllManufacturers,
 } = require("../controllers/tenders")
 
 router.get("/", requireRole("viewer"), getTendersSummary)
 router.get("/bidders", requireRole("viewer"), getAllBidders)
+router.get("/manufacturers", requireRole("viewer"), getAllManufacturers)
 router.get("/summary.xlsx", requireRole("viewer"), getTendersSummary)
 router.post("/", requireRole("contributor"), createTender)
 router.get("/:date", requireRole("viewer"), getTendersOnDate)

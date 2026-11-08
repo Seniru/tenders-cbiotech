@@ -42,8 +42,10 @@ export default function Index() {
     let minBidders = searchParams.get("minBidders")
     let maxBidders = searchParams.get("maxBidders")
     let matchBidders = searchParams.get("matchBidders")
+    let matchManufacturers = searchParams.get("matchManufacturers")
     let opt = {}
     if (matchBidders) opt.matchBidders = matchBidders
+    if (matchManufacturers) opt.matchManufacturers = matchManufacturers
     if (maxBidders) opt.maxBidders = parseInt(maxBidders)
     if (minBidders) opt.minBidders = parseInt(minBidders)
     return opt
@@ -74,11 +76,21 @@ export default function Index() {
   let { user } = useAuth()
 
   let [biddersBody, bidderFetchError, biddersLoading] = useFetch(
-    `${REACT_APP_API_URL}/api/tenders/bidders`
+    `${REACT_APP_API_URL}/api/tenders/bidders`,
   )
   let [matchBidders, setMatchBidders] = useState("slim,cliniqon")
+  let [matchManufacturers, setMatchManufacturers] = useState("")
 
-  const bidders = [...new Set(["slim", "cliniqon", ...(biddersBody?.body?.bidders || [])])]
+  const bidders = [
+    ...new Set(["slim", "cliniqon", ...(biddersBody?.body?.bidders || [])]),
+  ]
+
+  let [manufacturersBody, manufacturerFetchError, manufacturerLoading] = useFetch(
+    `${REACT_APP_API_URL}/api/tenders/manufacturers`
+  )
+  const manufacturers = [
+    ...new Set([...(manufacturersBody?.body?.manufacturers || [])]),
+  ]
 
   useEffect(() => {
     if (productFetchError) {
@@ -292,11 +304,36 @@ export default function Index() {
               Bidders:
               <MultiSelectDropdown
                 value={["slim", "cliniqon"]}
-                onChange={bidders => {
+                onChange={(bidders) => {
                   setOptions({ matchBidders: bidders.join(",") })
                   setMatchBidders(bidders.join(","))
                 }}
-                options={bidders.map(bidder => ({ value: bidder, label: bidder }))}
+                options={bidders.map((bidder) => ({
+                  value: bidder,
+                  label: bidder,
+                }))}
+                maxSelect={5}
+              />
+            </div>
+          </label>
+          <label className="view-options">
+            <Input
+              type="radio"
+              name="options"
+              onChange={() => setOptions({ matchManufacturers })}
+              defaultChecked={options.matchManufacturers}
+            />
+            <div style={{ display: "flex" }}>
+              Manufacturers:
+              <MultiSelectDropdown
+                onChange={(mnf) => {
+                  setOptions({ matchManufacturers: mnf.join(",") })
+                  setMatchManufacturers(mnf.join(","))
+                }}
+                options={manufacturers.map((mnf) => ({
+                  value: mnf,
+                  label: mnf,
+                }))}
                 maxSelect={5}
               />
             </div>

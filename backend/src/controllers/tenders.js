@@ -14,6 +14,7 @@ async function getFilteredItems({
     minBidders,
     maxBidders,
     matchBidders,
+    matchManufacturers,
 }) {
     const matchQuery = {
         itemName: {
@@ -34,17 +35,25 @@ async function getFilteredItems({
         if (toDate != null) matchQuery.closedOn.$lte = toDate
     }
 
-    if (matchBidders.length > 0) {
+    if (matchBidders.length > 0 || matchManufacturers.length > 0) {
+        const elemConditions = []
+
+        if (matchBidders.length > 0) {
+            elemConditions.push({
+                bidder: { $regex: matchBidders.join("|"), $options: "i" },
+            })
+        }
+
+        if (matchManufacturers.length > 0) {
+            elemConditions.push({
+                manufacturer: { $regex: matchManufacturers.join("|"), $options: "i" },
+            })
+        }
+
         matchQuery.bidders = {
-            $elemMatch: {
-                bidder: {
-                    $regex: matchBidders.join("|"),
-                    $options: "i",
-                },
-            },
+            $elemMatch: elemConditions.length > 1 ? { $and: elemConditions } : elemConditions[0],
         }
     }
-
     const pipeline = [
         {
             $addFields: {
@@ -59,6 +68,14 @@ async function getFilteredItems({
                 localField: "bidders",
                 foreignField: "_id",
                 as: "bidders",
+            },
+        },
+        {
+            $lookup: {
+                from: "manufacturers",
+                localField: "manufacturers",
+                foreignField: "_id",
+                as: "manufacturers",
             },
         },
         {
@@ -92,6 +109,7 @@ const getTendersSummary = async (req, res, next) => {
         const minBidders = req.query.minBidders
         const maxBidders = req.query.maxBidders
         const matchBidders = req.query.matchBidders?.split(",") || []
+        const matchManufacturers = req.query.matchManufacturers?.split(",") || []
         const fromDate = req.query.fromDate ? new Date(req.query.fromDate) : null
         const toDate = req.query.toDate ? new Date(req.query.toDate) : null
 
@@ -102,6 +120,7 @@ const getTendersSummary = async (req, res, next) => {
             minBidders,
             maxBidders,
             matchBidders,
+            matchManufacturers,
         })
 
         let latestTenders = result[0].data
@@ -470,8 +489,22 @@ const deleteTenderBidder = async (req, res, next) => {
 const getAllBidders = async (req, res, next) => {
     try {
         let bidders = await Bidder.distinct("bidder").exec()
-        bidders = [...new Set(bidders.map(bidder => bidder.toLowerCase().trim().replaceAll("\s+", " ")))]
+        bidders = [
+            ...new Set(bidders.map((bidder) => bidder.toLowerCase().trim().replaceAll("\s+", " "))),
+        ]
         return createResponse(res, StatusCodes.OK, { bidders })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const getAllManufacturers = async (req, res, next) => {
+    try {
+        let manufacturers = await Bidder.distinct("manufacturer").exec()
+        manufacturers = [
+            ...new Set(manufacturers.map((mnf) => mnf.toLowerCase().trim().replaceAll("\s+", " "))),
+        ]
+        return createResponse(res, StatusCodes.OK, { manufacturers })
     } catch (error) {
         next(error)
     }
@@ -488,4 +521,5 @@ module.exports = {
     addTenderBidder,
     deleteTenderBidder,
     getAllBidders,
+    getAllManufacturers,
 }
