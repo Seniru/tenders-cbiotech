@@ -15,9 +15,16 @@ export default function ProductList({
   const sortedProducts = useMemo(() => {
     if (!sortBy) return products
     return [...(products || [])].sort((p1, p2) => {
-      const sortField1 = p1[sortBy],
-        sortField2 = p2[sortBy]
-      if (!sortField1 || !sortField2) return 0
+      const sortField1 = p1[sortBy]
+      const sortField2 = p2[sortBy]
+
+      const isMissing1 = sortField1 === undefined || sortField1 === null
+      const isMissing2 = sortField2 === undefined || sortField2 === null
+
+      if (isMissing1 && isMissing2) return 0
+      if (isMissing1) return 1
+      if (isMissing2) return -1
+
       if (typeof sortField1 === "string")
         return sortField1.localeCompare(sortField2) * (sortAscending ? 1 : -1)
       return (sortField1 - sortField2) * (sortAscending ? 1 : -1)
