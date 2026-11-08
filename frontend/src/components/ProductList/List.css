@@ -3,8 +3,24 @@
     width: 100%;
 }
 
+.product-list > tr {
+    font-size: 16px;
+}
+
 .product-list th {
     text-align: left;
+
+    .product-list-sortable-heading {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+
+        .product-list-sorting {
+            display: grid !important;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    }
 }
 
 .product-row {
