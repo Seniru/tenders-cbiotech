@@ -78,16 +78,19 @@ export default function Index() {
   let [biddersBody, bidderFetchError, biddersLoading] = useFetch(
     `${REACT_APP_API_URL}/api/tenders/bidders`,
   )
-  let [matchBidders, setMatchBidders] = useState(options.matchBidders || "slim,cliniqon")
-  let [matchManufacturers, setMatchManufacturers] = useState(options.matchManufacturers)
+  let [matchBidders, setMatchBidders] = useState(
+    options.matchBidders || "slim,cliniqon",
+  )
+  let [matchManufacturers, setMatchManufacturers] = useState(
+    options.matchManufacturers,
+  )
 
   const bidders = [
     ...new Set(["slim", "cliniqon", ...(biddersBody?.body?.bidders || [])]),
   ]
 
-  let [manufacturersBody, manufacturerFetchError, manufacturerLoading] = useFetch(
-    `${REACT_APP_API_URL}/api/tenders/manufacturers`
-  )
+  let [manufacturersBody, manufacturerFetchError, manufacturerLoading] =
+    useFetch(`${REACT_APP_API_URL}/api/tenders/manufacturers`)
   const manufacturers = [
     ...new Set([...(manufacturersBody?.body?.manufacturers || [])]),
   ]
