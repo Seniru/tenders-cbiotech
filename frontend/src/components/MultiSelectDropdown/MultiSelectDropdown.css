@@ -1,0 +1,156 @@
+.multi-select-dropdown-container {
+  position: relative;
+  width: 150px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.multi-select-dropdown-header {
+  /* border: 1px solid #ccc; */
+  padding: 2px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e1e8f0;
+  flex: 1;
+  min-width: 0;
+}
+
+.multi-select-dropdown-arrow {
+  height: 18px;
+  color: var(--primary-text-color);
+}
+
+.multi-select-dropdown-options {
+  color: var(--primary-text-color);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 999;
+  padding: 5px 0;
+  width: max-content;
+}
+
+.multi-select-dropdown-option {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #eee; /* Horizontal line */
+  cursor: pointer;
+}
+
+.multi-select-dropdown-option:last-child {
+  border-bottom: none; /* Remove border for the last option */
+}
+
+.multi-select-dropdown-option:hover {
+  background-color: #f0f0f0; /* Change background on hover */
+}
+
+.multi-select-dropdown-option.selected {
+  background-color: #e1e8f0; /* Highlight the entire row when selected */
+}
+
+.multi-select-dropdown-search {
+  padding: 10px;
+  width: calc(100% - 40px);
+}
+
+.multi-select-dropdown-search-input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.multi-select-dropdown-select-all {
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+}
+
+.multi-select-dropdown-select-all-label {
+  margin-left: 8px;
+}
+
+.multi-select-dropdown-option {
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+}
+
+.multi-select-dropdown-option-label {
+  margin-left: 8px;
+}
+
+.label-styles {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.placeholder-style {
+  font-size: 12px;
+  color: grey;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.placeholder-style-selected {
+  font-size: 12px;
+  color: black;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Base style for the checkbox */
+.custom-checkbox {
+  appearance: none; /* Remove default browser checkbox style */
+  width: 18px; /* Checkbox size */
+  height: 18px;
+  border: 2px solid #669edb; /* Blue border */
+  border-radius: 4px; /* Rounded corners */
+  background-color: #ffffff; /* White background */
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+/* Add a blue checkmark when the checkbox is checked */
+.custom-checkbox:checked {
+  background-color: #eaf4ff; /* Optional: light blue background when checked */
+}
+
+.custom-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid #669edb; /* Blue checkmark color */
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.multi-select-dropdown-option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

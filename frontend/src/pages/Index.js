@@ -19,6 +19,7 @@ import MessageBox from "../components/MessageBox"
 import NewTenderForm from "../forms/NewTenderForm"
 
 import "./styles/Index.css"
+import MultiSelectDropdown from "../components/MultiSelectDropdown"
 
 const { REACT_APP_API_URL } = process.env
 
@@ -71,6 +72,13 @@ export default function Index() {
     refreshList,
   )
   let { user } = useAuth()
+
+  let [biddersBody, bidderFetchError, biddersLoading] = useFetch(
+    `${REACT_APP_API_URL}/api/tenders/bidders`
+  )
+  let [matchBidders, setMatchBidders] = useState("slim,cliniqon")
+
+  const bidders = [...new Set(["slim", "cliniqon", ...(biddersBody?.body?.bidders || [])])]
 
   useEffect(() => {
     if (productFetchError) {
@@ -277,10 +285,21 @@ export default function Index() {
             <Input
               type="radio"
               name="options"
-              onChange={() => setOptions({ matchBidders: "slim,cliniqon" })}
+              onChange={() => setOptions({ matchBidders })}
               defaultChecked={options.matchBidders}
             />
-            Bidders: Slim or Cliniqon
+            <div style={{ display: "flex" }}>
+              Bidders:
+              <MultiSelectDropdown
+                value={["slim", "cliniqon"]}
+                onChange={bidders => {
+                  setOptions({ matchBidders: bidders.join(",") })
+                  setMatchBidders(bidders.join(","))
+                }}
+                options={bidders.map(bidder => ({ value: bidder, label: bidder }))}
+                maxSelect={5}
+              />
+            </div>
           </label>
         </div>
         <div>

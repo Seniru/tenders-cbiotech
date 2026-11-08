@@ -463,7 +463,17 @@ const deleteTenderBidder = async (req, res, next) => {
             )
         return createResponse(res, StatusCodes.OK, { bidder })
     } catch (error) {
-        enxt(error)
+        next(error)
+    }
+}
+
+const getAllBidders = async (req, res, next) => {
+    try {
+        let bidders = await Bidder.distinct("bidder").exec()
+        bidders = [...new Set(bidders.map(bidder => bidder.toLowerCase().trim().replaceAll("\s+", " ")))]
+        return createResponse(res, StatusCodes.OK, { bidders })
+    } catch (error) {
+        next(error)
     }
 }
 
@@ -477,4 +487,5 @@ module.exports = {
     deleteTender,
     addTenderBidder,
     deleteTenderBidder,
+    getAllBidders,
 }
